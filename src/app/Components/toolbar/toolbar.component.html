@@ -1,0 +1,11 @@
+<div class = "Stoolbar">
+    <div
+      [style.background]="color"
+      [cpToggle]="true"
+      [cpDialogDisplay]="'inline'"
+      [(colorPicker)]="color"
+    ></div>
+    <app-shapeskit [shapeColor]="color"></app-shapeskit>
+    <app-button (btnClick)="save"></app-button>
+    <app-button (btnClick)="load"></app-button>
+</div>

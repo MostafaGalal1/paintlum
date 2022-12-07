@@ -1,0 +1,13 @@
+* {
+    margin: auto;
+}
+
+body{
+    background-color: #F8F8F8F8;
+}
+
+color-picker {
+    position:relative;
+    font-family: Verdana, Arial, sans-serif;
+    top: 20px;
+}

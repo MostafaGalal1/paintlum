@@ -1,0 +1,9 @@
+.Stoolbar{
+    display: inline-block;
+    position: fixed;
+    width: 246px;
+    height: 729px;
+    overflow: auto;
+    right: 0%;
+    background-color: #DDDDDD;
+}
