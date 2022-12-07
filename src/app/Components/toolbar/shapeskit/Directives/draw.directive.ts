@@ -52,10 +52,10 @@ export class DrawDirective {
     }
     var pos = this.stage?.getPointerPosition();
     if (this.toDrawShape === "circle") {
-      this.konvaShape.setAttr('radius', Math.sqrt((this.konvaShape.getAttr('x') - pos!.x) * (this.konvaShape.getAttr('x') - pos!.x) + (this.konvaShape.getAttr('y') - pos!.y) * (this.konvaShape.getAttr('y') - pos!.y)));
+      this.konvaShape.setAttr('radius', Math.sqrt(Math.abs((this.konvaShape.getAttr('x') - pos!.x) * (this.konvaShape.getAttr('x') - pos!.x) + (this.konvaShape.getAttr('y') - pos!.y) * (this.konvaShape.getAttr('y') - pos!.y))));
     } else if (this.toDrawShape === "ellipse") {
-      this.konvaShape.setAttr('width', pos!.x - this.konvaShape.getAttr('x'));
-      this.konvaShape.setAttr('height', pos!.y - this.konvaShape.getAttr('y'));
+      this.konvaShape.setAttr('width', Math.abs(pos!.x - this.konvaShape.getAttr('x')));
+      this.konvaShape.setAttr('height', Math.abs(pos!.y - this.konvaShape.getAttr('y')));
     } else if (this.toDrawShape === "square") {
       this.konvaShape.setAttr('width', Math.min(pos!.x - this.konvaShape.getAttr('x'), pos!.y - this.konvaShape.getAttr('y')));
       this.konvaShape.setAttr('height', Math.min(pos!.x - this.konvaShape.getAttr('x'), pos!.y - this.konvaShape.getAttr('y')));
