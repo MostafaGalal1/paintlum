@@ -11,6 +11,7 @@ import {DataService} from "../../Services/data.service";
 export class ToolbarComponent implements OnInit {
   protected color: string = "#FFFFFF";
   protected fillColor: string = "transparent";
+  protected thickness: string = "5";
 
   private data: DataService;
 
@@ -33,6 +34,11 @@ export class ToolbarComponent implements OnInit {
 
   pickFillColor() {
     this.data.setFillColor(this.fillColor);
+  }
+
+  pickThickness(event : any) {
+      this.thickness = event.target.value;
+      this.data.setThickness(this.thickness);
   }
 
 }
