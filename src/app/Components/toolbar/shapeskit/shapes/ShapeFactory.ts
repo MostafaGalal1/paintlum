@@ -4,6 +4,7 @@ import { Circle } from "./Circle";
 import { Ellipse } from "./Ellipse";
 import { Rectangle } from "./Rectangle";
 import {Square} from "./Square";
+import {Triangle} from "./Triangle";
 
 export class ShapeFactory {
 
@@ -20,6 +21,8 @@ export class ShapeFactory {
             return new Rectangle;
         else if (shape === "rounded_rectangle")
             return new Ellipse;
+        else if (shape === "triangle")
+          return new Triangle;
         return new Ellipse;
     }
 }

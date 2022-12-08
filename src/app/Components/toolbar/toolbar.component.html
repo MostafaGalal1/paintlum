@@ -4,8 +4,9 @@
       [cpToggle]="true"
       [cpDialogDisplay]="'inline'"
       [(colorPicker)]="color"
+      (colorPickerChange)="pickColor()"
     ></div>
-    <app-shapeskit [shapeColor]="color"></app-shapeskit>
+    <app-shapeskit></app-shapeskit>
     <app-button (btnClick)="save"></app-button>
     <app-button (btnClick)="load"></app-button>
 </div>
