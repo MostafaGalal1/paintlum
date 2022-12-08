@@ -16,6 +16,7 @@ export class DrawDirective {
   shapeCreation : boolean = false;
   @Input() toDrawShape?:string;
   @Input() toColorShape?:string;
+  @Input() fillColor?:string;
 
   private stage?:Konva.Stage;
   private layer:Konva.Layer;
@@ -43,7 +44,7 @@ export class DrawDirective {
       this.shape = this.factory.getShape(this.toDrawShape!);
       this.shape.x = pos!.x;
       this.shape.y = pos!.y;
-      this.shape.fill = 'transparent';
+      this.shape.fill = this.fillColor;
       this.shape.stroke = this.toColorShape;
       this.shape.draggable = true;
       this.shape.strokeWidth = 5;
@@ -52,7 +53,7 @@ export class DrawDirective {
       this.brush = true;
       this.konvaShape = new Konva.Line({
         points: [pos!.x, pos!.y, pos!.x, pos!.y],
-        stroke: this.toColorShape,
+        stroke: this.fillColor,
         strokeWidth: 10,
         lineCap: 'round',
         lineJoin: 'round',

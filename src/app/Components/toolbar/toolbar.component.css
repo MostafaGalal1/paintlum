@@ -1,9 +1,23 @@
 .Stoolbar{
     display: inline-block;
     position: fixed;
-    width: 246px;
-    height: 729px;
+    width: 256px;
+    height: 900px;
     overflow: auto;
-    right: 0%;
+    right: 0;
     background-color: #DDDDDD;
+    text-align: center;
+}
+
+.color-picker {
+  font-weight: bolder;
+  font-family: "Arial Black", serif;
+  padding-left: 10px;
+  cursor: pointer;
+  position: relative;
+  width: 200px;
+  height: 25px;
+  margin: 20px 10px 10px;
+  border: solid 1px black;
+  border-radius: 10px;
 }

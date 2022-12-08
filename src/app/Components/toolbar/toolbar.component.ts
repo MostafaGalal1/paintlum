@@ -9,20 +9,31 @@ import {DataService} from "../../Services/data.service";
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  protected color:string = "#ffffff";
+  protected color: string = "#FFFFFF";
+  protected fillColor: string = "transparent";
+
   private data: DataService;
-  constructor(dataService : DataService) { this.data = dataService; }
+
+  constructor(dataService: DataService) {
+    this.data = dataService;
+  }
 
   ngOnInit(): void {
   }
 
-  save(){
+  save() {
   }
 
-  load(){
+  load() {
   }
 
-  pickColor(){
+  pickColor() {
     this.data.setColor(this.color);
   }
+
+  pickFillColor() {
+    this.data.setFillColor(this.fillColor);
+  }
+
 }
+
