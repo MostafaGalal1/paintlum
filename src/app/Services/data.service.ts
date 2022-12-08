@@ -9,7 +9,7 @@ export class DataService {
   value$ = this.value.asObservable();
   color = new BehaviorSubject('#FFFFFF');
   color$ = this.color.asObservable();
-  fillColor = new BehaviorSubject('#FFFFFF');
+  fillColor = new BehaviorSubject('transparent');
   fillColor$ = this.fillColor.asObservable();
 
   constructor() {}
