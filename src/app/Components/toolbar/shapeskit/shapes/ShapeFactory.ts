@@ -3,9 +3,11 @@ import { Shape } from "./Shape";
 import { Circle } from "./Circle";
 import { Ellipse } from "./Ellipse";
 import { Rectangle } from "./Rectangle";
+import {Square} from "./Square";
+import {Triangle} from "./Triangle";
 
 export class ShapeFactory {
-    
+
     constructor(){ }
 
     public getShape(shape:string):Shape {
@@ -14,11 +16,13 @@ export class ShapeFactory {
         else if (shape === "ellipse")
             return new Ellipse;
         else if (shape === "square")
-            return new Ellipse;
+            return new Square();
         else if (shape === "rectangle")
             return new Rectangle;
         else if (shape === "rounded_rectangle")
             return new Ellipse;
+        else if (shape === "triangle")
+          return new Triangle;
         return new Ellipse;
     }
 }

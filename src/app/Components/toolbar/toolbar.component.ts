@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import Konva from 'konva';
 import { stages } from 'konva/lib/Stage';
+import {DataService} from "../../Services/data.service";
 
 @Component({
   selector: 'app-toolbar',
@@ -8,15 +9,31 @@ import { stages } from 'konva/lib/Stage';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  color: any;
-  constructor() {   }
+  protected color: string = "#FFFFFF";
+  protected fillColor: string = "transparent";
+
+  private data: DataService;
+
+  constructor(dataService: DataService) {
+    this.data = dataService;
+  }
 
   ngOnInit(): void {
   }
 
-  save(){
+  save() {
   }
 
-  load(){
+  load() {
   }
+
+  pickColor() {
+    this.data.setColor(this.color);
+  }
+
+  pickFillColor() {
+    this.data.setFillColor(this.fillColor);
+  }
+
 }
+

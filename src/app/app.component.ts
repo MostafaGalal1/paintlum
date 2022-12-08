@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from './Services/data.service';
 
 @Component({
@@ -9,10 +9,14 @@ import { DataService } from './Services/data.service';
 export class AppComponent implements OnInit{
   title = 'paintlum';
   public shape?:string;
+  public color?:string;
+  public fillColor?:string;
 
   constructor(private dataService:DataService){  }
 
   ngOnInit() {
     this.dataService.getValue().subscribe((val) => this.shape = val);
+    this.dataService.getColor().subscribe((col) => this.color = col);
+    this.dataService.getFillColor().subscribe((col) => this.fillColor = col);
   }
 }

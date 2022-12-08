@@ -1,9 +1,9 @@
 #container{
     display: inline-block;
     position: absolute;
-    width: 960px;
-    height: 640px;
-    top: 40px;
+    width: 1600px;
+    height: 880px;
+    top: 20px;
     left: 25px;
     background-color: white;
     z-index: -1;
