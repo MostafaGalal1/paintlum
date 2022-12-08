@@ -20,6 +20,7 @@
     "@angular/router": "^14.2.0",
     "konva": "^8.3.14",
     "ng2-konva": "^6.0.0",
+    "ngx-color-picker": "^13.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
