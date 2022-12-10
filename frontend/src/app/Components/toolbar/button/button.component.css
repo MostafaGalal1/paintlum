@@ -1,15 +1,32 @@
-.key {
-    background: hsl(210, 25%, 95%);
-    border: none;
-    color: black;
-    font-size: 1.5rem;
-    inline-size: 33px;
-    block-size: 33px;
-    margin: 0px;
-    padding: 0px;
+button {
+    width: 33px;
+    height: 33px;
+    background-color: white;
+    color: navy;
+    font-size: 16px;
+    font-weight: bolder;
+    margin: 7px;
+    padding: 0;
+    border-radius: 10px;
+    border: solid 1px navy;
+    vertical-align: top;
+    text-align: center;
+    transition: all 0.2s;
 }
 
-.key:active {
-    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3) inset;
-    outline: none;
+button:hover {
+    background-color: navy;
+    color: white;
+    border: none;
+}
+
+button:active {
+    background-color: #5a5ada;
+}
+
+.save-load {
+    position: relative;
+    top: 80px;
+    width: 80px;
+    height: 33px;
 }

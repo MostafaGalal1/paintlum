@@ -1,17 +1,8 @@
 .SshapesKit {
-    display: grid;
     position: relative;
-    grid-template-columns: repeat(7, 0fr);
     top: 20px;
     width: 231px;
     height: 100px;
-    border: solid 1px black;
     background-color: #DDDDDDDD;
     margin: 10px;
-}
-
-app-button {
-    margin: 0px;
-    height: 33px;
-    width: 33px;
 }
