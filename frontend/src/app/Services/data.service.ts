@@ -7,12 +7,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class DataService {
   value = new BehaviorSubject('brush');
   value$ = this.value.asObservable();
-  color = new BehaviorSubject('#FFFFFF');
-  color$ = this.color.asObservable();
+  strokeColor = new BehaviorSubject('#000000');
+  strokeColor$ = this.strokeColor.asObservable();
   fillColor = new BehaviorSubject('transparent');
   fillColor$ = this.fillColor.asObservable();
-  thickness = new BehaviorSubject('5');
-  thickness$ = this.thickness.asObservable();
+  strokeWidth = new BehaviorSubject('5');
+  strokeWidth$ = this.strokeWidth.asObservable();
 
   constructor() {}
 
@@ -24,28 +24,28 @@ export class DataService {
     this.value.next(val);
   }
 
-  getColor():Observable<string> {
-    return this.color$;
+  getStrokeColor():Observable<string> {
+    return this.strokeColor$;
   }
 
-  setColor(col : string) {
-    this.color.next(col);
+  setStrokeColor(sCl : string) {
+    this.strokeColor.next(sCl);
   }
 
   getFillColor():Observable<string> {
     return this.fillColor$;
   }
 
-  setFillColor(col : string) {
-    this.fillColor.next(col);
+  setFillColor(fCl : string) {
+    this.fillColor.next(fCl);
   }
 
-  getThickness(): Observable<string>{
-      return this.thickness$;
+  getStrokeWidth(): Observable<string>{
+      return this.strokeWidth$;
   }
 
-  setThickness(thickness : string) {
-      this.thickness.next(thickness);
+  setsetstrokeWidth(stW : string) {
+      this.strokeWidth.next(stW);
   }
 
 }

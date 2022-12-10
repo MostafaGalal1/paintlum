@@ -9,16 +9,16 @@ import { DataService } from './Services/data.service';
 export class AppComponent implements OnInit{
   title = 'paintlum';
   public shape?:string;
-  public color?:string;
+  public strokeColor?:string;
   public fillColor?:string;
-  public thickness?:string
+  public strokeWidth?:string
 
   constructor(private dataService:DataService){  }
 
   ngOnInit() {
     this.dataService.getValue().subscribe((val) => this.shape = val);
-    this.dataService.getColor().subscribe((col) => this.color = col);
-    this.dataService.getFillColor().subscribe((col) => this.fillColor = col);
-    this.dataService.getThickness().subscribe((thickness) => this.thickness = thickness);
+    this.dataService.getStrokeColor().subscribe((sCl) => this.strokeColor = sCl);
+    this.dataService.getFillColor().subscribe((fCl) => this.fillColor = fCl);
+    this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
   }
 }

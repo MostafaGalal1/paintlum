@@ -14,10 +14,10 @@ export class DrawDirective {
   konvaShape : any;
   brush : boolean = false;
   shapeCreation : boolean = false;
-  @Input() toDrawShape?:string;
-  @Input() toColorShape?:string;
+  @Input() selectedShape?:string;
+  @Input() strokeColor?:string;
   @Input() fillColor?:string;
-  @Input() thickness?:string;
+  @Input() strokeWidth?:string;
 
   private stage?:Konva.Stage;
   private layer:Konva.Layer;
@@ -40,22 +40,22 @@ export class DrawDirective {
     }
     this.tr = new Konva.Transformer();
     var pos = this.stage?.getPointerPosition();
-    if (this.toDrawShape !== "brush"){
+    if (this.selectedShape !== "brush"){
       this.shapeCreation = true;
-      this.shape = this.factory.getShape(this.toDrawShape!);
+      this.shape = this.factory.getShape(this.selectedShape!);
       this.shape.x = pos!.x;
       this.shape.y = pos!.y;
       this.shape.fill = this.fillColor;
-      this.shape.stroke = this.toColorShape;
+      this.shape.stroke = this.strokeColor;
       this.shape.draggable = true;
-      this.shape.strokeWidth = parseInt(this.thickness!);
+      this.shape.strokeWidth = parseInt(this.strokeWidth!);
       this.konvaShape = this.shape.getKonva();
     } else {
       this.brush = true;
       this.konvaShape = new Konva.Line({
         points: [pos!.x, pos!.y, pos!.x, pos!.y],
-        stroke: this.fillColor,
-        strokeWidth: parseInt(this.thickness!),
+        stroke: this.strokeColor,
+        strokeWidth: parseInt(this.strokeWidth!),
         lineCap: 'round',
         lineJoin: 'round',
         draggable: true,
@@ -72,15 +72,15 @@ export class DrawDirective {
       return;
     }
     if (this.shapeCreation){
-      if (this.toDrawShape === "circle" || this.toDrawShape === "triangle") {
+      if (this.selectedShape === "circle" || this.selectedShape === "triangle") {
         this.konvaShape.setAttr('radius', Math.sqrt(Math.abs((this.konvaShape.getAttr('x') - pos!.x) * (this.konvaShape.getAttr('x') - pos!.x) + (this.konvaShape.getAttr('y') - pos!.y) * (this.konvaShape.getAttr('y') - pos!.y))));
-      } else if (this.toDrawShape === "ellipse") {
+      } else if (this.selectedShape === "ellipse") {
         this.konvaShape.setAttr('width', Math.abs(pos!.x - this.konvaShape.getAttr('x')));
         this.konvaShape.setAttr('height', Math.abs(pos!.y - this.konvaShape.getAttr('y')));
-      } else if (this.toDrawShape === "square") {
+      } else if (this.selectedShape === "square") {
         this.konvaShape.setAttr('width', Math.min(pos!.x - this.konvaShape.getAttr('x'), pos!.y - this.konvaShape.getAttr('y')));
         this.konvaShape.setAttr('height', Math.min(pos!.x - this.konvaShape.getAttr('x'), pos!.y - this.konvaShape.getAttr('y')));
-      } else if (this.toDrawShape === "rectangle") {
+      } else if (this.selectedShape === "rectangle") {
         this.konvaShape.setAttr('width', pos!.x - this.konvaShape.getAttr('x'));
         this.konvaShape.setAttr('height', pos!.y - this.konvaShape.getAttr('y'));
       }
