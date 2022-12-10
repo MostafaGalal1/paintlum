@@ -11,7 +11,7 @@ export class DataService {
   strokeColor$ = this.strokeColor.asObservable();
   fillColor = new BehaviorSubject('transparent');
   fillColor$ = this.fillColor.asObservable();
-  strokeWidth = new BehaviorSubject('5');
+  strokeWidth = new BehaviorSubject("5");
   strokeWidth$ = this.strokeWidth.asObservable();
 
   constructor() {}
@@ -47,5 +47,4 @@ export class DataService {
   setsetstrokeWidth(stW : string) {
       this.strokeWidth.next(stW);
   }
-
 }

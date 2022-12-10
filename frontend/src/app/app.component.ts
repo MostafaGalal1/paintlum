@@ -11,7 +11,7 @@ export class AppComponent implements OnInit{
   public shape?:string;
   public strokeColor?:string;
   public fillColor?:string;
-  public strokeWidth?:string
+  public strokeWidth?:string;
 
   constructor(private dataService:DataService){  }
 

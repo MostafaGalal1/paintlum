@@ -82,7 +82,7 @@ export class ToolbarComponent implements OnInit {
 
   pickStrokeWidth(event : any) {
       this.strokeWidth = event.target.value;
-      this.data.setStrokeColor(this.strokeWidth);
+      this.data.setsetstrokeWidth(this.strokeWidth);
   }
 }
 
