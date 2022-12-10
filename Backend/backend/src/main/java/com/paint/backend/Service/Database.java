@@ -74,6 +74,11 @@ public class Database {
         return Shapes.get(ID).draw();
     }
 
+    public String view(int id){
+        return Shapes.get(id).draw();
+    }
+
+
     public void save(){
 
     }
