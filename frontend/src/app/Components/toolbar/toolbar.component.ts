@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import Konva from 'konva';
-import { stages } from 'konva/lib/Stage';
 import {DataService} from "../../Services/data.service";
 
 @Component({
