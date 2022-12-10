@@ -11,6 +11,7 @@ export class AppComponent implements OnInit{
   public shape?:string;
   public color?:string;
   public fillColor?:string;
+  public thickness?:string
 
   constructor(private dataService:DataService){  }
 
@@ -18,5 +19,6 @@ export class AppComponent implements OnInit{
     this.dataService.getValue().subscribe((val) => this.shape = val);
     this.dataService.getColor().subscribe((col) => this.color = col);
     this.dataService.getFillColor().subscribe((col) => this.fillColor = col);
+    this.dataService.getThickness().subscribe((thickness) => this.thickness = thickness);
   }
 }

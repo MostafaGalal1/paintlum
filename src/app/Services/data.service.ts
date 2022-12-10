@@ -11,6 +11,8 @@ export class DataService {
   color$ = this.color.asObservable();
   fillColor = new BehaviorSubject('transparent');
   fillColor$ = this.fillColor.asObservable();
+  thickness = new BehaviorSubject('5');
+  thickness$ = this.thickness.asObservable();
 
   constructor() {}
 
@@ -36,6 +38,14 @@ export class DataService {
 
   setFillColor(col : string) {
     this.fillColor.next(col);
+  }
+
+  getThickness(): Observable<string>{
+      return this.thickness$;
+  }
+
+  setThickness(thickness : string) {
+      this.thickness.next(thickness);
   }
 
 }

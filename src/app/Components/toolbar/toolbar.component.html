@@ -9,6 +9,11 @@
       [(colorPicker)]="fillColor"
       (colorPickerChange)="pickFillColor()"
     >
+    <div>
+        <p>Thickness</p>
+        <input type="range" (change)="pickThickness($event)" min="1" max="100">
+        <p>{{thickness}}</p>
+    </div>
     <app-shapeskit></app-shapeskit>
     <app-button (btnClick)="save"></app-button>
     <app-button (btnClick)="load"></app-button>
