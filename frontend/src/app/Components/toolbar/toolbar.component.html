@@ -17,10 +17,10 @@
     <app-shapeskit></app-shapeskit>
 
     <app-button (btnClick)="select()"></app-button>
-    <app-button (btnClick)="undo()"></app-button>
-    <app-button (btnClick)="redo()"></app-button>
     <app-button (btnClick)="remove()"></app-button>
     <app-button (btnClick)="erase()"></app-button>
     <app-button btnClass="save-load" btnText="save" (btnClick)="save()" btnShape="save"></app-button>
     <app-button btnClass="save-load" btnText="load" (btnClick)="load()" btnShape="load"></app-button>
+    <app-button btnClass="save-load" btnText="undo" (btnClick)="undo()"></app-button>
+    <app-button btnClass="save-load" btnText="redo" (btnClick)="redo()"></app-button>
 </div>

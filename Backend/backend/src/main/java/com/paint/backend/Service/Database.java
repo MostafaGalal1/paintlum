@@ -7,17 +7,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static java.lang.Integer.MIN_VALUE;
 
 @Service
 public class Database {
-    private int NextID = MIN_VALUE;
-    private Stack<Integer> UndoStack = new Stack<>();
-    private Stack<Integer> RedoStack = new Stack<>();
 
-    private Map<Integer, IShape> Shapes = new HashMap<>();
-    public int add(String ShapeData) {
-        int ID = NextID++;
+    private int MaxID = 0;
+    private Stack<String> UndoStack = new Stack<>();
+    private Stack<String> RedoStack = new Stack<>();
+    private Map<String, IShape> Shapes = new HashMap<>();
+
+    public String add(String ShapeData) {
+        String ID = Integer.toString(MaxID++);
         JSONObject jsonShape = new JSONObject(ShapeData);
         IShape shape = ShapesFactory.create(jsonShape);
         shape.setType((String) jsonShape.get("className"));
@@ -27,17 +27,19 @@ public class Database {
         Shapes.put(ID, shape);
         clearRedo();
 
+        System.out.println(shape.draw().toString());
+
         return ID;
     }
 
     private void clearRedo(){
         while(!RedoStack.isEmpty()) {
-            int ID = RedoStack.pop();
+            String ID = RedoStack.pop();
             if(Shapes.containsKey(ID)&&!Shapes.get(ID).isUpdated()){
                 Shapes.remove(ID);
             }
         }
-        for (Map.Entry<Integer,IShape> shape_it : Shapes.entrySet()) {
+        for (Map.Entry<String,IShape> shape_it : Shapes.entrySet()) {
             shape_it.getValue().clearRedo();
         }
     }
@@ -72,7 +74,7 @@ public class Database {
 
     public void update(String updatedShape){
         JSONObject jsonUpdatedShape = new JSONObject(updatedShape);
-        int ID = ((JSONObject)jsonUpdatedShape.get("attrs")).getInt("id");
+        String ID = ((JSONObject)jsonUpdatedShape.get("attrs")).getString("id");
         UndoStack.push(ID);
 
         JSONObject update = dataCompare(Shapes.get(ID).draw(),jsonUpdatedShape);
@@ -80,7 +82,7 @@ public class Database {
         clearRedo();
     }
 
-    public void delete(int ID){
+    public void delete(String ID){
         UndoStack.push(ID);
         Shapes.get(ID).delete();
         clearRedo();
@@ -88,7 +90,7 @@ public class Database {
 
     public String undo(){
         if(UndoStack.isEmpty()){return "empty";}
-        int ID = UndoStack.peek();
+        String ID = UndoStack.peek();
         RedoStack.push(UndoStack.pop());
 
         if(Objects.equals(Shapes.get(ID).undoUpdate(), "delete")){
@@ -100,7 +102,7 @@ public class Database {
 
     public String redo(){
         if(RedoStack.isEmpty()){ return "empty";}
-        int ID = RedoStack.peek();
+        String ID = RedoStack.peek();
         UndoStack.push(RedoStack.pop());
         if(Objects.equals(Shapes.get(ID).redoUpdate(), "delete")){
             return  new JSONObject().put("delete",ID).toString();
@@ -114,5 +116,12 @@ public class Database {
 
     public void load(){
 
+    }
+
+    public void restart() {
+        MaxID = 0;
+        UndoStack.clear();
+        RedoStack.clear();
+        Shapes.clear();
     }
 }

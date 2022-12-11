@@ -1,6 +1,4 @@
 <div>
   <app-toolbar></app-toolbar>
-  <ko-stage id="container" [config]="configStage" appDraw [selectedShape]="shape" [strokeColor]="strokeColor" [fillColor]="fillColor" [strokeWidth]="strokeWidth" [undoShape]="undo">
-    <ko-layer></ko-layer>
-  </ko-stage>
+  <div id="container" appDraw [selectedShape]="shape" [strokeColor]="strokeColor" [fillColor]="fillColor" [strokeWidth]="strokeWidth" [updateShape]="shapeUpdate" [deleteShape]="deletion"></div>
 </div>

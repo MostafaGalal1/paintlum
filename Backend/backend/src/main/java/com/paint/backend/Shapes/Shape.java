@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.util.Stack;
 
 public abstract class Shape implements IShape {
-    protected  int id;
+    protected String id;
     protected boolean draggable,strokeScaleEnabled;
     protected float x, y, strokeWidth;
     protected String className, stroke, fill;
@@ -14,7 +14,7 @@ public abstract class Shape implements IShape {
     protected Stack<JSONObject> RedoUpdate = new Stack<>();
 
 
-    public void setID(int ID) { this.id = ID; }
+    public void setID(String ID) { this.id = ID; }
 
     public void setType(String type) { this.className = type; }
 
@@ -41,7 +41,7 @@ public abstract class Shape implements IShape {
         }else{
             update(UndoUpdate.pop(),"old");
         }
-        return Integer.toString(id);
+        return id;
     }
 
     public String redoUpdate(){
@@ -53,7 +53,7 @@ public abstract class Shape implements IShape {
         }else{
             update(RedoUpdate.pop(),"new");
         }
-        return Integer.toString(id);
+        return id;
     }
 
 }

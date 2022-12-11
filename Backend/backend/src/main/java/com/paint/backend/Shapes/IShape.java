@@ -3,7 +3,7 @@ package com.paint.backend.Shapes;
 import org.json.JSONObject;
 
 public interface IShape {
-     void setID(int ID);
+     void setID(String ID);
 
      void setType(String Type);
 

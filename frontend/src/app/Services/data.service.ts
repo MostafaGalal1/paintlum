@@ -5,8 +5,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  undo = new BehaviorSubject('');
-  undo$ = this.undo.asObservable();
+  Shape = new BehaviorSubject('');
+  Shape$ = this.Shape.asObservable();
+  delete = new BehaviorSubject('-1');
+  delete$ = this.delete.asObservable();
   value = new BehaviorSubject('brush');
   value$ = this.value.asObservable();
   strokeColor = new BehaviorSubject('#000000');
@@ -26,12 +28,20 @@ export class DataService {
     this.value.next(val);
   }
 
-  getUndo():Observable<string> {
-    return this.undo$;
+  getShape():Observable<string> {
+    return this.Shape$;
   }
 
-  setUndo(und : string) {
-    this.undo.next(und);
+  setShape(und : string) {
+    this.Shape.next(und);
+  }
+
+  getDelete():Observable<string> {
+    return this.delete$;
+  }
+
+  setDelete(del : string) {
+    this.delete.next(del);
   }
 
   getStrokeColor():Observable<string> {

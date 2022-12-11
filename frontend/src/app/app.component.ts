@@ -10,7 +10,8 @@ import { DataService } from './Services/data.service';
 })
 export class AppComponent implements OnInit{
   title = 'paintlum';
-  public undo?:string;
+  public deletion?:string;
+  public shapeUpdate?:string;
   public shape?:string;
   public strokeColor?:string;
   public fillColor?:string;
@@ -19,15 +20,15 @@ export class AppComponent implements OnInit{
   constructor(private dataService:DataService){  }
 
   ngOnInit() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8080/paint/restart" , false);
+    xhr.send();
+    
     this.dataService.getValue().subscribe((val) => this.shape = val);
     this.dataService.getStrokeColor().subscribe((sCl) => this.strokeColor = sCl);
     this.dataService.getFillColor().subscribe((fCl) => this.fillColor = fCl);
     this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
-    this.dataService.getUndo().subscribe((unD) => this.undo = unD);
+    this.dataService.getShape().subscribe((shP) => this.shapeUpdate = shP);
+    this.dataService.getDelete().subscribe((deL) => this.deletion = deL);
   }
-
-  public configStage: Observable<any> = of({
-    width: 300,
-    height: 200
-  });
 }
