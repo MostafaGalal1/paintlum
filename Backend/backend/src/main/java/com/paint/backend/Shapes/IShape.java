@@ -9,7 +9,7 @@ public interface IShape {
 
      void update(JSONObject jsonUpdate, String state);
 
-     String draw();
+     JSONObject draw();
 
      boolean isUpdated();
      void clearRedo();
