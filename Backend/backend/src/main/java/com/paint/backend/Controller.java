@@ -2,9 +2,10 @@ package com.paint.backend;
 
 
 import com.paint.backend.Service.Database;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/paint")
 public class Controller {
@@ -15,14 +16,14 @@ public class Controller {
 
     @GetMapping("/create")
     @ResponseBody
-    public int createShape(@RequestBody String ShapeData){
+    public int createShape(@RequestParam String ShapeData){
         return database.add(ShapeData);
     }
 
-    @PostMapping("/update/{ID}")
+    @PostMapping("/update")
     @ResponseBody
-    public void update(@PathVariable("ID") int ID,@RequestBody String ShapeUpdate){
-        database.update(ID,ShapeUpdate);
+    public void update(@RequestBody String updatedShape){
+        database.update(updatedShape);
     }
 
     @PostMapping("/delete/{ID}")

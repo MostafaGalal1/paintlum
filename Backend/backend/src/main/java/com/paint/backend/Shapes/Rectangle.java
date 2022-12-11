@@ -5,8 +5,7 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class Rectangle extends Shape {
-    private float x, y, strokeWidth, alpha, rotateAngle, width, height;
-    private String stroke, fill;
+    private float width, height;
 
     public Rectangle() {}
 
@@ -23,28 +22,16 @@ public class Rectangle extends Shape {
             case "width" -> this.width = jsonUpdate.getFloat(state);
             case "height" -> this.height = jsonUpdate.getFloat(state);
             case "strokeWidth" -> this.strokeWidth = jsonUpdate.getFloat(state);
-            case "alpha" -> this.alpha = jsonUpdate.getFloat(state);
-            case "rotateAngle" -> this.rotateAngle = jsonUpdate.getFloat(state);
             case "stroke"-> this.stroke = jsonUpdate.getString(state);
             case "fill"-> this.fill = jsonUpdate.getString(state);
-            case "Type"-> this.Type = jsonUpdate.getString(state);
         }
     }
 
     @Override
-    public String draw() {
-        return "Rectangle {" + "\n" +
-                "\tx = " + x + ",\n" +
-                "\ty = " + y + ",\n" +
-                "\tID = " + ID + ",\n" +
-                "\tstrokeWidth = " + strokeWidth + ",\n" +
-                "\talpha = " + alpha + ",\n" +
-                "\trotateAngle = " + rotateAngle + ",\n" +
-                "\tstroke = '" + stroke + '\'' + ",\n" +
-                "\tfill = '" + fill + '\'' + ",\n" +
-                "\tType = '" + Type + '\'' + ",\n" +
-                "\twidth = " + width + ",\n" +
-                "\theight = " + height + "\n" +
-                '}';
+    public JSONObject draw() {
+        JSONObject attrs = new JSONObject().put("id",id).put("x",x).put("y",y).put("stroke",stroke).put("draggable",draggable)
+                .put("strokeScaleEnabled",strokeScaleEnabled).put("strokeWidth",strokeWidth).put("fill",fill)
+                .put("width",width).put("height",height);
+        return new JSONObject().put("className",className).put("attrs",attrs);
     }
 }

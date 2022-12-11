@@ -6,8 +6,7 @@ import java.util.Objects;
 
 public class Polygon extends Shape {
     private int sides;
-    private float x, y, radius, strokeWidth, alpha, rotateAngle;
-    private String stroke, fill;
+    private float  radius;
 
     public Polygon() {}
 
@@ -23,29 +22,17 @@ public class Polygon extends Shape {
             }
             case "radius" -> this.radius = jsonUpdate.getFloat(state);
             case "strokeWidth" -> this.strokeWidth = jsonUpdate.getFloat(state);
-            case "alpha" -> this.alpha = jsonUpdate.getFloat(state);
-            case "rotateAngle" -> this.rotateAngle = jsonUpdate.getFloat(state);
             case "stroke"-> this.stroke = jsonUpdate.getString(state);
             case "fill"-> this.fill = jsonUpdate.getString(state);
-            case "Type"-> this.Type = jsonUpdate.getString(state);
             case "sides"-> this.sides = jsonUpdate.getInt(state);
         }
     }
 
     @Override
-    public String draw() {
-        return "Polygon {" + "\n" +
-                "\tx = " + x + ",\n" +
-                "\ty = " + y + ",\n" +
-                "\tID = " + ID + ",\n" +
-                "\tstrokeWidth = " + strokeWidth + ",\n" +
-                "\talpha = " + alpha + ",\n" +
-                "\trotateAngle = " + rotateAngle + ",\n" +
-                "\tstroke = '" + stroke + '\'' + ",\n" +
-                "\tfill = '" + fill + '\'' + ",\n" +
-                "\tType = '" + Type + '\'' + ",\n" +
-                "\tradius = " + radius + ",\n" +
-                "\tsides = " + sides + "\n" +
-                '}';
+    public JSONObject draw() {
+        JSONObject attrs = new JSONObject().put("id",id).put("x",x).put("y",y).put("stroke",stroke).put("draggable",draggable)
+                .put("strokeScaleEnabled",strokeScaleEnabled).put("strokeWidth",strokeWidth).put("fill",fill)
+                .put("radius",radius).put("sides",sides);
+        return new JSONObject().put("className",className).put("attrs",attrs);
     }
 }

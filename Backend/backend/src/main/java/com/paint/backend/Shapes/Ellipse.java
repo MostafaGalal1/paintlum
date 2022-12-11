@@ -6,8 +6,7 @@ import java.util.Objects;
 
 
 public class Ellipse extends Shape {
-    private float x, y, radiusX, radiusY, strokeWidth, alpha, rotateAngle;
-    private String stroke, fill;
+    private float radiusX, radiusY;
 
     public Ellipse() {}
 
@@ -24,28 +23,16 @@ public class Ellipse extends Shape {
             case "radiusX" -> this.radiusX = jsonUpdate.getFloat(state);
             case "radiusY" -> this.radiusY = jsonUpdate.getFloat(state);
             case "strokeWidth" -> this.strokeWidth = jsonUpdate.getFloat(state);
-            case "alpha" -> this.alpha = jsonUpdate.getFloat(state);
-            case "rotateAngle" -> this.rotateAngle = jsonUpdate.getFloat(state);
             case "stroke"-> this.stroke = jsonUpdate.getString(state);
             case "fill"-> this.fill = jsonUpdate.getString(state);
-            case "Type"-> this.Type = jsonUpdate.getString(state);
         }
     }
 
     @Override
-    public String draw() {
-        return "Ellipse {\n" +
-                "\tx = " + x + ",\n" +
-                "\ty = " + y + ",\n" +
-                "\tID = " + ID + ",\n" +
-                "\tstrokeWidth = " + strokeWidth + ",\n" +
-                "\talpha = " + alpha + ",\n" +
-                "\trotateAngle = " + rotateAngle + ",\n" +
-                "\tstroke = '" + stroke + '\'' + ",\n" +
-                "\tfill = '" + fill + '\'' + ",\n" +
-                "\tType = '" + Type + '\'' + ",\n" +
-                "\tradiusX = " + radiusX + ",\n" +
-                "\tradiusY = " + radiusY + ",\n" +
-                '}';
+    public JSONObject draw() {
+        JSONObject attrs = new JSONObject().put("id",id).put("x",x).put("y",y).put("stroke",stroke).put("draggable",draggable)
+                .put("strokeScaleEnabled",strokeScaleEnabled).put("strokeWidth",strokeWidth)
+                .put("fill",fill).put("radiusX",radiusX).put("radiusY",radiusY);
+        return new JSONObject().put("className",className).put("attrs",attrs);
     }
 }
