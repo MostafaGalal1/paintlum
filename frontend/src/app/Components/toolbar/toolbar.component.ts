@@ -14,7 +14,7 @@ export class ToolbarComponent implements OnInit {
   protected strokeWidth: string = "5";
 
   private data: DataService;
-  un_url: string = "http://localhost:8080/paint/undo"; 
+  un_url: string = "http://localhost:8080/paint/"; 
 
   constructor(dataService: DataService) {
     this.data = dataService;
@@ -76,13 +76,20 @@ export class ToolbarComponent implements OnInit {
 
   async undo() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", this.un_url, false);
+    xhr.open("GET", this.un_url + 'undo', false);
     xhr.send();
+    
     console.log(xhr.response);
+    this.data.setUndo(xhr.response);
   }
 
   async redo() {
-
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", this.un_url + 'redo', false);
+    xhr.send();
+    
+    console.log(xhr.response);
+    this.data.setUndo(xhr.response);
   }
 
   erase(){
@@ -90,7 +97,20 @@ export class ToolbarComponent implements OnInit {
   }
 
   remove(){
+    var xhr = new XMLHttpRequest();
+    var pack: string;
+    var un_data: any;
 
+    un_data = {
+        "ID": 786867
+    };
+
+    pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+
+    xhr.open("GET", this.un_url + 'delete' + '?' + pack, false);
+    xhr.send();
+    
+    console.log(xhr.response);
   }
 
   select(){

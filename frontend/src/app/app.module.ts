@@ -8,6 +8,7 @@ import { ButtonComponent } from './Components/toolbar/button/button.component';
 import { ShapeskitComponent } from './Components/toolbar/shapeskit/shapeskit.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DrawDirective } from './Components/toolbar/shapeskit/Directives/draw.directive';
+import { KonvaModule } from "ng2-konva";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { DrawDirective } from './Components/toolbar/shapeskit/Directives/draw.di
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ColorPickerModule
+    ColorPickerModule,
+    KonvaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

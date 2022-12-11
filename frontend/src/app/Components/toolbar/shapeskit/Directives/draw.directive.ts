@@ -143,8 +143,11 @@ export class DrawDirective {
     
     this.shapeDimension = true;
     if (this.shapeCreation){
-      if (this.selectedShape === "circle" || this.selectedShape === "triangle") {
+      if (this.selectedShape === "circle" || this.selectedShape === "triangle" || this.selectedShape === "diamond" || this.selectedShape === "pentagon" || this.selectedShape === "hexagon") {
         this.konvaShape.setAttr('radius', Math.sqrt(Math.abs((this.konvaShape.getAttr('x') - pos!.x) * (this.konvaShape.getAttr('x') - pos!.x) + (this.konvaShape.getAttr('y') - pos!.y) * (this.konvaShape.getAttr('y') - pos!.y))));
+      } else if (this.selectedShape === "diamond_star" || this.selectedShape === "penta_star" || this.selectedShape === "hexa_star") {
+        this.konvaShape.setAttr('innerRadius', Math.sqrt(Math.abs((this.konvaShape.getAttr('x') - pos!.x) * (this.konvaShape.getAttr('x') - pos!.x) + (this.konvaShape.getAttr('y') - pos!.y) * (this.konvaShape.getAttr('y') - pos!.y))));
+        this.konvaShape.setAttr('outerRadius', this.konvaShape.getAttr('innerRadius') *  10 / (this.konvaShape.getAttr('numPoints') - 1));
       } else if (this.selectedShape === "ellipse") {
         this.konvaShape.setAttr('width', Math.abs(pos!.x - this.konvaShape.getAttr('x')));
         this.konvaShape.setAttr('height', Math.abs(pos!.y - this.konvaShape.getAttr('y')));
@@ -186,17 +189,13 @@ export class DrawDirective {
       this.tr?.nodes(selected!);
       this.layer.batchDraw();
     }
-
-    console.log(this.konvaShape.toJSON());
     
     this.shapeDimension = false;
     this.shapeCreation = false;
     this.selection = false;
     this.brush = false;
 
-    
     var pack: string;
-
     var un_data: any;
     un_data = {
         "ShapeData": this.konvaShape.toJSON()

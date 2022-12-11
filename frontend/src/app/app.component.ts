@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { KonvaComponent } from 'ng2-konva';
+import { Observable, of } from 'rxjs';
 import { DataService } from './Services/data.service';
 
 @Component({
@@ -23,4 +25,9 @@ export class AppComponent implements OnInit{
     this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
     this.dataService.getUndo().subscribe((unD) => this.undo = unD);
   }
+
+  public configStage: Observable<any> = of({
+    width: 300,
+    height: 200
+  });
 }
