@@ -6,15 +6,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static java.lang.Integer.MIN_VALUE;
+
 @Service
 public class Database {
     private Stack<Integer> UndoStack = new Stack<>();
-
+    private int NextID = MIN_VALUE;
     private Stack<Integer> RedoStack = new Stack<>();
 
     private Map<Integer, IShape> Shapes = new HashMap<>();
     public int add(String ShapeData) {
-        int ID = new Random().nextInt();
+        int ID = NextID++;
         JSONObject jsonShape = new JSONObject(ShapeData);
         IShape shape = ShapesFactory.create(jsonShape);
         shape.setType((String) jsonShape.get("className"));
@@ -71,6 +73,11 @@ public class Database {
         }
         return Shapes.get(ID).draw();
     }
+
+    public String view(int id){
+        return Shapes.get(id).draw();
+    }
+
 
     public void save(){
 

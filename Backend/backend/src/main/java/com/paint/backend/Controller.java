@@ -40,4 +40,7 @@ public class Controller {
         return database.redo();
     }
 
+    @GetMapping("/view/{ID}")
+    public String view(@PathVariable("ID") int ID){ return database.view(); }
+
 }
