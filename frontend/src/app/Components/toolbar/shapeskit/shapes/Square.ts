@@ -18,6 +18,7 @@ export class Square extends Shape {
 
     override getKonva() {
         return new Konva.Rect({
+            name: 'shape',
             x: this._x,
             y: this._y,
             width: this._side,
@@ -26,6 +27,7 @@ export class Square extends Shape {
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
             draggable: this._draggable,
+            strokeScaleEnabled: false,
         });
     }
 }

@@ -18,6 +18,7 @@ export class Triangle extends Shape {
 
     override getKonva() {
         return new Konva.RegularPolygon({
+            name: 'shape',
             x: this._x,
             y: this._y,
             sides: 3,
@@ -26,6 +27,7 @@ export class Triangle extends Shape {
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
             draggable: this._draggable,
+            strokeScaleEnabled: false,
         });
     }
 }

@@ -5,6 +5,8 @@ import { Ellipse } from "./Ellipse";
 import { Rectangle } from "./Rectangle";
 import {Square} from "./Square";
 import {Triangle} from "./Triangle";
+import { Pentagon } from "./Pentagon";
+import { Hexagon } from "./Hexagon";
 
 export class ShapeFactory {
 
@@ -23,6 +25,10 @@ export class ShapeFactory {
             return new Ellipse;
         else if (shape === "triangle")
           return new Triangle;
+        else if (shape === "pentagon")
+            return new Pentagon;
+        else if (shape === "hexagon")
+          return new Hexagon;
         return new Ellipse;
     }
 }

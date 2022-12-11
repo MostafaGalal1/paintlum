@@ -14,6 +14,7 @@ export class ToolbarComponent implements OnInit {
   protected strokeWidth: string = "5";
 
   private data: DataService;
+  un_url: string = "http://localhost:8080/paint/undo"; 
 
   constructor(dataService: DataService) {
     this.data = dataService;
@@ -52,6 +53,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
+  
   async save() {
     var blob = new Blob([this.stage.toJSON()], { type: 'text/plain' });
     this.selectedFile = new File([blob], "", {type: "text/plain"});
@@ -70,6 +72,29 @@ export class ToolbarComponent implements OnInit {
     const writableStream = await this.newFile.createWritable();
     await writableStream.write(this.selectedFile);
     await writableStream.close();
+  }
+
+  async undo() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", this.un_url, false);
+    xhr.send();
+    console.log(xhr.response);
+  }
+
+  async redo() {
+
+  }
+
+  erase(){
+
+  }
+
+  remove(){
+
+  }
+
+  select(){
+    this.data.setValue('select');
   }
 
   pickStrokeColor() {
