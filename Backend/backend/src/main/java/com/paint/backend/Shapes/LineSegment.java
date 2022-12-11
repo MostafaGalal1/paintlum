@@ -8,8 +8,7 @@ import java.util.Objects;
 
 
 public class LineSegment extends Shape{
-    private float x, y, strokeWidth, alpha, rotateAngle;
-    private String stroke, fill;
+
     private float[] points;
 
     public LineSegment() {}
@@ -25,28 +24,16 @@ public class LineSegment extends Shape{
                 this.y = (((JSONObject)(jsonUpdate.get(state))).getFloat("y"));
             }
             case "strokeWidth" -> this.strokeWidth =jsonUpdate.getFloat(state);
-            case "alpha" -> this.alpha = jsonUpdate.getFloat(state);
-            case "rotateAngle" -> this.rotateAngle = jsonUpdate.getFloat(state);
             case "stroke"-> this.stroke = jsonUpdate.getString(state);
             case "fill"-> this.fill = jsonUpdate.getString(state);
-            case "Type"-> this.Type = jsonUpdate.getString(state);
-            case "points"-> this.points= new Gson().fromJson(jsonUpdate.get(state).toString(),float[].class);
+            case "points"-> this.points = (float[])jsonUpdate.get(state);
         }
     }
 
     @Override
-    public String draw() {
-        return "LineSegment {" + "\n" +
-                "\tx = " + x + ",\n" +
-                "\ty = " + y + ",\n" +
-                "\tID = " + ID + ",\n" +
-                "\tstrokeWidth = " + strokeWidth + ",\n" +
-                "\talpha = " + alpha + ",\n" +
-                "\trotateAngle = " + rotateAngle + ",\n" +
-                "\tstroke = '" + stroke + '\'' + ",\n" +
-                "\tfill = '" + fill + '\'' + ",\n" +
-                "\tType = '" + Type + '\'' + ",\n" +
-                "\tpoints = " + Arrays.toString(points) + "\n" +
-                '}';
+    public JSONObject draw() {
+        JSONObject attrs = new JSONObject().put("id",id).put("x",x).put("y",y).put("stroke",stroke).put("draggable",draggable)
+                .put("strokeScaleEnabled",strokeScaleEnabled).put("strokeWidth",strokeWidth).put("fill",fill).put("points",points);
+        return new JSONObject().put("className",className).put("attrs",attrs);
     }
 }

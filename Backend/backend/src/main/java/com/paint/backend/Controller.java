@@ -2,6 +2,7 @@ package com.paint.backend;
 
 
 import com.paint.backend.Service.Database;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,10 +20,10 @@ public class Controller {
         return database.add(ShapeData);
     }
 
-    @PostMapping("/update/{ID}")
+    @PostMapping("/update")
     @ResponseBody
-    public void update(@PathVariable("ID") int ID,@RequestBody String ShapeUpdate){
-        database.update(ID,ShapeUpdate);
+    public void update(@RequestBody String updatedShape){
+        database.update(updatedShape);
     }
 
     @PostMapping("/delete/{ID}")
@@ -39,8 +40,5 @@ public class Controller {
     public String redo(){
         return database.redo();
     }
-
-    @GetMapping("/view/{ID}")
-    public String view(@PathVariable("ID") int ID){ return database.view(); }
 
 }

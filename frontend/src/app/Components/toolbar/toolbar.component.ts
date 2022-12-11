@@ -68,6 +68,7 @@ export class ToolbarComponent implements OnInit {
       excludeAcceptAllOption: true,
       suggestedName: 'paint.JSON',
     });
+    console.log(this.selectedFile);
     const writableStream = await this.newFile.createWritable();
     await writableStream.write(this.selectedFile);
     await writableStream.close();
