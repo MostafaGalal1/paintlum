@@ -26,6 +26,7 @@ export class Rectangle extends Shape {
 
     override getKonva() {
         return new Konva.Rect({
+            name: 'shape',
             x: this._x,
             y: this._y,
             width: this._width,

@@ -8,10 +8,11 @@ import { DataService } from './Services/data.service';
 })
 export class AppComponent implements OnInit{
   title = 'paintlum';
+  public undo?:string;
   public shape?:string;
   public strokeColor?:string;
   public fillColor?:string;
-  public strokeWidth?:string
+  public strokeWidth?:string;
 
   constructor(private dataService:DataService){  }
 
@@ -20,5 +21,6 @@ export class AppComponent implements OnInit{
     this.dataService.getStrokeColor().subscribe((sCl) => this.strokeColor = sCl);
     this.dataService.getFillColor().subscribe((fCl) => this.fillColor = fCl);
     this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
+    this.dataService.getUndo().subscribe((unD) => this.undo = unD);
   }
 }

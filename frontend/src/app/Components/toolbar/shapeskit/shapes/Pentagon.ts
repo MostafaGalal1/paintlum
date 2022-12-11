@@ -1,7 +1,7 @@
 import Konva from "konva";
 import { Shape } from "./Shape";
 
-export class Circle extends Shape {
+export class Pentagon extends Shape {
     private _radius?: number;
 
     constructor(x?:number, y?:number, radius?:number, fill?: string, stroke?: string, strokeWidth?: number, draggable?: boolean){
@@ -17,10 +17,11 @@ export class Circle extends Shape {
     }
 
     override getKonva() {
-        return new Konva.Circle({
+        return new Konva.RegularPolygon({
             name: 'shape',
             x: this._x,
             y: this._y,
+            sides: 5,
             radius: this._radius!,
             fill: this._fill,
             stroke: this._stroke,

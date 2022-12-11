@@ -57,12 +57,14 @@ export abstract class Shape implements Ishape {
 
     getKonva() {
         return new Konva.Shape({
+            name: 'shape',
             x: this._x,
             y: this._y,
             fill: this._fill,
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
             draggable: this._draggable,
+            strokeScaleEnabled: false,
         });
     }
 }

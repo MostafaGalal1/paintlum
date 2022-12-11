@@ -27,6 +27,7 @@ export class Ellipse extends Shape {
 
     override getKonva() {
         return new Konva.Ellipse({
+            name: 'shape',
             x: this._x,
             y: this._y,
             radiusX: this._radiusX!,
@@ -35,6 +36,7 @@ export class Ellipse extends Shape {
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
             draggable: this._draggable,
+            strokeScaleEnabled: false,
         });
     }
 }

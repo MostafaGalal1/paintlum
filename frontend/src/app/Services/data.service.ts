@@ -5,13 +5,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
+  undo = new BehaviorSubject('');
+  undo$ = this.undo.asObservable();
   value = new BehaviorSubject('brush');
   value$ = this.value.asObservable();
   strokeColor = new BehaviorSubject('#000000');
   strokeColor$ = this.strokeColor.asObservable();
   fillColor = new BehaviorSubject('transparent');
   fillColor$ = this.fillColor.asObservable();
-  strokeWidth = new BehaviorSubject('5');
+  strokeWidth = new BehaviorSubject("5");
   strokeWidth$ = this.strokeWidth.asObservable();
 
   constructor() {}
@@ -22,6 +24,14 @@ export class DataService {
 
   setValue(val : string) {
     this.value.next(val);
+  }
+
+  getUndo():Observable<string> {
+    return this.undo$;
+  }
+
+  setUndo(und : string) {
+    this.undo.next(und);
   }
 
   getStrokeColor():Observable<string> {
@@ -47,5 +57,4 @@ export class DataService {
   setsetstrokeWidth(stW : string) {
       this.strokeWidth.next(stW);
   }
-
 }

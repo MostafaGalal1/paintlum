@@ -22,5 +22,4 @@ export class ShapeskitComponent implements OnInit {
   drawShape(shape:string){
     this.data.setValue(shape);
   }
-
 }
