@@ -5,7 +5,7 @@ import com.paint.backend.Service.Database;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/paint")
 public class Controller {
@@ -16,7 +16,7 @@ public class Controller {
 
     @GetMapping("/create")
     @ResponseBody
-    public int createShape(@RequestBody String ShapeData){
+    public int createShape(@RequestParam String ShapeData){
         return database.add(ShapeData);
     }
 
