@@ -22,7 +22,8 @@ export class DrawDirective {
   @Input() strokeColor?:string;
   @Input() fillColor?:string;
   @Input() strokeWidth?:string;
-  @Input() undoShape?:string;
+  @Input() updateShape?:string;
+  @Input() deleteShape?:string;
 
   private stage?:Konva.Stage;
   private layer:Konva.Layer;
@@ -49,10 +50,18 @@ export class DrawDirective {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if(changes[this.undoShape!]){
-      var tmp = Konva.Node.create(this.undoShape);
+    console.log(changes);
+    if (changes.hasOwnProperty('deleteShape')){
+      this.konvaShape = this.stage?.findOne('#' + this.deleteShape!);
+      this.konvaShape.destroy();
+      this.tr?.destroy();
+      this.layer.batchDraw();
+    }
+    if (changes.hasOwnProperty('updateShape')){
+      var tmp = Konva.Node.create(this.updateShape!);
       this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
       this.konvaShape = tmp;
+      this.layer.add(this.konvaShape);
       this.layer.batchDraw();
     }
   }
@@ -65,7 +74,6 @@ export class DrawDirective {
     if (this.tr?.hasChildren()) {
       if (this.tr !== undefined && !(pos!.x < (this.tr?.getX() - this.pad) || pos!.x > (this.tr?.getX() + this.tr?.getWidth() + this.pad) || pos!.y < (this.tr?.getY() - this.pad) || pos!.y > (this.tr?.getY() + this.tr?.getWidth() + this.pad))) {
         var pack: string;
-
     var un_data: any;
     un_data = {
         "ShapeData": this.konvaShape.toJSON()
@@ -176,9 +184,22 @@ export class DrawDirective {
   }
 
   @HostListener('mouseup') onMouseUp(){
-    if (this.shapeDimension)
+    if (this.shapeDimension) {
       this.tr?.nodes([this.konvaShape]);
-    if (this.selection) {
+      var pack: string;
+      var un_data: any;
+      un_data = {
+          "ShapeData": this.konvaShape.toJSON()
+      };
+
+      pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", this.un_url + 'create' + '?' + pack, false);
+      xhr.send();
+      console.log(xhr.response);
+      this.konvaShape.setAttr('id', xhr.response);
+    } if (this.selection) {
       this.selectionRectangle.visible(false);
       var shapes = this.stage?.find('.shape');
       var box = this.selectionRectangle.getClientRect();
@@ -194,19 +215,6 @@ export class DrawDirective {
     this.shapeCreation = false;
     this.selection = false;
     this.brush = false;
-
-    var pack: string;
-    var un_data: any;
-    un_data = {
-        "ShapeData": this.konvaShape.toJSON()
-    };
-
-    pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", this.un_url + 'create' + '?' + pack, false);
-    xhr.send();
-    this.konvaShape.setAttr('id', xhr.response);
   }
 }
 

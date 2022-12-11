@@ -2,7 +2,6 @@ package com.paint.backend;
 
 
 import com.paint.backend.Service.Database;
-import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -16,7 +15,7 @@ public class Controller {
 
     @GetMapping("/create")
     @ResponseBody
-    public int createShape(@RequestParam String ShapeData){
+    public String createShape(@RequestParam String ShapeData){
         return database.add(ShapeData);
     }
 
@@ -27,7 +26,7 @@ public class Controller {
     }
 
     @PostMapping("/delete/{ID}")
-    public void delete(@PathVariable("ID") int ID){
+    public void delete(@PathVariable("ID") String ID){
         database.delete(ID);
     }
 
@@ -41,4 +40,8 @@ public class Controller {
         return database.redo();
     }
 
+    @PostMapping("/restart")
+    public void restart(){
+        database.restart();
+    }
 }

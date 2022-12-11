@@ -79,17 +79,33 @@ export class ToolbarComponent implements OnInit {
     xhr.open("GET", this.un_url + 'undo', false);
     xhr.send();
     
-    console.log(xhr.response);
-    this.data.setUndo(xhr.response);
+    if (xhr.response === "empty"){
+      console.log('empty');
+      return;
+    } else {
+      const obj = JSON.parse(xhr.response);
+      if (obj.hasOwnProperty("delete")){
+        this.data.setDelete(obj.delete);
+      } else
+        this.data.setShape(xhr.response);
+    }
   }
 
   async redo() {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'redo', false);
     xhr.send();
-    
-    console.log(xhr.response);
-    this.data.setUndo(xhr.response);
+
+    if (xhr.response === "empty"){
+      console.log('empty');
+      return;
+    } else {
+      const obj = JSON.parse(xhr.response);
+      if (obj.hasOwnProperty("delete")){
+        this.data.setDelete(obj.delete);
+      } else
+        this.data.setShape(xhr.response);
+    }
   }
 
   erase(){
