@@ -99,7 +99,6 @@ export class ToolbarComponent implements OnInit {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'redo', false);
     xhr.send();
-
     if (xhr.response === "empty"){
       console.log('empty');
       return;

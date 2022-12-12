@@ -1,9 +1,6 @@
 import { Directive, HostListener, Input, SimpleChanges } from '@angular/core';
 import Konva from 'konva';
-import { Layer } from 'konva/lib/Layer';
 import { DataService } from 'src/app/Services/data.service';
-import { Ellipse } from '../shapes/Ellipse';
-import { Shape } from '../shapes/Shape';
 import { ShapeFactory } from '../shapes/ShapeFactory';
 
 @Directive({
@@ -52,7 +49,6 @@ export class DrawDirective {
 
   ngOnChanges(changes: SimpleChanges){
     if (changes.hasOwnProperty('deleteShape')){
-        console.log("A777aaaaaaa");
       this.konvaShape = this.stage?.findOne('#' + this.deleteShape!);
       this.konvaShape.destroy();
       this.tr?.destroy();
@@ -60,7 +56,7 @@ export class DrawDirective {
     }
 
     if (changes.hasOwnProperty('updateShape')){
-      var tmp = Konva.Node.create(this.updateShape!);
+      let tmp = Konva.Node.create(this.updateShape!);
       this.konvaShape = this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
       this.layer.add(tmp);
       this.konvaShape = tmp;
@@ -68,7 +64,7 @@ export class DrawDirective {
     }
 
     if (changes.hasOwnProperty('upShape')){
-        var tmp = Konva.Node.create(this.upShape!);
+        let tmp = Konva.Node.create(this.upShape!);
         this.konvaShape = this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
         this.konvaShape.destroy();
         this.layer.add(tmp);
