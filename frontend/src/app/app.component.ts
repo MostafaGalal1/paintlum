@@ -10,6 +10,7 @@ export class AppComponent implements OnInit{
   title = 'paintlum';
   public deletion?:string;
   public shapeUpdate?:string;
+  public upShape?:string;
   public shape?:string;
   public strokeColor:string = '#000000';
   public fillColor:string = 'transparent';
@@ -21,12 +22,13 @@ export class AppComponent implements OnInit{
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:8080/paint/restart" , false);
     xhr.send();
-    
+
     this.dataService.getValue().subscribe((val) => this.shape = val);
     this.dataService.getStrokeColor().subscribe((sCl) => this.strokeColor = sCl);
     this.dataService.getFillColor().subscribe((fCl) => this.fillColor = fCl);
     this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
     this.dataService.getShape().subscribe((shP) => this.shapeUpdate = shP);
+    this.dataService.getUpShape().subscribe((ushP) => this.upShape = ushP);
     this.dataService.getDelete().subscribe((deL) => this.deletion = deL);
     this.dataService.getKonvaShape().subscribe((ksP) => this.shapeUpdate = ksP);
   }

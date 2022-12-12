@@ -13,7 +13,7 @@ export class ToolbarComponent implements OnInit {
   @Input() strokeWidth: string = "5";
 
   private data: DataService;
-  un_url: string = "http://localhost:8080/paint/"; 
+  un_url: string = "http://localhost:8080/paint/";
 
   constructor(dataService: DataService) {
     this.data = dataService;
@@ -52,7 +52,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
-  
+
   async save() {
     var blob = new Blob([this.stage.toJSON()], { type: 'text/plain' });
     this.selectedFile = new File([blob], "", {type: "text/plain"});
@@ -78,7 +78,7 @@ export class ToolbarComponent implements OnInit {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'undo', false);
     xhr.send();
-    
+
     if (xhr.response === "empty"){
       console.log('empty');
       return;
@@ -87,8 +87,11 @@ export class ToolbarComponent implements OnInit {
       console.log(xhr.response);
       if (obj.hasOwnProperty("delete")){
         this.data.setDelete(obj.delete);
-      } else
-        this.data.setShape(xhr.response);
+      } else if (obj.hasOwnProperty("create")) {
+          this.data.setShape(obj.create);
+      } else if (obj.hasOwnProperty("update")) {
+          this.data.setUpShape(obj.update);
+      }
     }
   }
 
@@ -101,13 +104,15 @@ export class ToolbarComponent implements OnInit {
       console.log('empty');
       return;
     } else {
-      const obj = JSON.parse(xhr.response);
-      if (obj.hasOwnProperty("delete")){
-        this.data.setDelete(obj.delete);
-      } else{
-        this.data.setShape(xhr.response);
-        console.log(xhr.response)
-      }
+        const obj = JSON.parse(xhr.response);
+        console.log(xhr.response);
+        if (obj.hasOwnProperty("delete")){
+            this.data.setDelete(obj.delete);
+        } else if (obj.hasOwnProperty("create")) {
+            this.data.setShape(obj.create);
+        } else if (obj.hasOwnProperty("update")) {
+            this.data.setUpShape(obj.update);
+        }
     }
   }
 
@@ -128,7 +133,7 @@ export class ToolbarComponent implements OnInit {
 
     xhr.open("GET", this.un_url + 'delete' + '?' + pack, false);
     xhr.send();
-    
+
     console.log(xhr.response);
   }
 
