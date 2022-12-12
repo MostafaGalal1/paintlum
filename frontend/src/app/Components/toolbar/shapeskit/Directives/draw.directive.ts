@@ -17,7 +17,7 @@ export class DrawDirective {
   shapeCreation : boolean = false;
   shapeDimension : boolean = false;
   selection : boolean = false;
-  un_url: string = "http://localhost:8080/paint/"; 
+  un_url: string = "http://localhost:8080/paint/";
 
   @Input() selectedShape?:string;
   @Input() strokeColor?:string;
@@ -56,7 +56,7 @@ export class DrawDirective {
       this.tr?.destroy();
       this.layer.batchDraw();
     }
-    
+
     if (changes.hasOwnProperty('updateShape')){
       var tmp = Konva.Node.create(this.updateShape!);
       this.konvaShape = this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
@@ -92,7 +92,7 @@ export class DrawDirective {
       this.layer.batchDraw();
     }
   }
-  
+
 
   @HostListener('mousedown') onMouseDown() {
     var pos = this.stage?.getPointerPosition();
@@ -127,7 +127,7 @@ export class DrawDirective {
         lineJoin: 'round',
         draggable: true,
       });
-      
+
       this.layer?.add(this.konvaShape);
       this.layer?.add(this.tr);
     } else if (this.selectedShape === "select"){
@@ -148,7 +148,7 @@ export class DrawDirective {
       this.shape.draggable = true;
       this.shape.strokeWidth = parseInt(this.strokeWidth!);
       this.konvaShape = this.shape.getKonva();
-      
+
       this.layer?.add(this.konvaShape);
       this.layer?.add(this.tr);
     }
@@ -159,7 +159,7 @@ export class DrawDirective {
     if (!this.shapeCreation && !this.brush && !this.selection){
       return;
     }
-    
+
     this.shapeDimension = true;
     if (this.shapeCreation){
       if (this.selectedShape === "circle" || this.selectedShape === "triangle" || this.selectedShape === "diamond" || this.selectedShape === "pentagon" || this.selectedShape === "hexagon") {
