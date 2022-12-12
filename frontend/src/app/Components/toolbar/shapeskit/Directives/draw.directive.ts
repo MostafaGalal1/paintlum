@@ -67,6 +67,7 @@ export class DrawDirective {
     }
 
     if (this.tr?.hasChildren()) {
+        this.konvaShape = this.tr?.nodes()[0];
         this.konvaShape.setAttr("fill", this.fillColor);
         this.konvaShape.setAttr("stroke", this.strokeColor);
         this.konvaShape.setAttr("strokeWidth", parseInt(this.strokeWidth!));
