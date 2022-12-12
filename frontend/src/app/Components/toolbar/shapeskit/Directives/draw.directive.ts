@@ -50,7 +50,6 @@ export class DrawDirective {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log(changes);
     if (changes.hasOwnProperty('deleteShape')){
       this.konvaShape = this.stage?.findOne('#' + this.deleteShape!);
       this.konvaShape.destroy();
@@ -61,16 +60,35 @@ export class DrawDirective {
     if (changes.hasOwnProperty('updateShape')){
       var tmp = Konva.Node.create(this.updateShape!);
       this.konvaShape = this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
+      if (this.konvaShape !== undefined)
+        this.konvaShape.destroy();
+      this.layer.add(tmp);
       this.konvaShape = tmp;
-      this.layer.add(this.konvaShape);
       this.layer.batchDraw();
     }
 
     if (this.tr?.hasChildren()) {
+      var update = false;
+      if (this.konvaShape === this.tr?.nodes()[0]){
+        update = true;
+      }
       this.konvaShape = this.tr?.nodes()[0];
       this.konvaShape.setAttr("fill", this.fillColor);
       this.konvaShape.setAttr("stroke", this.strokeColor);
       this.konvaShape.setAttr("strokeWidth", parseInt(this.strokeWidth!));
+      if (update){
+        var pack: string;
+        var un_data: any;
+        un_data = {
+            "updatedShape": this.konvaShape.toJSON()
+        };
+
+        pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", this.un_url + 'update' + '?' + pack, false);
+        xhr.send();
+      }
       this.layer.batchDraw();
     }
   }
@@ -78,8 +96,6 @@ export class DrawDirective {
 
   @HostListener('mousedown') onMouseDown() {
     var pos = this.stage?.getPointerPosition();
-    console.log(this.tr?.getWidth() + " " + this.tr?.getHeight());
-    console.log(this.tr?.getX() + " " + this.tr?.getY());
     if (this.tr?.hasChildren()) {
       if (this.tr !== undefined && !(pos!.x < (this.tr?.getX() - this.pad) || pos!.x > (this.tr?.getX() + this.tr?.getWidth() + this.pad) || pos!.y < (this.tr?.getY() - this.pad) || pos!.y > (this.tr?.getY() + this.tr?.getWidth() + this.pad))) {
         return;

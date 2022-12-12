@@ -96,6 +96,8 @@ public class Database {
         if(Objects.equals(Shapes.get(ID).undoUpdate(), "delete")){
             return new JSONObject().put("delete",ID).toString();
         }
+        System.out.println(Shapes.get(ID).draw().toString());
+
 
         return Shapes.get(ID).draw().toString();
     }
@@ -104,9 +106,13 @@ public class Database {
         if(RedoStack.isEmpty()){ return "empty";}
         String ID = RedoStack.peek();
         UndoStack.push(RedoStack.pop());
+
         if(Objects.equals(Shapes.get(ID).redoUpdate(), "delete")){
             return  new JSONObject().put("delete",ID).toString();
         }
+        System.out.println(Shapes.get(ID).draw().toString());
+
+
         return Shapes.get(ID).draw().toString();
     }
 

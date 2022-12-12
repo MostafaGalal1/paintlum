@@ -7,6 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class DataService {
   Shape = new BehaviorSubject('');
   Shape$ = this.Shape.asObservable();
+  konvaShape = new BehaviorSubject('');
+  konvaShape$ = this.konvaShape.asObservable();
   delete = new BehaviorSubject('-1');
   delete$ = this.delete.asObservable();
   value = new BehaviorSubject('brush');
@@ -33,6 +35,14 @@ export class DataService {
   }
 
   setShape(und : string) {
+    this.Shape.next(und);
+  }
+
+  getKonvaShape():Observable<string> {
+    return this.Shape$;
+  }
+
+  setKonvaShape(und : string) {
     this.Shape.next(und);
   }
 

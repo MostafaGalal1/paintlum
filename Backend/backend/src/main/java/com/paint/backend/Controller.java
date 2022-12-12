@@ -21,7 +21,7 @@ public class Controller {
 
     @PostMapping("/update")
     @ResponseBody
-    public void update(@RequestBody String updatedShape){
+    public void update(@RequestParam String updatedShape){
         database.update(updatedShape);
     }
 
