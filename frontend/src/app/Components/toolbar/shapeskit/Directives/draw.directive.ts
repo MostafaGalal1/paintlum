@@ -25,6 +25,7 @@ export class DrawDirective {
   @Input() strokeWidth?:string;
   @Input() updateShape?:string;
   @Input() deleteShape?:string;
+  @Input() upShape?:string;
 
   private stage?:Konva.Stage;
   private layer:Konva.Layer;
@@ -51,6 +52,7 @@ export class DrawDirective {
 
   ngOnChanges(changes: SimpleChanges){
     if (changes.hasOwnProperty('deleteShape')){
+        console.log("A777aaaaaaa");
       this.konvaShape = this.stage?.findOne('#' + this.deleteShape!);
       this.konvaShape.destroy();
       this.tr?.destroy();
@@ -60,11 +62,18 @@ export class DrawDirective {
     if (changes.hasOwnProperty('updateShape')){
       var tmp = Konva.Node.create(this.updateShape!);
       this.konvaShape = this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
-      if (this.konvaShape !== undefined)
-        this.konvaShape.destroy();
       this.layer.add(tmp);
       this.konvaShape = tmp;
       this.layer.batchDraw();
+    }
+
+    if (changes.hasOwnProperty('upShape')){
+        var tmp = Konva.Node.create(this.upShape!);
+        this.konvaShape = this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
+        this.konvaShape.destroy();
+        this.layer.add(tmp);
+        this.konvaShape = tmp;
+        this.layer.batchDraw();
     }
 
     if (this.tr?.hasChildren()) {
@@ -201,7 +210,7 @@ export class DrawDirective {
       console.log(xhr.response);
       this.konvaShape.setAttr('id', xhr.response);
     }
-    
+
     this.shapeDimension = false;
     this.shapeCreation = false;
     this.brush = false;

@@ -79,6 +79,7 @@ public class Database {
 
         JSONObject update = dataCompare(Shapes.get(ID).draw(),jsonUpdatedShape);
         Shapes.get(ID).update(update,"new");
+        System.out.println(Shapes.get(ID).draw().toString());
         clearRedo();
     }
 
@@ -93,7 +94,7 @@ public class Database {
         String ID = UndoStack.peek();
         RedoStack.push(UndoStack.pop());
 
-        String state = Shapes.get(ID).redoUpdate();
+        String state = Shapes.get(ID).undoUpdate();
         if(Objects.equals(state, "delete")){
             return new JSONObject().put("delete",ID).toString();
         }
