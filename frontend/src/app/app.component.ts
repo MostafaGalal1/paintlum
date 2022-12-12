@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { KonvaComponent } from 'ng2-konva';
-import { Observable, of } from 'rxjs';
 import { DataService } from './Services/data.service';
 
 @Component({
@@ -30,5 +28,6 @@ export class AppComponent implements OnInit{
     this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
     this.dataService.getShape().subscribe((shP) => this.shapeUpdate = shP);
     this.dataService.getDelete().subscribe((deL) => this.deletion = deL);
+    this.dataService.getKonvaShape().subscribe((ksP) => this.shapeUpdate = ksP);
   }
 }

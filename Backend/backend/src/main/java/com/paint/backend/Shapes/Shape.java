@@ -45,6 +45,7 @@ public abstract class Shape implements IShape {
     }
 
     public String redoUpdate(){
+        System.out.println(RedoUpdate.toString());
         if(RedoUpdate.empty()){
             return "create";
         }else if(RedoUpdate.peek().has("delete")){
