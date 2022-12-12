@@ -1,10 +1,14 @@
 package com.paint.backend.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.paint.backend.Shapes.IShape;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -120,7 +124,18 @@ public class Database {
     }
 
     public void save(){
-
+        File file = new File("goda.json");
+        try {
+            FileWriter writer =new FileWriter(file);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(MaxID,writer);
+            gson.toJson(UndoStack.toString(),writer);
+            gson.toJson(RedoStack.toString(),writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String load(StringBuilder sb){

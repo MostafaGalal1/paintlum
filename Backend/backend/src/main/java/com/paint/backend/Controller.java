@@ -85,4 +85,9 @@ public class Controller {
     public void restart(){
         database.restart();
     }
+
+    @PostMapping("/save")
+    public void save(){
+        database.save();
+    }
 }
