@@ -84,6 +84,7 @@ export class ToolbarComponent implements OnInit {
       return;
     } else {
       const obj = JSON.parse(xhr.response);
+      console.log(xhr.response);
       if (obj.hasOwnProperty("delete")){
         this.data.setDelete(obj.delete);
       } else
@@ -103,8 +104,10 @@ export class ToolbarComponent implements OnInit {
       const obj = JSON.parse(xhr.response);
       if (obj.hasOwnProperty("delete")){
         this.data.setDelete(obj.delete);
-      } else
+      } else{
         this.data.setShape(xhr.response);
+        console.log(xhr.response)
+      }
     }
   }
 

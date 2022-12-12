@@ -35,18 +35,20 @@ public abstract class Shape implements IShape {
 
     public String undoUpdate(){
         if(UndoUpdate.empty()){
+            RedoUpdate.push(new JSONObject().put("create",true));
             return "delete";
         }else if(UndoUpdate.peek().has("delete")){
             RedoUpdate.push(UndoUpdate.pop());
+            return "create";
         }else{
             update(UndoUpdate.pop(),"old");
         }
-        return id;
+        return "update";
     }
 
     public String redoUpdate(){
-        System.out.println(RedoUpdate.toString());
-        if(RedoUpdate.empty()){
+        if(RedoUpdate.peek().has("create")){
+            RedoUpdate.pop();
             return "create";
         }else if(RedoUpdate.peek().has("delete")){
             UndoUpdate.push(RedoUpdate.pop());
@@ -54,7 +56,7 @@ public abstract class Shape implements IShape {
         }else{
             update(RedoUpdate.pop(),"new");
         }
-        return id;
+        return "update";
     }
 
 }

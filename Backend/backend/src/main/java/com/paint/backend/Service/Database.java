@@ -93,13 +93,14 @@ public class Database {
         String ID = UndoStack.peek();
         RedoStack.push(UndoStack.pop());
 
-        if(Objects.equals(Shapes.get(ID).undoUpdate(), "delete")){
+        String state = Shapes.get(ID).redoUpdate();
+        if(Objects.equals(state, "delete")){
             return new JSONObject().put("delete",ID).toString();
         }
         System.out.println(Shapes.get(ID).draw().toString());
 
 
-        return Shapes.get(ID).draw().toString();
+        return new JSONObject().put(state,Shapes.get(ID).draw()).toString();
     }
 
     public String redo(){
@@ -107,13 +108,14 @@ public class Database {
         String ID = RedoStack.peek();
         UndoStack.push(RedoStack.pop());
 
-        if(Objects.equals(Shapes.get(ID).redoUpdate(), "delete")){
+        String state = Shapes.get(ID).redoUpdate();
+        if(Objects.equals(state, "delete")){
             return  new JSONObject().put("delete",ID).toString();
         }
         System.out.println(Shapes.get(ID).draw().toString());
 
 
-        return Shapes.get(ID).draw().toString();
+        return new JSONObject().put(state,Shapes.get(ID).draw()).toString();
     }
 
     public void save(){

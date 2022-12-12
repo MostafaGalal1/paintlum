@@ -28,10 +28,6 @@ public class Star extends Shape{
         }
     }
 
-    //{"attrs":
-    // {"name":"shape","x":247,"y":221,"numPoints":4,"fill":"transparent","stroke":"#000000",
-    // "strokeWidth":5,"draggable":true,"strokeScaleEnabled":false,"innerRadius":53.150729063673246,
-    // "outerRadius":177.16909687891084},"className":"Star"}
     @Override
     public JSONObject draw() {
         JSONObject attrs = new JSONObject().put("id",id).put("x",x).put("y",y).put("stroke",stroke).put("draggable",draggable)
