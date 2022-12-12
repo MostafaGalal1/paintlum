@@ -20,6 +20,8 @@ public class ShapesFactory{
             shape = gson.fromJson(jsonShape.get("attrs").toString(), Ellipse.class);
         } else if ((jsonShape.getString("className")).equalsIgnoreCase("line")) {
             shape = gson.fromJson(jsonShape.get("attrs").toString(), LineSegment.class);
+        }else if ((jsonShape.getString("className")).equalsIgnoreCase("Star")){
+            shape = gson.fromJson(jsonShape.get("attrs").toString(), Star.class);
         }
         return shape;
     }
