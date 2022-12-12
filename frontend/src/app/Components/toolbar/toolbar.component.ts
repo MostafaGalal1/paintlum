@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import Konva from 'konva';
 import {DataService} from "../../Services/data.service";
 
@@ -8,9 +8,9 @@ import {DataService} from "../../Services/data.service";
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  protected strokeColor: string = "#000000";
-  protected fillColor: string = "transparent";
-  protected strokeWidth: string = "5";
+  @Input() strokeColor: string = "#000000";
+  @Input() fillColor: string = "transparent";
+  @Input() strokeWidth: string = "5";
 
   private data: DataService;
   un_url: string = "http://localhost:8080/paint/"; 

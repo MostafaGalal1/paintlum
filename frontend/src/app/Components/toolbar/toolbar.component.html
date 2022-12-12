@@ -3,6 +3,7 @@
       [style.background]="strokeColor"
       [(colorPicker)]="strokeColor"
       (colorPickerChange)="pickStrokeColor()"
+      
     >
     <input readonly class="color-picker" placeholder="Fill"
       [style.background]="fillColor"
@@ -11,7 +12,7 @@
     >
     <div>
         <p>Stroke Width</p>
-        <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" value = "5" min="5" max="50" step="5">
+        <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5">
         <p>{{strokeWidth}}</p>
     </div>
     <app-shapeskit></app-shapeskit>

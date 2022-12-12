@@ -13,9 +13,9 @@ export class AppComponent implements OnInit{
   public deletion?:string;
   public shapeUpdate?:string;
   public shape?:string;
-  public strokeColor?:string;
-  public fillColor?:string;
-  public strokeWidth?:string;
+  public strokeColor:string = '#000000';
+  public fillColor:string = 'transparent';
+  public strokeWidth:string = '5';
 
   constructor(private dataService:DataService){  }
 

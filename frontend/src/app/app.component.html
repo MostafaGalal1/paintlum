@@ -1,4 +1,4 @@
 <div>
-  <app-toolbar></app-toolbar>
+  <app-toolbar [strokeColor]="strokeColor" [fillColor]="fillColor" [strokeWidth]="strokeWidth"></app-toolbar>
   <div id="container" appDraw [selectedShape]="shape" [strokeColor]="strokeColor" [fillColor]="fillColor" [strokeWidth]="strokeWidth" [updateShape]="shapeUpdate" [deleteShape]="deletion"></div>
 </div>
