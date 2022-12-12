@@ -209,6 +209,7 @@ export class DrawDirective {
       xhr.send();
       console.log(xhr.response);
       this.konvaShape.setAttr('id', xhr.response);
+      console.log(this.konvaShape.toJSON());
     }
 
     this.shapeDimension = false;

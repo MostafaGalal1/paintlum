@@ -123,8 +123,9 @@ public class Database {
 
     }
 
-    public void load(){
-
+    public String load(StringBuilder sb){
+        Gson g = new Gson();
+        return g.toJson(sb.toString());
     }
 
     public void restart() {
