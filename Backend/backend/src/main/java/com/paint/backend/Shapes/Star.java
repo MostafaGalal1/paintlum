@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Star extends Shape{
     private float innerRadius;
     private float outerRadius;
-    private int numPoints;
+    private int numPoints = 5;
 
 
     @Override
