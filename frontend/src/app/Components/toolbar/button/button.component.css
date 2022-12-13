@@ -4,10 +4,11 @@ button {
     background-color: rgb(128,128,128);
     color: black;
     font-weight: bolder;
-    margin: 5px;
-    padding: 0;
+    margin: 2%;
+    padding: 1%;
     border-radius: 10px;
     border: solid 1px black;
+    transition: all 0.2s;
 }
 
 button:hover {
