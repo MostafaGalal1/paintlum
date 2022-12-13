@@ -1,10 +1,14 @@
 package com.paint.backend;
 
 import com.paint.backend.Service.PaintApp;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,13 +22,13 @@ public class Controller {
 
     @GetMapping("/create")
     @ResponseBody
-    public String createShape(@RequestParam String ShapeData){
+    public String createShape(@RequestBody String ShapeData){
         return paint.create(ShapeData);
     }
 
     @PostMapping("/update")
     @ResponseBody
-    public void update(@RequestParam String updatedShape){
+    public void update(@RequestBody String updatedShape){
         paint.update(updatedShape);
     }
 
@@ -75,11 +79,24 @@ public class Controller {
     public void restart(){
         paint.restart();
     }
-/*
-    @PostMapping("/save")
-    public void save(){
-        paint.save();
+
+    @GetMapping("/save")
+    public ResponseEntity<byte[]> save(@RequestParam String fileType){
+        File file = paint.save(fileType);
+
+        byte[] arr;
+        try {
+            arr = Files.readAllBytes(Paths.get(String.valueOf(file.toPath())));
+        } catch (IOException e) {
+            throw new RuntimeException("File Error");
+        }
+
+        if (!file.delete()){
+            System.out.println("Could not delete file");
+        }
+
+        return ResponseEntity.ok().contentLength(arr.length)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()).body(arr);
     }
 
- */
 }

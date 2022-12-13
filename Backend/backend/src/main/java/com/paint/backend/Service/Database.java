@@ -1,5 +1,7 @@
 package com.paint.backend.Service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.paint.backend.Shapes.IShape;
 
 import org.json.JSONObject;
@@ -42,8 +44,8 @@ public final class Database {
                 Shapes.remove(ID);
             }
         }
-        for (Map.Entry<String,IShape> shape_it : Shapes.entrySet()) {
-            shape_it.getValue().clearRedo();
+        for (Map.Entry<String,IShape> shape : Shapes.entrySet()) {
+            shape.getValue().clearRedo();
         }
     }
 
@@ -93,6 +95,14 @@ public final class Database {
         return new JSONObject().put(state,Shapes.get(ID).draw()).toString();
     }
 
+    public JSONObject getData(){
+        ArrayList<IShape> shapes = new ArrayList<IShape>();
+        for (Map.Entry<String,IShape> shape : Shapes.entrySet()) {
+            shapes.add(shape.getValue());
+        }
+        return new JSONObject().put("MaxID",MaxID)
+                .put("UndoStack",new Gson().toJson(UndoStack)).put("UndoStack",new Gson().toJson(UndoStack)).put("shapes",shapes);
+    }
 
     public void clear() {
         MaxID = 0;
