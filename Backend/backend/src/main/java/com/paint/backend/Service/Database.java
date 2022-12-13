@@ -101,7 +101,7 @@ public final class Database {
             shapes.add(shape.getValue());
         }
         return new JSONObject().put("MaxID",MaxID)
-                .put("UndoStack",new Gson().toJson(UndoStack)).put("UndoStack",new Gson().toJson(UndoStack)).put("shapes",shapes);
+                .put("UndoStack",new Gson().toJson(UndoStack)).put("RedoStack",new Gson().toJson(RedoStack)).put("shapes",shapes);
     }
 
     public void clear() {

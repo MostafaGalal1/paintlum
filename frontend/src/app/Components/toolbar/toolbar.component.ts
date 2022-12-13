@@ -36,22 +36,47 @@ export class ToolbarComponent implements OnInit {
     excludeAcceptAllOption: true,
   };
 
-  async load() {
-    let stage:Konva.Circle;
-    let fileHandle: FileSystemFileHandle;
-    [fileHandle] = await window.showOpenFilePicker(this.pickerOpts);
-    console.log(fileHandle);
-    if (fileHandle.kind === 'file') {
-      this.selectedFile = await fileHandle.getFile();
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", this.un_url + 'file', false);
-      xhr.send(this.selectedFile);
+  async save() {
+    var blob;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", this.un_url + 'save?fileType=json', false);
+    xhr.send();
+
+    blob = xhr.response;
+    var JSONFile = new File([blob], "", {type: "text/plain"});
+
+    xhr.open("GET", this.un_url + 'save?fileType=xml', false);
+    xhr.send();
+
+    blob = xhr.response;
+    var XMLFile = new File([blob], "", {type: "text/plain"});
+
+    this.newFile = await window.showSaveFilePicker({
+      types: [
+        {
+          description: 'paints',
+          accept: {
+            'paints/*': ['.JSON', '.xml'],
+          },
+        },
+      ],
+      excludeAcceptAllOption: true,
+      suggestedName: 'drawing',
+    });
+
+    const writableStream = await this.newFile.createWritable();
+    console.log(this.newFile.name);
+    if (this.newFile.name.indexOf("xml") !== -1) {
+      await writableStream.write(XMLFile);
+    } else { 
+      await writableStream.write(JSONFile);
     }
+    await writableStream.close();
   }
 
   private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
 
-  save (e:any){
+  load (e:any){
     let currentInput = e.target.files;
     if (currentInput.length === 0) {
       return
