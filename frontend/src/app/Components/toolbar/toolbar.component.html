@@ -1,25 +1,31 @@
 <div class = "Stoolbar">
     <div class="tools">
     <img class="image" src="assets/icons/stroke.svg" width="32" height="32">
-    <input #ignoredInput1 readonly class="color-picker" type="color"
+    <input readonly class="color-picker"
       [style.background]="strokeColor"
       [(colorPicker)]="strokeColor"
-      [cpIgnoredElements]="[ignoredInput1]"
-      [cpToggle]="false"
       (colorPickerChange)="pickStrokeColor()"
-    >
+      [cpOKButton]="true"
+      [cpSaveClickOutside]="false"
+      [cpOKButtonClass]= "'btn btn-primary btn-xs'"
+      [cpEyeDropper]="true"
+      (colorPickerSelect)="colorIt()"
+    />
     <img class="image" src="assets/icons/fill.svg" width="32" height="32">
-    <input #ignoredInput2 readonly class="color-picker" type="color"
+    <input readonly class="color-picker"
       [style.background]="fillColor"
       [(colorPicker)]="fillColor"
-      [cpIgnoredElements]="[ignoredInput2]"
-      [cpToggle]="false"
       (colorPickerChange)="pickFillColor()"
-    >
+      [cpOKButton]="true"
+      [cpSaveClickOutside]="false"
+      [cpOKButtonClass]= "'btn btn-primary btn-xs'"
+      [cpEyeDropper]="true"
+      (colorPickerSelect)="colorIt()"
+    />
     </div>
     <div class="tools">
         <p>Stroke Width</p>
-        <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5">
+        <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5" (change)="colorIt()">
         <p>{{strokeWidth}}</p>
     </div>
     <div class="tools">

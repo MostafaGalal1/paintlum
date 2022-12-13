@@ -1,5 +1,6 @@
 import { Directive, HostListener, Input, SimpleChanges } from '@angular/core';
 import Konva from 'konva';
+import { delay } from 'rxjs';
 import { DataService } from 'src/app/Services/data.service';
 import { ShapeFactory } from '../shapes/ShapeFactory';
 
@@ -7,7 +8,7 @@ import { ShapeFactory } from '../shapes/ShapeFactory';
   selector: '[appDraw]'
 })
 export class DrawDirective {
-  factory:ShapeFactory;
+  factory : ShapeFactory;
   shape : any;
   konvaShape : any;
   brush : boolean = false;
@@ -18,6 +19,7 @@ export class DrawDirective {
 
   @Input() selectedShape?:string;
   @Input() strokeColor?:string;
+  @Input() sendColor?:boolean;
   @Input() fillColor?:string;
   @Input() strokeWidth?:string;
   @Input() updateShape?:string;
@@ -62,7 +64,6 @@ export class DrawDirective {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log(changes);
     if (changes.hasOwnProperty('deleteShape')){
       if (this.deleteShape === "-1")
         return;
@@ -101,29 +102,31 @@ export class DrawDirective {
         }, 0);
     }
 
-    else if (this.tr?.nodes()[0] !== undefined ) {
-      var update = false;
-      if (this.konvaShape === this.tr?.nodes()[0]){
-        update = true;
-      }
+    else if (this.tr?.nodes()[0] !== undefined) {
       this.konvaShape = this.tr?.nodes()[0];
       this.konvaShape.setAttr("fill", this.fillColor);
       this.konvaShape.setAttr("stroke", this.strokeColor);
       this.konvaShape.setAttr("strokeWidth", parseInt(this.strokeWidth!));
-      if (update){
-        var pack: string;
-        var un_data: any;
-        un_data = {
-            "updatedShape": this.konvaShape.toJSON()
-        };
-
-        pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
-        xhr.send();
-      }
       this.layer.batchDraw();
+
+      if (!this.sendColor)
+        return;
+
+      setTimeout(() => {
+        this.dataService.setColorIt(false);
+      });
+      
+      var pack: string;
+      var un_data: any;
+      un_data = {
+          "updatedShape": this.konvaShape.toJSON()
+      };
+
+      pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
+      xhr.send();
     }
   }
 
@@ -216,6 +219,8 @@ export class DrawDirective {
       un_data = {
           "ShapeData": this.konvaShape.toJSON()
       };
+
+      console.log('zbyyyyyyyyyyyyyyyyyyy');
 
       pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
