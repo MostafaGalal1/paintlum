@@ -43,20 +43,20 @@ public class PaintApp {
             }else if(key.equals("points")){ updated =new Gson().fromJson(updated.toString(),float[].class);}
 
             if(!old.equals(updated)){
-                if(key.equals("x")){
+                if(key.equals("x") || key.equals("y") ){
                     key = "move";
                     old = new JSONObject().put("x",old).put("y",((JSONObject)oldShape.get("attrs")).get("y"));
                     updated = new JSONObject().put("x",updated).put("y",((JSONObject)updatedShape.get("attrs")).get("y"));
-                }else if (key.equals("y")){
-                    key = "move";
                     old = new JSONObject().put("y",old).put("x",((JSONObject)oldShape.get("attrs")).get("x"));
                     updated = new JSONObject().put("y",updated).put("x",((JSONObject)updatedShape.get("attrs")).get("x"));
-                }else if(key.equals("scaleX")){
+                    }else if(key.equals("scaleX") || key.equals("scaleY") ){
                     key = "scale";
                     old = new JSONObject().put("scaleX",old).put("scaleY",((JSONObject)oldShape.get("attrs")).get("scaleY"));
                     updated = new JSONObject().put("scaleX",updated).put("scaleY",((JSONObject)updatedShape.get("attrs")).get("scaleY"));
-                }else if(key.equals("scaleY")){
-                    key = "scale";
+                    old = new JSONObject().put("x",old).put("y",((JSONObject)oldShape.get("attrs")).get("y"));
+                    updated = new JSONObject().put("x",updated).put("y",((JSONObject)updatedShape.get("attrs")).get("y"));
+                    old = new JSONObject().put("y",old).put("x",((JSONObject)oldShape.get("attrs")).get("x"));
+                    updated = new JSONObject().put("y",updated).put("x",((JSONObject)updatedShape.get("attrs")).get("x"));
                     old = new JSONObject().put("scaleY",old).put("scaleX",((JSONObject)oldShape.get("attrs")).get("scaleX"));
                     updated = new JSONObject().put("scaleY",updated).put("scaleX",((JSONObject)updatedShape.get("attrs")).get("scaleX"));
                 }
