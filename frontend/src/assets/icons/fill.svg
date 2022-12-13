@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" version="1.1" id="DESIGNS" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
-<title property="dc:title">to fill</title><desc property="dc:description">An icon for "fill" from the Stone series on to [icon]. Downloaded from http://www.toicon.com/icons/stone_fill by 127.0.0.1 on 2017-07-10. Licensed CC-BY, see http://toicon.com/license/ for details.</desc>
-<path class="stone_een" d="M10.593,9l-3.714,3.714C6.312,13.281,6,14.034,6,14.835V28c0,1.214-1.087,2.179-2.339,1.972  C2.678,29.81,2,28.884,2,27.887V15.5C2,11.91,4.91,9,8.5,9H10.593z M28.879,15.879L21,8V5.178c0-2.088-1.523-3.956-3.601-4.158  C15.014,0.788,13,2.663,13,5v10.5c0,0.276,0.224,0.5,0.5,0.5s0.5-0.224,0.5-0.5V5c0-1.85,1.683-3.314,3.598-2.942  C19.022,2.335,20,3.668,20,5.118V7l-0.879-0.879C17.988,4.987,16.178,4.961,15,6.022V15.5c0,0.827-0.673,1.5-1.5,1.5  S12,16.327,12,15.5V9.007l-4.414,4.414C7.208,13.799,7,14.301,7,14.835V18l9.879,9.879c1.172,1.172,3.071,1.172,4.243,0l7.757-7.757  C30.05,18.95,30.05,17.05,28.879,15.879z" style="fill: #0B1719;"/>
-<metadata><work rdf:about=""><format>image/svg+xml</format><type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/><license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/><attributionname>Shannon E Thomas</attributionname><attributionurl>http://www.toicon.com/icons/stone_fill</attributionurl></work></metadata></svg>
+<svg version="1.1" id="Uploaded to svgrepo.com" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.linesandangles_een{fill:#111918;}
+</style>
+<path class="linesandangles_een" d="M21,12.17V6c0-1.206-0.799-3-3-3s-3,1.794-3,3v2.021L10.054,13H6c-1.105,0-2,0.895-2,2v9h2v-7
+	l12,12l10-10L21,12.17z M18,5c0.806,0,0.988,0.55,1,1v4.17l-2-2V6.012C17.012,5.55,17.194,5,18,5z M18,26l-9-9l6-6v6h2v-6.001L25,19
+	L18,26z M4,26h2v2H4V26z"/>
+</svg>
