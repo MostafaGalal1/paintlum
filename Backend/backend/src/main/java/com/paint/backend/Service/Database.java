@@ -1,7 +1,6 @@
 package com.paint.backend.Service;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.paint.backend.Shapes.IShape;
 
 import org.json.JSONObject;
@@ -96,12 +95,24 @@ public final class Database {
     }
 
     public JSONObject getData(){
-        ArrayList<IShape> shapes = new ArrayList<IShape>();
+        ArrayList<String> shapes = new ArrayList<>();
         for (Map.Entry<String,IShape> shape : Shapes.entrySet()) {
-            shapes.add(shape.getValue());
+            shapes.add(new Gson().toJson(shape.getValue()));
         }
         return new JSONObject().put("MaxID",MaxID)
                 .put("UndoStack",new Gson().toJson(UndoStack)).put("RedoStack",new Gson().toJson(RedoStack)).put("shapes",shapes);
+    }
+    public void setData(JSONObject data){
+        Gson gson = new Gson();
+        MaxID = data.getInt("MaxID");
+        UndoStack = gson.fromJson(data.get("UndoStack").toString(),Stack.class);
+        RedoStack = gson.fromJson(data.get("RedoStack").toString(),Stack.class);
+        for(Object shape :gson.fromJson(data.get("shapes").toString(),ArrayList.class)){
+
+        }
+        System.out.println(gson.toJson(UndoStack));
+        System.out.println(gson.toJson(RedoStack));
+        System.out.println("asdadasdasdsad");
     }
 
     public void clear() {
