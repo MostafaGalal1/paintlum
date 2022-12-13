@@ -122,6 +122,7 @@ export class DrawDirective {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
         xhr.send();
+        console.log(this.konvaShape.toJSON());
       }
       this.layer.batchDraw();
     }
