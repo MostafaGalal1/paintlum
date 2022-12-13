@@ -20,6 +20,10 @@ public class Ellipse extends Shape {
                 this.x = (((JSONObject)(jsonUpdate.get(state))).getFloat("x"));
                 this.y = (((JSONObject)(jsonUpdate.get(state))).getFloat("y"));
             }
+            case "scale"-> {
+                this.scaleX = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleX"));
+                this.scaleY = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleY"));
+            }
             case "radiusX" -> this.radiusX = jsonUpdate.getFloat(state);
             case "radiusY" -> this.radiusY = jsonUpdate.getFloat(state);
             case "strokeWidth" -> this.strokeWidth = jsonUpdate.getFloat(state);
