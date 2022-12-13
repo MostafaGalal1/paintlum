@@ -22,13 +22,13 @@ public class Controller {
 
     @GetMapping("/create")
     @ResponseBody
-    public String createShape(@RequestBody String ShapeData){
+    public String createShape(@RequestParam String ShapeData){
         return paint.create(ShapeData);
     }
 
     @PostMapping("/update")
     @ResponseBody
-    public void update(@RequestBody String updatedShape){
+    public void update(@RequestParam String updatedShape){
         paint.update(updatedShape);
     }
 
