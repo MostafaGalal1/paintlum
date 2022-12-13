@@ -5,7 +5,7 @@
     height: 95%;
     top: 20px;
     right: 20px;
-    background-color: rgb(40,40,40);
+    background-color: rgb(28,28,28);
     text-align: center;
     border-radius: 20px;
 }
@@ -15,7 +15,7 @@
     padding-top: 7px;
     padding-bottom: 7px;
     border-radius: 10px;
-    margin-top: 25px;
+    margin-top: 20px;
     margin-bottom: 20px;
     background-color: rgba(60,60,60);
     border: none;
@@ -37,6 +37,7 @@
     border-radius: 10px;
     border: solid 1px black;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .selector::-webkit-file-upload-button:hover {
@@ -48,11 +49,16 @@
 }
 
 .color-picker {
-  padding-left: 10px;
   cursor: pointer;
   position: relative;
-  width: 80%;
+  top: 0;
+  margin-bottom: 3%;
+  margin-top: 3%;
+  width: 72%;
   aspect-ratio: 6;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: all 0.2s;
 }
 
 .color-picker:hover{
@@ -69,4 +75,10 @@
 .color-picker::-webkit-color-swatch {
     border: none;
     border-radius: 10px;
+}
+
+.image {
+    filter: invert(85%) sepia(8%) saturate(12%) hue-rotate(356deg) brightness(75%) contrast(89%);
+    position: relative;
+    top: 4px;
 }
