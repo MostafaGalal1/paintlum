@@ -1,20 +1,14 @@
 package com.paint.backend;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.Gson;
-import com.paint.backend.Service.Database;
-import com.paint.backend.Shapes.Circle;
-import com.paint.backend.Shapes.Shape;
-import org.apache.tomcat.util.json.JSONParser;
+import com.paint.backend.Service.PaintApp;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Scanner;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -22,25 +16,25 @@ import java.util.Scanner;
 @RequestMapping("/paint")
 public class Controller {
 
-    private final Database database;
+    private final PaintApp paint;
 
-    public Controller(Database database) { this.database = database; }
+    public Controller(PaintApp paintApp) { this.paint = paintApp; }
 
     @GetMapping("/create")
     @ResponseBody
     public String createShape(@RequestParam String ShapeData){
-        return database.add(ShapeData);
+        return paint.create(ShapeData);
     }
 
     @PostMapping("/update")
     @ResponseBody
     public void update(@RequestParam String updatedShape){
-        database.update(updatedShape);
+        paint.update(updatedShape);
     }
 
     @PostMapping("/delete/{ID}")
     public void delete(@PathVariable("ID") String ID){
-        database.delete(ID);
+        paint.delete(ID);
     }
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
@@ -64,7 +58,7 @@ public class Controller {
             }
             myReader.close();
             if(!targetFile.delete()) System.out.println("Could not delete file");
-            return database.load(sb);
+            return null;
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -73,21 +67,36 @@ public class Controller {
 
     @GetMapping("/undo")
     public String undo(){
-        return database.undo();
+        return paint.undo();
     }
 
     @GetMapping("/redo")
     public String redo(){
-        return database.redo();
+        return paint.redo();
     }
 
     @PostMapping("/restart")
     public void restart(){
-        database.restart();
+        paint.restart();
     }
 
-    @PostMapping("/save")
-    public void save(){
-        database.save();
+    @GetMapping("/save")
+    public ResponseEntity<byte[]> save(@RequestParam String fileType){
+        File file = paint.save(fileType);
+
+        byte[] arr;
+        try {
+            arr = Files.readAllBytes(Paths.get(String.valueOf(file.toPath())));
+        } catch (IOException e) {
+            throw new RuntimeException("File Error");
+        }
+
+        if (!file.delete()){
+            System.out.println("Could not delete file");
+        }
+
+        return ResponseEntity.ok().contentLength(arr.length)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()).body(arr);
     }
+
 }

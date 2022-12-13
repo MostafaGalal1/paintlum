@@ -115,9 +115,6 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-  erase(){
-
-  }
 
   remove(){
     var xhr = new XMLHttpRequest();
