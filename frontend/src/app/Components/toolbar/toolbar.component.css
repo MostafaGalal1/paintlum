@@ -1,22 +1,76 @@
 .Stoolbar{
     display: inline-block;
     position: fixed;
-    width: 256px;
-    height: 900px;
-    overflow: auto;
-    right: 0;
-    background-color: #DDDDDD;
+    width: 13%;
+    height: 95%;
+    top: 20px;
+    right: 20px;
+    background-color: rgb(40,40,40);
     text-align: center;
+    border-radius: 20px;
+}
+
+.tools {
+    width: 90%;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 10px;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    background-color: rgba(60,60,60);
+    border: none;
+    position: relative;
+    vertical-align: center;
+    text-align: center;
+}
+.selector {
+    width: 96%;
+}
+
+.selector::-webkit-file-upload-button {
+    background-color: rgb(128,128,128);
+    width: 45%;
+    aspect-ratio: 2.5;
+    font-family: "Arial Black", serif;
+    color: black;
+    font-weight: bolder;
+    border-radius: 10px;
+    border: solid 1px black;
+    cursor: pointer;
+    transition: none;
+}
+
+.selector::-webkit-file-upload-button:hover {
+    background-color: rgba(128,128,128,0.6);
+}
+
+.selector::-webkit-file-upload-button:active {
+    background-color: rgba(128,128,128,0.2);
 }
 
 .color-picker {
-  font-weight: bolder;
   padding-left: 10px;
   cursor: pointer;
   position: relative;
-  width: 200px;
-  height: 25px;
-  margin: 20px 10px 10px;
-  border: solid 1px black;
+  width: 80%;
+  aspect-ratio: 6;
+  margin-top: 20px;
+  border: solid 2px black;
   border-radius: 10px;
+}
+
+.color-picker:hover{
+    opacity: 0.7;
+}
+.color-picker:active{
+    opacity: 0.4;
+}
+
+.color-picker::-webkit-color-swatch-wrapper{
+    padding: 0;
+}
+
+.color-picker::-webkit-color-swatch {
+    border: none;
+    border-radius: 10px;
 }

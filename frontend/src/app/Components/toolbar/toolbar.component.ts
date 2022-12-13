@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import axios from 'axios';
 import Konva from 'konva';
 import {DataService} from "../../Services/data.service";
 
@@ -19,8 +20,7 @@ export class ToolbarComponent implements OnInit {
     this.data = dataService;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   selectedFile!: File;
   newFile!: FileSystemFileHandle;
@@ -43,36 +43,38 @@ export class ToolbarComponent implements OnInit {
     console.log(fileHandle);
     if (fileHandle.kind === 'file') {
       this.selectedFile = await fileHandle.getFile();
-      console.log(JSON.stringify(this.selectedFile));
-      fetch('./assets/p.JSON')
-        .then((response) => response.json())
-        .then((json) => {stage = Konva.Node.create(json)
-        console.log(stage);});
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", this.un_url + 'file', false);
+      xhr.send(this.selectedFile);
     }
   }
 
   private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
 
-  async save() {
-    var blob = new Blob([this.stage.toJSON()], { type: 'text/plain' });
-    this.selectedFile = new File([blob], "", {type: "text/plain"});
-    this.newFile = await window.showSaveFilePicker({
-      types: [
-        {
-          description: 'Paints',
-          accept: {
-            'paints/*': ['.JSON', '.xml'],
-          },
-        },
-      ],
-      excludeAcceptAllOption: true,
-      suggestedName: 'paint.JSON',
-    });
-    console.log(this.selectedFile);
-    const writableStream = await this.newFile.createWritable();
-    await writableStream.write(this.selectedFile);
-    await writableStream.close();
-  }
+  save (e:any){
+    let currentInput = e.target.files;
+    if (currentInput.length === 0) {
+      return
+    }
+    let file = currentInput[0];
+    let fileName = file.name;
+    let regex = new RegExp('[^.]+$');
+    let extension = fileName.match(regex);
+    console.log(extension);
+
+    if (currentInput[0] == null) {
+      return
+    }
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("ext", extension);
+
+    axios.post(this.un_url + "file", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }).then(Response => {this.data.setUpShape(Response.data)});
+ }
 
   async undo() {
     var xhr = new XMLHttpRequest();
@@ -86,7 +88,7 @@ export class ToolbarComponent implements OnInit {
       const obj = JSON.parse(xhr.response);
       console.log(xhr.response);
       if (obj.hasOwnProperty("delete")){
-        this.data.setDelete(obj.delete);
+          this.data.setDelete(obj.delete);
       } else if (obj.hasOwnProperty("create")) {
           this.data.setShape(obj.create);
       } else if (obj.hasOwnProperty("update")) {
@@ -115,9 +117,6 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-  erase(){
-
-  }
 
   remove(){
     var xhr = new XMLHttpRequest();

@@ -3,25 +3,29 @@
       [style.background]="strokeColor"
       [(colorPicker)]="strokeColor"
       (colorPickerChange)="pickStrokeColor()"
-      
     >
     <input readonly class="color-picker" placeholder="Fill"
       [style.background]="fillColor"
       [(colorPicker)]="fillColor"
       (colorPickerChange)="pickFillColor()"
     >
-    <div>
+    <div class="tools">
         <p>Stroke Width</p>
         <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5">
         <p>{{strokeWidth}}</p>
     </div>
+    <div class="tools">
     <app-shapeskit></app-shapeskit>
-
-    <app-button (btnClick)="select()"></app-button>
-    <app-button (btnClick)="remove()"></app-button>
-    <app-button (btnClick)="erase()"></app-button>
-    <app-button btnClass="save-load" btnText="save" (btnClick)="save()" btnShape="save"></app-button>
-    <app-button btnClass="save-load" btnText="load" (btnClick)="load()" btnShape="load"></app-button>
-    <app-button btnClass="save-load" btnText="undo" (btnClick)="undo()"></app-button>
-    <app-button btnClass="save-load" btnText="redo" (btnClick)="redo()"></app-button>
-</div>
+    </div>
+    <div class="tools">
+    <app-button btnClass="tool" btnText="select" (btnClick)="select()"></app-button>
+    <app-button btnClass="tool" btnText="remove" (btnClick)="remove()"></app-button>
+    <app-button btnClass="tool" btnText="save" (btnClick)="save($event)"></app-button>
+    <app-button btnClass="tool" btnText="load" (btnClick)="load()" btnShape="load"></app-button>
+    <app-button btnClass="tool" btnText="undo" (btnClick)="undo()"></app-button>
+    <app-button btnClass="tool" btnText="redo" (btnClick)="redo()"></app-button>
+    </div>
+    <div class="tools">
+    <input class="selector" type="file" id="file" accept=".xml, .json" (change)="save($event)">
+    </div>
+  </div>
