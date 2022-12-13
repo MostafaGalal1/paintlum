@@ -38,8 +38,8 @@ public class Controller {
         paint.update(updatedShape);
     }
 
-    @PostMapping("/delete/{ID}")
-    public void delete(@PathVariable("ID") String ID){
+    @PostMapping("/delete")
+    public void delete(@RequestParam String ID){
         paint.delete(ID);
     }
 

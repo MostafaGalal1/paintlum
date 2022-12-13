@@ -1,6 +1,5 @@
 import { Directive, HostListener, Input, SimpleChanges } from '@angular/core';
 import Konva from 'konva';
-import { delay } from 'rxjs';
 import { DataService } from 'src/app/Services/data.service';
 import { ShapeFactory } from '../shapes/ShapeFactory';
 
@@ -10,6 +9,8 @@ import { ShapeFactory } from '../shapes/ShapeFactory';
 export class DrawDirective {
   factory : ShapeFactory;
   shape : any;
+  sendScale : boolean = false;
+  sendCoordinate : boolean = false;
   konvaShape : any;
   brush : boolean = false;
   shapeCreation : boolean = false;
@@ -21,6 +22,7 @@ export class DrawDirective {
   @Input() strokeColor?:string;
   @Input() sendColor?:boolean;
   @Input() fillColor?:string;
+  @Input() removeShape?:boolean;
   @Input() strokeWidth?:string;
   @Input() updateShape?:string;
   @Input() deleteShape?:string;
@@ -61,7 +63,25 @@ export class DrawDirective {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if (changes.hasOwnProperty('deleteShape')){
+    if (changes.hasOwnProperty('removeShape')){
+      setTimeout(() => {
+        this.dataService.setRemove(false);
+      }, 0);
+      if (this.tr?.nodes()[0] !== undefined) {
+        var pack: string;
+        var un_data: any;
+        un_data = {"ID": this.tr?.nodes()[0].getAttr('id')};
+        this.tr?.nodes()[0].destroy();
+
+        pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", this.API_url + 'delete' + '?' + pack, false);
+        xhr.send();
+        this.tr?.nodes([]);
+        this.layer.batchDraw();
+      }
+    } else if (changes.hasOwnProperty('deleteShape')){
       if (this.deleteShape === "-1")
         return;
       this.stage?.findOne('#' + this.deleteShape!).remove();
@@ -115,9 +135,7 @@ export class DrawDirective {
       
       var pack: string;
       var un_data: any;
-      un_data = {
-          "updatedShape": this.konvaShape.toJSON()
-      };
+      un_data = {"key": "style", "updatedShape": this.konvaShape.toJSON()};
 
       pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
@@ -195,8 +213,12 @@ export class DrawDirective {
       this.shape.fill = this.fillColor;
       this.shape.stroke = this.strokeColor;
       this.shape.draggable = true;
+      this.shape.scaleX = 1;
+      this.shape.scaleY = 1;
       this.shape.strokeWidth = parseInt(this.strokeWidth!);
       this.konvaShape = this.shape.getKonva();
+
+      console.log(this.konvaShape);
 
       this.layer?.add(this.konvaShape);
       this.layer?.add(this.tr!);
@@ -205,6 +227,15 @@ export class DrawDirective {
 
   @HostListener('mousemove') onMouseMove() {
     var pos = this.stage?.getPointerPosition();
+    if (this.tr?.nodes()[0] !== undefined){
+      this.tr?.nodes()[0].on('scaleXChange scaleYChange', () => {
+        this.sendScale = true;
+      });
+      this.tr?.nodes()[0].on('xChange yChange', () => {
+        this.sendCoordinate = true;
+      });
+    }
+
     if (!this.shapeCreation && !this.brush && !this.selection){
       return;
     }
@@ -237,6 +268,7 @@ export class DrawDirective {
             this.konvaShape.points(newPoints);
         }
     }
+
     this.layer.batchDraw();
   }
 
@@ -247,23 +279,53 @@ export class DrawDirective {
       var pack: string;
       var un_data: any;
       un_data = {
-          "ShapeData": this.konvaShape.toJSON()
+          "ShapeData": this.tr?.nodes()[0].toJSON()
       };
 
-      console.log('zbyyyyyyyyyyyyyyyyyyy');
-
+      
+      console.log(this.tr?.nodes()[0].toJSON());
       pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
       var xhr = new XMLHttpRequest();
       xhr.open("GET", this.API_url + 'create' + '?' + pack, false);
       xhr.send();
-      this.konvaShape.setAttr('id', xhr.response);
+      this.tr?.nodes()[0].setAttr('id', xhr.response);
     }
+
+    if (this.sendCoordinate){
+      var pack: string;
+      var un_data: any;
+      un_data = {"key": "move", "updatedShape": this.tr?.nodes()[0].toJSON()};
+
+      pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
+      xhr.send();
+      this.sendCoordinate = false;
+    }
+
+    if (this.sendScale){
+      console.log(this.tr?.nodes()[0].toJSON());
+      var pack: string;
+      var un_data: any;
+      un_data = {"key": "scale", "updatedShape": this.tr?.nodes()[0].toJSON()};
+
+      pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
+      xhr.send();
+      this.sendScale = false;
+    }
+
+    this.tr?.nodes()[0].off('scaleXChange scaleYChange xChange yChange');
 
     this.shapeDimension = false;
     this.shapeCreation = false;
     this.brush = false;
   }
+  
 
   @HostListener('click') onMouseClick(){
     if (this.selection) {

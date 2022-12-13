@@ -146,20 +146,7 @@ export class ToolbarComponent implements OnInit {
 
 
   remove(){
-    var xhr = new XMLHttpRequest();
-    var pack: string;
-    var un_data: any;
-
-    un_data = {
-        "ID": 786867
-    };
-
-    pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
-
-    xhr.open("GET", this.un_url + 'delete' + '?' + pack, false);
-    xhr.send();
-
-    console.log(xhr.response);
+    this.data.setRemove(true);
   }
 
   select(){

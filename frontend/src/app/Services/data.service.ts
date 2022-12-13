@@ -11,6 +11,8 @@ export class DataService {
   upShape$ = this.upShape.asObservable();
   ColorIT = new BehaviorSubject(false);
   ColorIT$ = this.ColorIT.asObservable();
+  removeShape = new BehaviorSubject(false);
+  removeShape$ = this.removeShape.asObservable();
   konvaShape = new BehaviorSubject('');
   konvaShape$ = this.konvaShape.asObservable();
   delete = new BehaviorSubject('-1');
@@ -40,6 +42,14 @@ export class DataService {
 
   setColorIt(val : boolean) {
     this.ColorIT.next(val);
+  }
+
+  getRemove():Observable<boolean> {
+    return this.removeShape$;
+  }
+
+  setRemove(val : boolean) {
+    this.removeShape.next(val);
   }
 
   getShape():Observable<string> {

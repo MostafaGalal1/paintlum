@@ -11,6 +11,7 @@ export class AppComponent implements OnInit{
   public deletion?:string;
   public shapeUpdate?:string;
   public coloringIt?:boolean;
+  public removeIt?:boolean;
   public upShape?:string;
   public shape?:string;
   public strokeColor:string = '#000000';
@@ -33,5 +34,6 @@ export class AppComponent implements OnInit{
     this.dataService.getDelete().subscribe((deL) => this.deletion = deL);
     this.dataService.getKonvaShape().subscribe((ksP) => this.shapeUpdate = ksP);
     this.dataService.getColorIt().subscribe((ks) => this.coloringIt = ks);
+    this.dataService.getRemove().subscribe((rem) => this.removeIt = rem);
   }
 }
