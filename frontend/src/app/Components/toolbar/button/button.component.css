@@ -1,32 +1,28 @@
 button {
     width: 33px;
     height: 33px;
-    background-color: white;
-    color: navy;
+    background-color: rgb(128,128,128);
+    color: black;
     font-size: 16px;
     font-weight: bolder;
-    margin: 7px;
+    margin: 5px;
     padding: 0;
     border-radius: 10px;
-    border: solid 1px navy;
+    border: solid 1px black;
     vertical-align: top;
     text-align: center;
-    transition: all 0.2s;
 }
 
 button:hover {
-    background-color: navy;
-    color: white;
-    border: none;
+    background-color: rgba(128,128,128,0.6);
 }
 
 button:active {
-    background-color: #5a5ada;
+    background-color: rgba(128,128,128,0.2);
 }
 
-.save-load {
+.tool {
     position: relative;
-    top: 80px;
-    width: 80px;
+    width: 90px;
     height: 33px;
 }

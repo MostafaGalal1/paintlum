@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import axios from 'axios';
 import Konva from 'konva';
 import {DataService} from "../../Services/data.service";
@@ -20,8 +20,7 @@ export class ToolbarComponent implements OnInit {
     this.data = dataService;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   selectedFile!: File;
   newFile!: FileSystemFileHandle;

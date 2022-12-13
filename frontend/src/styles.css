@@ -1,11 +1,69 @@
 * {
+    color: rgb(200,200,200);
     font-family: "Arial Black", serif;
     margin: auto;
+    transition: all 0.2s;
 }
 
 body{
-    background-color: #F8F8F8F8;
+    background-color: rgb(12,12,12);
 }
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    margin: 10px;
+    width: 80%;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background-color: rgb(12,12,12);
+    border-radius: 10px;
+    height: 16px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -2px;
+    background-color: rgb(128,128,128);
+    height: 20px;
+    border-radius: 5px;
+    width: 16px;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+    border: 1px solid rgb(12,12,12);
+    outline: 2px solid rgb(12,12,12);
+    outline-offset: 0.15rem;
+}
+
+input[type="range"]::-moz-range-track {
+    background-color: rgb(128,128,128);
+    border-radius: 0.5rem;
+    height: 0.5rem;
+}
+
+input[type="range"]::-moz-range-thumb {
+    border: none;
+    border-radius: 0;
+    background-color: rgb(128,128,128);
+    height: 2rem;
+    width: 1rem;
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+    border: 1px solid rgb(12,12,12);
+    outline: 3px solid rgb(12,12,12);
+    outline-offset: 0.125rem;
+}
+
 
 color-picker {
     position:relative;
