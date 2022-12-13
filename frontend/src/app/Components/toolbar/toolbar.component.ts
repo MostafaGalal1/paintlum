@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import axios from 'axios';
 import Konva from 'konva';
 import {DataService} from "../../Services/data.service";
@@ -36,22 +36,47 @@ export class ToolbarComponent implements OnInit {
     excludeAcceptAllOption: true,
   };
 
-  async load() {
-    let stage:Konva.Circle;
-    let fileHandle: FileSystemFileHandle;
-    [fileHandle] = await window.showOpenFilePicker(this.pickerOpts);
-    console.log(fileHandle);
-    if (fileHandle.kind === 'file') {
-      this.selectedFile = await fileHandle.getFile();
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", this.un_url + 'file', false);
-      xhr.send(this.selectedFile);
+  async save() {
+    var blob;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", this.un_url + 'save?fileType=json', false);
+    xhr.send();
+
+    blob = xhr.response;
+    var JSONFile = new File([blob], "", {type: "text/plain"});
+
+    xhr.open("GET", this.un_url + 'save?fileType=xml', false);
+    xhr.send();
+
+    blob = xhr.response;
+    var XMLFile = new File([blob], "", {type: "text/plain"});
+
+    this.newFile = await window.showSaveFilePicker({
+      types: [
+        {
+          description: 'paints',
+          accept: {
+            'paints/*': ['.JSON', '.xml'],
+          },
+        },
+      ],
+      excludeAcceptAllOption: true,
+      suggestedName: 'drawing',
+    });
+
+    const writableStream = await this.newFile.createWritable();
+    console.log(this.newFile.name);
+    if (this.newFile.name.indexOf("xml") !== -1) {
+      await writableStream.write(XMLFile);
+    } else { 
+      await writableStream.write(JSONFile);
     }
+    await writableStream.close();
   }
 
   private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
 
-  save (e:any){
+  load (e:any){
     let currentInput = e.target.files;
     if (currentInput.length === 0) {
       return
@@ -86,11 +111,10 @@ export class ToolbarComponent implements OnInit {
       return;
     } else {
       const obj = JSON.parse(xhr.response);
-      console.log(xhr.response);
       if (obj.hasOwnProperty("delete")){
           this.data.setDelete(obj.delete);
       } else if (obj.hasOwnProperty("create")) {
-          this.data.setShape(obj.create);
+          this.data.setKonvaShape(obj.create);
       } else if (obj.hasOwnProperty("update")) {
           this.data.setUpShape(obj.update);
       }
@@ -106,11 +130,10 @@ export class ToolbarComponent implements OnInit {
       return;
     } else {
         const obj = JSON.parse(xhr.response);
-        console.log(xhr.response);
         if (obj.hasOwnProperty("delete")){
             this.data.setDelete(obj.delete);
         } else if (obj.hasOwnProperty("create")) {
-            this.data.setShape(obj.create);
+            this.data.setKonvaShape(obj.create);
         } else if (obj.hasOwnProperty("update")) {
             this.data.setUpShape(obj.update);
         }

@@ -1,10 +1,12 @@
 package com.paint.backend.Service;
 
 import com.google.gson.Gson;
+import com.paint.backend.Shapes.Circle;
 import com.paint.backend.Shapes.IShape;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -12,8 +14,12 @@ import java.util.Iterator;
 public class PaintApp {
 
     private final Database database;
+    private final FileManager fileManager;
 
-    public PaintApp() throws IOException { database=Database.getInstance(); }
+    public PaintApp() throws IOException {
+        database=Database.getInstance();
+        fileManager = FileManager.getInstance();
+    }
 
     public String create(String ShapeData){
         JSONObject jsonShape = new JSONObject(ShapeData);
@@ -55,6 +61,7 @@ public class PaintApp {
         String ID = ((JSONObject)jsonUpdatedShape.get("attrs")).getString("id");
         JSONObject update = dataCompare(database.getShape(ID).draw(),jsonUpdatedShape);
         database.update(ID,update);
+        database.getData();
     }
 
     public void delete(String ID){
@@ -71,6 +78,16 @@ public class PaintApp {
 
     public void restart(){
         database.clear();
+    }
+
+    public File save(String fileType){
+        if (fileType.equalsIgnoreCase("json")) {
+           return fileManager.saveJson();
+        }else if (fileType.equalsIgnoreCase("xml")){
+            System.out.println(fileManager.saveXml());
+           return fileManager.saveXml();
+        }
+        return null;
     }
 
 }
