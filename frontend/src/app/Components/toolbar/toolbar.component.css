@@ -29,11 +29,10 @@
 
 .selector::-webkit-file-upload-button {
     background-color: rgb(128,128,128);
-    width: 103px;
-    height: 33px;
+    width: 45%;
+    aspect-ratio: 2.5;
     font-family: "Arial Black", serif;
     color: black;
-    font-size: 14px;
     font-weight: bolder;
     border-radius: 10px;
     border: solid 1px black;
@@ -53,10 +52,7 @@
   cursor: pointer;
   position: relative;
   width: 80%;
-  height: 30px;
-  margin-top: 20px;
-  border: solid 2px black;
-  border-radius: 10px;
+  aspect-ratio: 6;
 }
 
 .color-picker:hover{
