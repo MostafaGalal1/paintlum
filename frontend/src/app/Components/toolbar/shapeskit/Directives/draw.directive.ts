@@ -43,11 +43,8 @@ export class DrawDirective {
       container: "container",
       width: 1600,
       height: 880});
-
-    
-    this.layer = new Konva.Layer();
-
-    this.tr = new Konva.Transformer({
+      this.layer = new Konva.Layer();
+      this.tr = new Konva.Transformer({
       anchorStroke: 'grey',
       anchorFill: 'white',
       anchorSize: 7,
@@ -139,7 +136,17 @@ export class DrawDirective {
       }
     }
 
-    if (this.selectedShape === "brush"){
+    this.tr = new Konva.Transformer({
+      anchorStroke: 'grey',
+      anchorFill: 'white',
+      anchorSize: 7,
+      borderStroke: 'black',
+      borderDash: [3, 3],
+      shouldOverdrawWholeArea: true,
+    });
+    this.layer.add(this.tr);
+
+    if (this.selectedShape === "brush" || this.selectedShape === "line_segment"){
       this.shapeDimension = true;
       this.brush = true;
       this.konvaShape = new Konva.Line({
@@ -154,6 +161,21 @@ export class DrawDirective {
 
       this.layer?.add(this.konvaShape);
       this.layer?.add(this.tr!);
+    } else if (this.selectedShape === "eraser") {
+        this.shapeDimension = true;
+        this.brush = true;
+        this.konvaShape = new Konva.Line({
+            name: 'shape',
+            points: [pos!.x, pos!.y, pos!.x, pos!.y],
+            stroke: "white",
+            strokeWidth: parseInt(this.strokeWidth!),
+            lineCap: 'round',
+            lineJoin: 'round',
+            draggable: false,
+        });
+
+        this.layer?.add(this.konvaShape);
+        this.layer?.add(this.tr!);
     } else if (this.selectedShape === "select"){
       this.selection = true;
       this.selectionRectangle!.setAttrs({
@@ -202,15 +224,23 @@ export class DrawDirective {
         this.konvaShape.setAttr('height', pos!.y - this.konvaShape.getAttr('y'));
       }
     } else if (this.brush) {
-      var newPoints = this.konvaShape.points().concat([pos!.x, pos!.y]);
-      this.konvaShape.points(newPoints);
+        var newPoints
+        if (this.selectedShape === "brush" || this.selectedShape === "eraser") {
+            newPoints = this.konvaShape.points().concat([pos!.x, pos!.y]);
+            this.konvaShape.points(newPoints);
+        }
+        else if (this.selectedShape === "line_segment") {
+            newPoints = [this.konvaShape.points()[0], this.konvaShape.points()[1], pos!.x, pos!.y];
+            this.konvaShape.points(newPoints);
+        }
     }
     this.layer.batchDraw();
   }
 
   @HostListener('mouseup') onMouseUp(){
     if (this.shapeDimension) {
-      this.tr?.nodes([this.konvaShape]);
+      if (this.selectedShape !== "eraser")
+        this.tr?.nodes([this.konvaShape]);
       var pack: string;
       var un_data: any;
       un_data = {
@@ -254,3 +284,4 @@ export class DrawDirective {
     this.selection = false;
   }
 }
+
