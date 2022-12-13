@@ -99,5 +99,8 @@ public class PaintApp {
         }
         return null;
     }
+    public void load(JSONObject data){
+        database.setData(data);
+    }
 
 }
