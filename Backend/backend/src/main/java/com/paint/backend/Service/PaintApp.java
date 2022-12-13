@@ -25,6 +25,7 @@ public class PaintApp {
         JSONObject jsonShape = new JSONObject(ShapeData);
         IShape shape = ShapesFactory.create(jsonShape);
         shape.setType((String) jsonShape.get("className"));
+       // System.out.println( ((JSONObject)jsonShape.get("attrs")).get("scaleX").toString());
         return database.add(shape);
     }
 
@@ -36,7 +37,8 @@ public class PaintApp {
             Object updated = ((JSONObject)updatedShape.get("attrs")).get(key);
 
             if(key.equals("x")||key.equals("y")||key.equals("strokeWidth")
-                    ||key.equals("radius")||key.equals("radiusX")||key.equals("radiusY")||key.equals("width")||key.equals("height")){
+                    ||key.equals("radius")||key.equals("radiusX")||key.equals("radiusY")||key.equals("width")
+                    ||key.equals("height") ||key.equals("scaleX")||key.equals("scaleY")){
                 updated =  new Gson().fromJson(updated.toString(),float.class);
             }else if(key.equals("points")){ updated =new Gson().fromJson(updated.toString(),float[].class);}
 
@@ -47,8 +49,16 @@ public class PaintApp {
                     updated = new JSONObject().put("x",updated).put("y",((JSONObject)updatedShape.get("attrs")).get("y"));
                 }else if (key.equals("y")){
                     key = "move";
-                    old = new JSONObject().put("y",old).put("y",((JSONObject)oldShape.get("attrs")).get("x"));
+                    old = new JSONObject().put("y",old).put("x",((JSONObject)oldShape.get("attrs")).get("x"));
                     updated = new JSONObject().put("y",updated).put("x",((JSONObject)updatedShape.get("attrs")).get("x"));
+                }else if(key.equals("scaleX")){
+                    key = "scale";
+                    old = new JSONObject().put("scaleX",old).put("scaleY",((JSONObject)oldShape.get("attrs")).get("scaleY"));
+                    updated = new JSONObject().put("scaleX",updated).put("scaleY",((JSONObject)updatedShape.get("attrs")).get("scaleY"));
+                }else if(key.equals("scaleY")){
+                    key = "scale";
+                    old = new JSONObject().put("scaleY",old).put("scaleX",((JSONObject)oldShape.get("attrs")).get("scaleX"));
+                    updated = new JSONObject().put("scaleY",updated).put("scaleX",((JSONObject)updatedShape.get("attrs")).get("scaleX"));
                 }
                 return update.put("attrs",key).put("old",old).put("new",updated);
             }

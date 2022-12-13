@@ -1,17 +1,31 @@
 <div class = "Stoolbar">
-    <input readonly class="color-picker" placeholder="Stroke"
+    <div class="tools">
+    <img class="image" src="assets/icons/stroke.svg" width="32" height="32">
+    <input readonly class="color-picker"
       [style.background]="strokeColor"
       [(colorPicker)]="strokeColor"
       (colorPickerChange)="pickStrokeColor()"
-    >
-    <input readonly class="color-picker" placeholder="Fill"
+      [cpOKButton]="true"
+      [cpSaveClickOutside]="false"
+      [cpOKButtonClass]= "'btn btn-primary btn-xs'"
+      [cpEyeDropper]="true"
+      (colorPickerSelect)="colorIt()"
+    />
+    <img class="image" src="assets/icons/fill.svg" width="32" height="32">
+    <input readonly class="color-picker"
       [style.background]="fillColor"
       [(colorPicker)]="fillColor"
       (colorPickerChange)="pickFillColor()"
-    >
+      [cpOKButton]="true"
+      [cpSaveClickOutside]="false"
+      [cpOKButtonClass]= "'btn btn-primary btn-xs'"
+      [cpEyeDropper]="true"
+      (colorPickerSelect)="colorIt()"
+    />
+    </div>
     <div class="tools">
         <p>Stroke Width</p>
-        <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5">
+        <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5" (change)="colorIt()">
         <p>{{strokeWidth}}</p>
     </div>
     <div class="tools">

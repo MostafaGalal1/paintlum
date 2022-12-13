@@ -20,6 +20,10 @@ public class Polygon extends Shape {
                 this.x = (((JSONObject)(jsonUpdate.get(state))).getFloat("x"));
                 this.y = (((JSONObject)(jsonUpdate.get(state))).getFloat("y"));
             }
+            case "scale"-> {
+                this.scaleX = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleX"));
+                this.scaleY = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleY"));
+            }
             case "radius" -> this.radius = jsonUpdate.getFloat(state);
             case "strokeWidth" -> this.strokeWidth = jsonUpdate.getFloat(state);
             case "stroke"-> this.stroke = jsonUpdate.getString(state);

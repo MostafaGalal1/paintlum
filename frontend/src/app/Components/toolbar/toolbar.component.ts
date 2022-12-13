@@ -74,6 +74,10 @@ export class ToolbarComponent implements OnInit {
     await writableStream.close();
   }
 
+  colorIt(){
+    this.data.setColorIt(true);
+  }
+
   private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
 
   load (e:any){

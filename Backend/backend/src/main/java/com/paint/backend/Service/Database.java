@@ -17,6 +17,7 @@ public final class Database {
     private Stack<String> RedoStack = new Stack<>();
     private Map<String, IShape> Shapes = new HashMap<>();
     private static Database instance;
+    private Database(){}
 
     public static Database getInstance() throws IOException {
         if (instance == null) {

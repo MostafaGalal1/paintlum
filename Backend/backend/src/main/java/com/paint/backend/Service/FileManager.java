@@ -15,7 +15,7 @@ public final class FileManager {
     private static FileManager instance;
 
     private FileManager() throws IOException { database=Database.getInstance(); }
-
+    
     public static FileManager getInstance() throws IOException {
         if (instance == null) {
             instance = new FileManager();
