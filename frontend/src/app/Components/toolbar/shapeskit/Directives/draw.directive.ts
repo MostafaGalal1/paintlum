@@ -49,10 +49,13 @@ export class DrawDirective {
 
   ngOnChanges(changes: SimpleChanges){
     if (changes.hasOwnProperty('deleteShape')){
+      if (this.deleteShape === "-1")
+        return;
       this.konvaShape = this.stage?.findOne('#' + this.deleteShape!);
       this.konvaShape.destroy();
       this.tr?.destroy();
       this.layer.batchDraw();
+      this.dataService.setDelete("-1");
     }
 
     if (changes.hasOwnProperty('updateShape')){
@@ -66,7 +69,8 @@ export class DrawDirective {
     if (changes.hasOwnProperty('upShape')){
         let tmp = Konva.Node.create(this.upShape!);
         this.konvaShape = this.stage?.findOne('#' + this.konvaShape.getAttr('id'));
-        this.konvaShape.destroy();
+        if (this.konvaShape !== undefined)
+          this.konvaShape.destroy();
         this.layer.add(tmp);
         this.konvaShape = tmp;
         this.layer.batchDraw();
@@ -205,6 +209,7 @@ export class DrawDirective {
       xhr.send();
       console.log(xhr.response);
       this.konvaShape.setAttr('id', xhr.response);
+      console.log(this.konvaShape.toJSON());
     }
 
     this.shapeDimension = false;

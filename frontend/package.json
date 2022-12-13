@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
     "@types/wicg-file-system-access": "^2020.9.5",
+    "axios": "^1.2.1",
     "konva": "^8.3.14",
     "ng2-konva": "^6.0.0",
     "ngx-color-picker": "^13.0.0",
