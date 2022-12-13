@@ -1,14 +1,10 @@
 package com.paint.backend.Service;
 
-import com.google.gson.Gson;
-import com.paint.backend.Shapes.Circle;
 import com.paint.backend.Shapes.IShape;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 
 @Service
 public class PaintApp {
@@ -16,7 +12,7 @@ public class PaintApp {
     private final Database database;
     private final FileManager fileManager;
 
-    public PaintApp() throws IOException {
+    public PaintApp(){
         database=Database.getInstance();
         fileManager = FileManager.getInstance();
     }
@@ -29,49 +25,38 @@ public class PaintApp {
         return database.add(shape);
     }
 
-    private JSONObject dataCompare(JSONObject oldShape,JSONObject updatedShape){
-        JSONObject update = new JSONObject().put("attrs","");
-        for (Iterator<String> it = ((JSONObject)oldShape.get("attrs")).keys(); it.hasNext();) {
-            String key =it.next();
-            Object old= ((JSONObject)oldShape.get("attrs")).get(key);
-            Object updated = ((JSONObject)updatedShape.get("attrs")).get(key);
-
-            if(key.equals("x")||key.equals("y")||key.equals("strokeWidth")
-                    ||key.equals("radius")||key.equals("radiusX")||key.equals("radiusY")||key.equals("width")
-                    ||key.equals("height") ||key.equals("scaleX")||key.equals("scaleY")){
-                updated =  new Gson().fromJson(updated.toString(),float.class);
-            }else if(key.equals("points")){ updated =new Gson().fromJson(updated.toString(),float[].class);}
-
-            if(!old.equals(updated)){
-                if(key.equals("x")){
-                    key = "move";
-                    old = new JSONObject().put("x",old).put("y",((JSONObject)oldShape.get("attrs")).get("y"));
-                    updated = new JSONObject().put("x",updated).put("y",((JSONObject)updatedShape.get("attrs")).get("y"));
-                }else if (key.equals("y")){
-                    key = "move";
-                    old = new JSONObject().put("y",old).put("x",((JSONObject)oldShape.get("attrs")).get("x"));
-                    updated = new JSONObject().put("y",updated).put("x",((JSONObject)updatedShape.get("attrs")).get("x"));
-                }else if(key.equals("scaleX")){
-                    key = "scale";
-                    old = new JSONObject().put("scaleX",old).put("scaleY",((JSONObject)oldShape.get("attrs")).get("scaleY"));
-                    updated = new JSONObject().put("scaleX",updated).put("scaleY",((JSONObject)updatedShape.get("attrs")).get("scaleY"));
-                }else if(key.equals("scaleY")){
-                    key = "scale";
-                    old = new JSONObject().put("scaleY",old).put("scaleX",((JSONObject)oldShape.get("attrs")).get("scaleX"));
-                    updated = new JSONObject().put("scaleY",updated).put("scaleX",((JSONObject)updatedShape.get("attrs")).get("scaleX"));
-                }
-                return update.put("attrs",key).put("old",old).put("new",updated);
+    private JSONObject dataCompare(String updateKey,JSONObject oldShape,JSONObject updatedShape){
+        JSONObject update = new JSONObject().put("key",updateKey);
+        JSONObject old = new JSONObject();
+        JSONObject updated = new JSONObject();
+        switch (updateKey) {
+            case "scale" -> {
+                old = old.put("x", ((JSONObject) oldShape.get("attrs")).get("x")).put("y", ((JSONObject) oldShape.get("attrs")).get("y"))
+                        .put("scaleX", ((JSONObject) oldShape.get("attrs")).get("scaleX")).put("scaleY", ((JSONObject) oldShape.get("attrs")).get("scaleY"));
+                updated = updated.put("x", ((JSONObject) updatedShape.get("attrs")).get("x")).put("y", ((JSONObject) updatedShape.get("attrs")).get("y"))
+                        .put("scaleX", ((JSONObject) updatedShape.get("attrs")).get("scaleX")).put("scaleY", ((JSONObject) updatedShape.get("attrs")).get("scaleY"));
+            }
+            case "move" -> {
+                old = old.put("x", ((JSONObject) oldShape.get("attrs")).get("x")).put("y", ((JSONObject) oldShape.get("attrs")).get("y"));
+                updated = update.put("x", ((JSONObject) updatedShape.get("attrs")).get("x")).put("y", ((JSONObject) updatedShape.get("attrs")).get("y"));
+            }
+            case "style" -> {
+                old = old.put("fill", ((JSONObject) oldShape.get("attrs")).get("fill")).put("stroke", ((JSONObject) oldShape.get("attrs")).get("stroke"))
+                        .put("strokeWidth", ((JSONObject) oldShape.get("attrs")).get("strokeWidth"));
+                updated = update.put("fill", ((JSONObject) updatedShape.get("attrs")).get("fill")).put("stroke", ((JSONObject) updatedShape.get("attrs")).get("stroke"))
+                        .put("strokeWidth", ((JSONObject) updatedShape.get("attrs")).get("strokeWidth"));
             }
         }
-        return update;
+        return update.put("old",old).put("new",updated);
     }
 
-    public void update(String updatedShape){
-        JSONObject jsonUpdatedShape = new JSONObject(updatedShape);
+    public void update (String updateData){
+        JSONObject jsonUpdateData = new JSONObject(updateData);
+        String updateKey = jsonUpdateData.getString("key");
+        JSONObject jsonUpdatedShape = jsonUpdateData.getJSONObject("updatedShape");
         String ID = ((JSONObject)jsonUpdatedShape.get("attrs")).getString("id");
-        JSONObject update = dataCompare(database.getShape(ID).draw(),jsonUpdatedShape);
+        JSONObject update = dataCompare(updateKey,database.getShape(ID).draw(),jsonUpdatedShape);
         database.update(ID,update);
-        database.getData();
     }
 
     public void delete(String ID){
@@ -98,6 +83,9 @@ public class PaintApp {
            return fileManager.saveXml();
         }
         return null;
+    }
+    public void load(JSONObject data){
+        database.setData(data);
     }
 
 }

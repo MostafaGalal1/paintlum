@@ -1,7 +1,7 @@
 .Stoolbar{
     display: inline-block;
     position: fixed;
-    width: 250px;
+    width: 13%;
     height: 95%;
     top: 20px;
     right: 20px;
@@ -49,6 +49,14 @@
 }
 
 .color-picker {
+<<<<<<< HEAD
+  padding-left: 10px;
+  height: 30px;
+  margin-top: 20px;
+  border: solid 1px black;
+  border-radius: 10px;
+=======
+>>>>>>> fdaf4ed6bd9d92a0212861e6f10662d0ab8ee297
   cursor: pointer;
   position: relative;
   top: 0;
