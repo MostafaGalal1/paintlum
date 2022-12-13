@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import axios from 'axios';
 import Konva from 'konva';
 import {DataService} from "../../Services/data.service";
@@ -86,11 +86,10 @@ export class ToolbarComponent implements OnInit {
       return;
     } else {
       const obj = JSON.parse(xhr.response);
-      console.log(xhr.response);
       if (obj.hasOwnProperty("delete")){
           this.data.setDelete(obj.delete);
       } else if (obj.hasOwnProperty("create")) {
-          this.data.setShape(obj.create);
+          this.data.setKonvaShape(obj.create);
       } else if (obj.hasOwnProperty("update")) {
           this.data.setUpShape(obj.update);
       }
@@ -106,11 +105,10 @@ export class ToolbarComponent implements OnInit {
       return;
     } else {
         const obj = JSON.parse(xhr.response);
-        console.log(xhr.response);
         if (obj.hasOwnProperty("delete")){
             this.data.setDelete(obj.delete);
         } else if (obj.hasOwnProperty("create")) {
-            this.data.setShape(obj.create);
+            this.data.setKonvaShape(obj.create);
         } else if (obj.hasOwnProperty("update")) {
             this.data.setUpShape(obj.update);
         }

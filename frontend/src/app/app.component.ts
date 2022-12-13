@@ -27,7 +27,7 @@ export class AppComponent implements OnInit{
     this.dataService.getStrokeColor().subscribe((sCl) => this.strokeColor = sCl);
     this.dataService.getFillColor().subscribe((fCl) => this.fillColor = fCl);
     this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
-    this.dataService.getShape().subscribe((shP) => this.shapeUpdate = shP);
+    this.dataService.getShape().subscribe((shP) => this.shape = shP);
     this.dataService.getUpShape().subscribe((ushP) => this.upShape = ushP);
     this.dataService.getDelete().subscribe((deL) => this.deletion = deL);
     this.dataService.getKonvaShape().subscribe((ksP) => this.shapeUpdate = ksP);
