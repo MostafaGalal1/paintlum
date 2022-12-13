@@ -3,6 +3,7 @@ package com.paint.backend.Shapes;
 
 import org.json.JSONObject;
 
+import java.util.Objects;
 import java.util.Stack;
 
 public abstract class Shape implements IShape {
@@ -26,8 +27,6 @@ public abstract class Shape implements IShape {
         return !UndoUpdate.isEmpty();
     }
     public abstract JSONObject draw();
-
-    public abstract void update(JSONObject jsonUpdate, String state);
 
     public void delete(){
         UndoUpdate.push(new JSONObject().put("delete", true));
@@ -59,4 +58,26 @@ public abstract class Shape implements IShape {
         return "update";
     }
 
+    public void update(JSONObject jsonUpdate, String state){
+        if(Objects.equals(state, "new")){ UndoUpdate.push(jsonUpdate); }
+        else{ RedoUpdate.push(jsonUpdate); }
+
+        switch(jsonUpdate.getString("key")){
+            case "move"-> {
+                this.x = (((JSONObject)(jsonUpdate.get(state))).getFloat("x"));
+                this.y = (((JSONObject)(jsonUpdate.get(state))).getFloat("y"));
+            }
+            case "scale"-> {
+                this.x = (((JSONObject)(jsonUpdate.get(state))).getFloat("x"));
+                this.y = (((JSONObject)(jsonUpdate.get(state))).getFloat("y"));
+                this.scaleX = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleX"));
+                this.scaleY = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleY"));
+            }
+            case "style"->{
+                this.strokeWidth = jsonUpdate.getFloat(state);
+                this.stroke = jsonUpdate.getString(state);
+                this.fill = jsonUpdate.getString(state);
+            }
+        }
+    }
 }

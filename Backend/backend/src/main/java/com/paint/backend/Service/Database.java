@@ -108,9 +108,10 @@ public final class Database {
         MaxID = data.getInt("MaxID");
         UndoStack = gson.fromJson(data.get("UndoStack").toString(),Stack.class);
         RedoStack = gson.fromJson(data.get("RedoStack").toString(),Stack.class);
-        for(Object shape :gson.fromJson(data.get("shapes").toString(),ArrayList.class)){
-
-        }
+        /*
+        for(int shapeID=0 ;shapeID<gson.fromJson(data.get("shapes").toString(),ArrayList.class).size();shapeID++){
+                Shapes.put(shapeID,)
+        }*/
         System.out.println(gson.toJson(UndoStack));
         System.out.println(gson.toJson(RedoStack));
         System.out.println("asdadasdasdsad");
