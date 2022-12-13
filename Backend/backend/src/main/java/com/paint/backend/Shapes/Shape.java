@@ -9,7 +9,7 @@ import java.util.Stack;
 public abstract class Shape implements IShape {
     protected String id;
     protected boolean draggable,strokeScaleEnabled;
-    protected float x, y, strokeWidth , scaleX , scaleY;
+    protected float x, y, strokeWidth , scaleX=1 , scaleY=1;
     protected String className, stroke, fill;
     protected Stack<JSONObject> UndoUpdate = new Stack<>();
     protected Stack<JSONObject> RedoUpdate = new Stack<>();

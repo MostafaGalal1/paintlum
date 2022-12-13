@@ -5,7 +5,6 @@ import com.paint.backend.Shapes.IShape;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.*;
 
 
@@ -19,7 +18,7 @@ public final class Database {
     private static Database instance;
     private Database(){}
 
-    public static Database getInstance() throws IOException {
+    public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
         }

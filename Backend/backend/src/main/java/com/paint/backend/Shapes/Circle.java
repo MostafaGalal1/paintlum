@@ -2,7 +2,6 @@ package com.paint.backend.Shapes;
 
 import org.json.JSONObject;
 
-import java.util.Objects;
 
 
 public class Circle extends Shape {

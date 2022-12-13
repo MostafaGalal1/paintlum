@@ -1,22 +1,16 @@
 package com.paint.backend;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.paint.backend.Service.PaintApp;
-import com.paint.backend.Shapes.IShape;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.beans.XMLDecoder;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Stack;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
