@@ -53,7 +53,12 @@ public class PaintApp {
 
     public void update (String key,String updatedShape){
         JSONObject jsonUpdatedShape = new JSONObject(updatedShape);
+        System.out.println("ttttt");
+        System.out.println(jsonUpdatedShape);
+        System.out.println(((JSONObject)jsonUpdatedShape.get("attrs")).getString("id"));
         String ID = ((JSONObject)jsonUpdatedShape.get("attrs")).getString("id");
+        System.out.println(database.getShape(ID));
+        System.out.println(database.getShape(ID).draw());
         JSONObject update = dataCompare(key,database.getShape(ID).draw(),jsonUpdatedShape);
         database.update(ID,update);
     }

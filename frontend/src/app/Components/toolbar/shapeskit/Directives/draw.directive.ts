@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input, SimpleChanges } from '@angular/core';
+import { Directive, ChangeDetectorRef, HostListener, Input, SimpleChanges } from '@angular/core';
 import Konva from 'konva';
 import { DataService } from 'src/app/Services/data.service';
 import { ShapeFactory } from '../shapes/ShapeFactory';
@@ -34,7 +34,7 @@ export class DrawDirective {
   private selectionRectangle?:Konva.Rect;
   private pad:number = 4;
 
-  constructor(private dataService:DataService) {
+  constructor(private dataService:DataService, private changeDetectorRef: ChangeDetectorRef) {
     Konva.autoDrawEnabled = false;
     this.factory = new ShapeFactory;
 
@@ -76,7 +76,7 @@ export class DrawDirective {
     if (changes.hasOwnProperty('removeShape')){
       setTimeout(() => {
         this.dataService.setRemove(false);
-      }, 0);
+      });
       if (this.tr?.nodes()[0] !== undefined) {
         var pack: string;
         var un_data: any;
@@ -99,42 +99,50 @@ export class DrawDirective {
       this.layer.batchDraw();
       setTimeout(() => {
         this.dataService.setDelete("-1");
-      }, 0);
+      });
     }
 
     else if (changes.hasOwnProperty('updateShape')){
       if (this.updateShape === '')
           return;
-      console.log("create");
       let tmp = Konva.Node.create(this.updateShape!);
+      tmp.setAttr('name', 'shape');
       this.layer.add(tmp);
       this.tr?.nodes([tmp]);
+      this.fillColor = this.tr?.nodes()[0].getAttr('fill');
+      this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
+      this.strokeWidth = this.tr?.nodes()[0].getAttr('strokeWidth');
+      this.dataService.setFillColor(this.fillColor!);
+      this.dataService.setStrokeColor(this.strokeColor!);
+      this.dataService.setsetstrokeWidth(this.strokeWidth!);
       this.layer.batchDraw();
       setTimeout(() => {
         this.dataService.setKonvaShape('');
-      }, 0);
+      });
     }
 
     else if (changes.hasOwnProperty('upShape')){
         if (this.upShape === '')
           return;
-        console.log("update");
         let tmp = Konva.Node.create(this.upShape!);
-        this.stage?.findOne('#' + tmp.getAttr('id')).remove();
-        console.log(tmp.toJSON());
+        this.layer?.findOne('#' + tmp.getAttr('id')).destroy();
+        tmp.setAttr('name', 'shape');
         this.layer.add(tmp);
         this.tr?.nodes([tmp]);
+        this.fillColor = this.tr?.nodes()[0].getAttr('fill');
+        this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
+        this.strokeWidth = this.tr?.nodes()[0].getAttr('strokeWidth');
+        this.dataService.setFillColor(this.fillColor!);
+        this.dataService.setStrokeColor(this.strokeColor!);
+        this.dataService.setsetstrokeWidth(this.strokeWidth!);
         this.layer.batchDraw();
         setTimeout(() => {
           this.dataService.setUpShape('');
-        }, 0);
-    }
-
-    else if (this.tr?.nodes()[0] !== undefined) {
-      this.konvaShape = this.tr?.nodes()[0];
-      this.konvaShape.setAttr("fill", this.fillColor);
-      this.konvaShape.setAttr("stroke", this.strokeColor);
-      this.konvaShape.setAttr("strokeWidth", parseInt(this.strokeWidth!));
+        });
+    } else if (this.tr?.nodes()[0] !== undefined) {
+      this.tr?.nodes()[0].setAttr("fill", this.fillColor);
+      this.tr?.nodes()[0].setAttr("stroke", this.strokeColor);
+      this.tr?.nodes()[0].setAttr("strokeWidth", parseInt(this.strokeWidth!));
       this.layer.batchDraw();
 
       if (!this.sendColor)
@@ -146,7 +154,7 @@ export class DrawDirective {
       
       var pack: string;
       var un_data: any;
-      un_data = {"key": "style", "updatedShape": this.konvaShape.toJSON()};
+      un_data = {"key": "style", "updatedShape": this.tr?.nodes()[0].toJSON()};
 
       pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
@@ -276,7 +284,6 @@ export class DrawDirective {
       un_data = {
           "ShapeData": this.tr?.nodes()[0].toJSON()
       };
-
       pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
       var xhr = new XMLHttpRequest();
@@ -290,9 +297,8 @@ export class DrawDirective {
         Konva.Util.haveIntersection(box, shape.getClientRect())
       );
 
-      this.tr?.nodes(selected!);
-      if (this.tr?.nodes()[0] !== undefined){
-        this.tr?.nodes([this.tr?.nodes()[0]]);
+      if (selected![0] !== undefined){
+        this.tr?.nodes([selected![0]]);
         this.tr?.nodes()[0].draggable(true);
         this.fillColor = this.tr?.nodes()[0].getAttr('fill');
         this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
@@ -303,9 +309,7 @@ export class DrawDirective {
         this.layer.batchDraw();
       }
       this.selection = false;
-    }
-
-    if (this.sendScale){
+    } else if (this.sendScale){
       var pack: string;
       var un_data: any;
       un_data = {"key": "scale", "updatedShape": this.tr?.nodes()[0].toJSON()};
@@ -313,6 +317,8 @@ export class DrawDirective {
       pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
       var xhr = new XMLHttpRequest();
+      console.log(this.tr?.nodes()[0].toJSON());
+      console.log(un_data);
       xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
       xhr.send();
       this.sendScale = false;
@@ -348,9 +354,8 @@ export class DrawDirective {
         Konva.Util.haveIntersection(box, shape.getClientRect())
       );
 
-      this.tr?.nodes(selected!);
-      if (this.tr?.nodes()[0] !== undefined){
-        this.tr?.nodes([this.tr?.nodes()[0]]);
+      if (selected![0] !== undefined){
+        this.tr?.nodes([selected![0]]);
         this.tr?.nodes()[0].draggable(true);
         this.fillColor = this.tr?.nodes()[0].getAttr('fill');
         this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
