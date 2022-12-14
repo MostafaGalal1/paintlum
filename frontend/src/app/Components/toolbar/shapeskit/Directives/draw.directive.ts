@@ -1,4 +1,4 @@
-import { Directive, ChangeDetectorRef, HostListener, Input, SimpleChanges } from '@angular/core';
+import { Directive, HostListener, Input, SimpleChanges } from '@angular/core';
 import Konva from 'konva';
 import { DataService } from 'src/app/Services/data.service';
 import { ShapeFactory } from '../shapes/ShapeFactory';
@@ -345,29 +345,16 @@ export class DrawDirective {
       let pack: string;
       let un_data: any;
       un_data = {"key":"move", "updatedShape": this.tr?.nodes()[0].toJSON()};
-
-      if (selected![0] !== undefined) {
-        this.tr?.nodes([selected![0]]);
-        this.tr?.nodes()[0].draggable(true);
-        this.fillColor = this.tr?.nodes()[0].getAttr('fill');
-        this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
-        this.strokeWidth = this.tr?.nodes()[0].getAttr('strokeWidth');
-        this.dataService.setFillColor(this.fillColor!);
-        this.dataService.setStrokeColor(this.strokeColor!);
-        this.dataService.setsetstrokeWidth(this.strokeWidth!);
-        this.layer.batchDraw();
-      }
-      this.selection = false;
     } else if (this.copying) {
-      var pos = this.stage?.getPointerPosition();
+      let pos = this.stage?.getPointerPosition();
       let tmp = this.copyShape;
       tmp.setAttrs({ x: pos!.x, y: pos!.y });
       this.layer.add(tmp);
       this.tr?.nodes([tmp]);
       this.layer.batchDraw();
       this.copying = false;
-      var pack: string;
-      var un_data: any;
+      let pack: string;
+      let un_data: any;
       un_data = {
         "ShapeData": tmp.toJSON()
       };
