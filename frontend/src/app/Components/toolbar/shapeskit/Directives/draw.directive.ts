@@ -335,8 +335,7 @@ export class DrawDirective {
       let pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
       let xhr = new XMLHttpRequest();
-      console.log(this.tr?.nodes()[0].toJSON());
-      console.log(un_data);
+
       xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
       xhr.send();
       this.sendScale = false;
@@ -345,22 +344,7 @@ export class DrawDirective {
       let pack: string;
       let un_data: any;
       un_data = {"key":"move", "updatedShape": this.tr?.nodes()[0].toJSON()};
-    } else if (this.copying) {
-      let pos = this.stage?.getPointerPosition();
-      let tmp = this.copyShape;
-      tmp.setAttrs({ x: pos!.x, y: pos!.y });
-      this.layer.add(tmp);
-      this.tr?.nodes([tmp]);
-      this.layer.batchDraw();
-      this.copying = false;
-      let pack: string;
-      let un_data: any;
-      un_data = {
-        "ShapeData": tmp.toJSON()
-      };
       pack = Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
-
-      console.log(un_data);
       let xhr = new XMLHttpRequest();
       xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
       xhr.send();
@@ -374,7 +358,6 @@ export class DrawDirective {
     this.shapeCreation = false;
     this.brush = false;
   }
-
 
   @HostListener('click') onMouseClick(){
     if (this.selection) {

@@ -64,7 +64,6 @@ export class ToolbarComponent implements OnInit {
     });
 
     const writableStream = await this.newFile.createWritable();
-    console.log(this.newFile.name);
     if (this.newFile.name.indexOf("xml") !== -1) {
       await writableStream.write(XMLFile);
     } else {
@@ -110,7 +109,6 @@ export class ToolbarComponent implements OnInit {
     xhr.send();
 
     if (xhr.response === "empty"){
-      console.log('empty');
       return;
     } else {
       const obj = JSON.parse(xhr.response);
@@ -129,7 +127,6 @@ export class ToolbarComponent implements OnInit {
     xhr.open("GET", this.un_url + 'redo', false);
     xhr.send();
     if (xhr.response === "empty"){
-      console.log('empty');
       return;
     } else {
         const obj = JSON.parse(xhr.response);
