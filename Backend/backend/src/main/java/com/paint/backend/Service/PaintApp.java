@@ -78,7 +78,7 @@ public class PaintApp {
         if (fileType.equalsIgnoreCase("json")) {
            return fileManager.saveJson();
         }else if (fileType.equalsIgnoreCase("xml")){
-            System.out.println(fileManager.saveXml());
+           // System.out.println(fileManager.saveXml());
            return fileManager.saveXml();
         }
         return null;

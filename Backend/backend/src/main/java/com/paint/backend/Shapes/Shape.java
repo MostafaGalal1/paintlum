@@ -34,7 +34,7 @@ public abstract class Shape implements IShape {
     }
 
     public String undoUpdate(){
-        if(UndoUpdate.peek().get("key")=="create"){
+        if(UndoUpdate.peek().get("key").equals("create")){
             RedoUpdate.push(UndoUpdate.pop());
             return "delete";
         }else if(UndoUpdate.peek().has("delete")){
@@ -47,7 +47,7 @@ public abstract class Shape implements IShape {
     }
 
     public String redoUpdate(){
-        if(RedoUpdate.peek().get("key")=="create"){
+        if(RedoUpdate.peek().get("key").equals("create")){
             UndoUpdate.push(RedoUpdate.pop());
             return "create";
         }else if(RedoUpdate.peek().has("delete")){

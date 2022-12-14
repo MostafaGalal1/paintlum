@@ -1,23 +1,14 @@
 package com.paint.backend.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
-import org.xml.sax.SAXException;
+import org.json.XML;
 
-import javax.swing.text.Document;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
-
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
+import java.util.ArrayList;
 
 public final class FileManager {
 
@@ -52,7 +43,6 @@ public final class FileManager {
             Gson json = new Gson();
             FileReader f = new FileReader(String.valueOf(file.toPath()));
             JSONObject y = json.fromJson(f, JSONObject.class);
-            System.out.println(y);
             f.close();
             return y;
         } catch (IOException e) {
@@ -63,24 +53,33 @@ public final class FileManager {
 
     public JSONObject loadXml(File file) throws IOException {
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = (Document) db.parse(file);
-            System.out.println(doc.toString());
-            return null;
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
+            FileInputStream f2 = new FileInputStream(file.toPath().toString());
+            XMLDecoder mydecoder = new XMLDecoder(f2);
+            String result = (String) mydecoder.readObject();
+            mydecoder.close();
+            f2.close();
+            return XML.toJSONObject(result);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public File saveXml(){
         File file = new File("temp.xml");
-        ObjectMapper objectMapper = new XmlMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
+        try {
+            FileOutputStream fileStream = new FileOutputStream(file);
+            XMLEncoder encoder = new XMLEncoder(fileStream);
+            encoder.writeObject(XML.toString(database.getData(),"data"));
+            encoder.close();
+            fileStream.flush();
+            fileStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return file;
     }
+
+
+
 }

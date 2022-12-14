@@ -72,6 +72,7 @@ public final class Database {
         RedoStack.push(UndoStack.pop());
 
         String state = Shapes.get(ID).undoUpdate();
+        System.out.println(state);
         if(Objects.equals(state, "delete")){
             return new JSONObject().put("delete",ID).toString();
         }
@@ -100,17 +101,16 @@ public final class Database {
             String className = shape.getValue().getClass().getSimpleName();
             shapes.add(new JSONObject().put("attrs",new Gson().toJson(shape.getValue())).put("className",className).toString());
         }
+
         return new JSONObject().put("MaxID",MaxID)
                 .put("UndoStack",new Gson().toJson(UndoStack)).put("RedoStack",new Gson().toJson(RedoStack)).put("shapes",shapes);
     }
     public void setData(JSONObject data){
-        System.out.println(data);
         Gson gson = new Gson();
         MaxID = data.getInt("MaxID");
         UndoStack = gson.fromJson(data.get("UndoStack").toString(),Stack.class);
         RedoStack = gson.fromJson(data.get("RedoStack").toString(),Stack.class);
         JsonArray shapes = gson.fromJson(data.get("shapes").toString(),JsonArray.class);
-        System.out.println(shapes);
         for(int shapeID=0 ;shapeID<shapes.size();shapeID++){
             IShape shape = ShapesFactory.create(new JSONObject(shapes.get(shapeID).toString()));
             Shapes.put(String.valueOf(shapeID),shape);
