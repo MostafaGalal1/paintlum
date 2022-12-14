@@ -8,6 +8,10 @@ body{
     background-color: rgb(12,12,12);
 }
 
+button {
+    cursor: pointer;
+}
+
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;

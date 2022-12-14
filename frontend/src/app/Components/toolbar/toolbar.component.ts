@@ -1,7 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import axios from 'axios';
-import Konva from 'konva';
-import { delay } from 'rxjs';
 import {DataService} from "../../Services/data.service";
 
 @Component({
@@ -38,19 +36,19 @@ export class ToolbarComponent implements OnInit {
   };
 
   async save() {
-    var blob;
-    var xhr = new XMLHttpRequest();
+    let blob;
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'save?fileType=json', false);
     xhr.send();
 
     blob = xhr.response;
-    var JSONFile = new File([blob], "", {type: "text/plain"});
+    let JSONFile = new File([blob], "", {type: "text/plain"});
 
     xhr.open("GET", this.un_url + 'save?fileType=xml', false);
     xhr.send();
 
     blob = xhr.response;
-    var XMLFile = new File([blob], "", {type: "text/plain"});
+    let XMLFile = new File([blob], "", {type: "text/plain"});
 
     this.newFile = await window.showSaveFilePicker({
       types: [
@@ -66,10 +64,9 @@ export class ToolbarComponent implements OnInit {
     });
 
     const writableStream = await this.newFile.createWritable();
-    console.log(this.newFile.name);
     if (this.newFile.name.indexOf("xml") !== -1) {
       await writableStream.write(XMLFile);
-    } else { 
+    } else {
       await writableStream.write(JSONFile);
     }
     await writableStream.close();
@@ -79,8 +76,6 @@ export class ToolbarComponent implements OnInit {
   colorIt(){
     this.data.setColorIt(true);
   }
-
-  private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
 
   load (e:any){
     let currentInput = e.target.files;
@@ -98,8 +93,6 @@ export class ToolbarComponent implements OnInit {
     let formData = new FormData();
     formData.append("file", file);
     formData.append("ext", extension);
-    var res:any;
-
     axios.post(this.un_url + "load", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
@@ -111,12 +104,11 @@ export class ToolbarComponent implements OnInit {
  }
 
   async undo() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'undo', false);
     xhr.send();
 
     if (xhr.response === "empty"){
-      console.log('empty');
       return;
     } else {
       const obj = JSON.parse(xhr.response);
@@ -131,11 +123,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   async redo() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'redo', false);
     xhr.send();
     if (xhr.response === "empty"){
-      console.log('empty');
       return;
     } else {
         const obj = JSON.parse(xhr.response);

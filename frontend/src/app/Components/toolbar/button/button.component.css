@@ -22,5 +22,5 @@ button:active {
 .tool {
     position: relative;
     width: 40%;
-    height: 33px;
+    aspect-ratio: 2.6;
 }

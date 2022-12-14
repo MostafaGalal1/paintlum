@@ -51,11 +51,7 @@ export class DataService {
   }
 
   setRemove(val : boolean) {
-    this.removeShape.next(val);
-  }
-
-  getShape():Observable<string> {
-    return this.Shape$;
+      this.removeShape.next(val);
   }
 
   setShape(und : string) {
