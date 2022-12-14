@@ -5,8 +5,8 @@ export class Ellipse extends Shape {
     private _radiusX?: number;
     private _radiusY?: number;
 
-    constructor(x?:number, y?:number, radiusX?:number, radiusY?:number, fill?: string, stroke?: string, strokeWidth?: number, draggable?: boolean){
-        super(x, y, fill, stroke, strokeWidth, draggable);
+    constructor(x?:number, y?:number, radiusX?:number, radiusY?:number, fill?: string, stroke?: string, strokeWidth?: number, draggable?: boolean, scaleX?: number, scaleY?: number){
+        super(x, y, fill, stroke, strokeWidth, draggable, scaleX, scaleY);
         this._radiusX = radiusX;
         this._radiusY = radiusY;
     }
@@ -36,6 +36,8 @@ export class Ellipse extends Shape {
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
             draggable: this._draggable,
+            scaleX: this._scaleX,
+            scaleY: this._scaleY,
             strokeScaleEnabled: false,
         });
     }

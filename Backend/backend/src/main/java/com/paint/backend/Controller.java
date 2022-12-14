@@ -29,8 +29,8 @@ public class Controller {
 
     @PostMapping("/update")
     @ResponseBody
-    public void update(@RequestParam String updatedShape){
-        paint.update(updatedShape);
+    public void update(@RequestParam String key,@RequestParam String updatedShape){
+        paint.update(key,updatedShape);
     }
 
     @PostMapping("/delete")

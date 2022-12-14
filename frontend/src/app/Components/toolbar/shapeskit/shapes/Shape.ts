@@ -18,6 +18,8 @@ export abstract class Shape implements Ishape {
         this._stroke = stroke;
         this._strokeWidth = strokeWidth;
         this._draggable = draggable;
+        this._scaleX = scaleX;
+        this._scaleY = scaleY;
     }
 
     public get x(): number | undefined{
@@ -78,9 +80,9 @@ export abstract class Shape implements Ishape {
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
             draggable: this._draggable,
-            strokeScaleEnabled: false,
             scaleX: this._scaleX,
             scaleY: this._scaleY,
+            strokeScaleEnabled: false,
         });
     }
 }

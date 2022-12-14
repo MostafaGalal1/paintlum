@@ -16,7 +16,7 @@ export class ShapeFactory {
 
     constructor(){ }
 
-    public getShape(shape:string):Shape {
+    public getShape(shape:string) {
         if (shape === "circle")
             return new Circle;
         else if (shape === "ellipse")
@@ -41,6 +41,6 @@ export class ShapeFactory {
             return new Penta_star;
         else if (shape === "hexa_star")
           return new Hexa_star;
-        return new Ellipse;
+        return null;
     }
 }

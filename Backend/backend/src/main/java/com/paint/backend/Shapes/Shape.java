@@ -59,6 +59,7 @@ public abstract class Shape implements IShape {
         if(Objects.equals(state, "new")){ UndoUpdate.push(jsonUpdate); }
         else{ RedoUpdate.push(jsonUpdate); }
 
+        System.out.println(jsonUpdate);
         switch(jsonUpdate.getString("key")){
             case "move"-> {
                 this.x = (((JSONObject)(jsonUpdate.get(state))).getFloat("x"));
@@ -71,9 +72,9 @@ public abstract class Shape implements IShape {
                 this.scaleY = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleY"));
             }
             case "style"->{
-                this.strokeWidth = jsonUpdate.getFloat(state);
-                this.stroke = jsonUpdate.getString(state);
-                this.fill = jsonUpdate.getString(state);
+                this.strokeWidth = (((JSONObject)(jsonUpdate.get(state))).getFloat("strokeWidth"));
+                this.stroke = (((JSONObject)(jsonUpdate.get(state))).getString("stroke"));
+                this.fill = (((JSONObject)(jsonUpdate.get(state))).getString("fill"));
             }
         }
     }

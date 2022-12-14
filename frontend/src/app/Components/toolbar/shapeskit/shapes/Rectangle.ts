@@ -5,8 +5,8 @@ export class Rectangle extends Shape {
     private _width?: number;
     private _height?: number | undefined;
 
-    constructor(x?:number, y?:number, width?:number, height?:number, fill?: string, stroke?: string, strokeWidth?: number, draggable?: boolean){
-        super(x, y, fill, stroke, strokeWidth, draggable);
+    constructor(x?:number, y?:number, width?:number, height?:number, fill?: string, stroke?: string, strokeWidth?: number, draggable?: boolean, scaleX?: number, scaleY?: number){
+        super(x, y, fill, stroke, strokeWidth, draggable, scaleX, scaleY);
         this._width = width;
         this._height = height;
     }
@@ -34,6 +34,8 @@ export class Rectangle extends Shape {
             fill: this._fill,
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
+            scaleX: this._scaleX,
+            scaleY: this._scaleY,
             draggable: this._draggable,
         });
     }

@@ -38,24 +38,22 @@ public class PaintApp {
             }
             case "move" -> {
                 old = old.put("x", ((JSONObject) oldShape.get("attrs")).get("x")).put("y", ((JSONObject) oldShape.get("attrs")).get("y"));
-                updated = update.put("x", ((JSONObject) updatedShape.get("attrs")).get("x")).put("y", ((JSONObject) updatedShape.get("attrs")).get("y"));
+                updated = updated.put("x", ((JSONObject) updatedShape.get("attrs")).get("x")).put("y", ((JSONObject) updatedShape.get("attrs")).get("y"));
             }
             case "style" -> {
                 old = old.put("fill", ((JSONObject) oldShape.get("attrs")).get("fill")).put("stroke", ((JSONObject) oldShape.get("attrs")).get("stroke"))
                         .put("strokeWidth", ((JSONObject) oldShape.get("attrs")).get("strokeWidth"));
-                updated = update.put("fill", ((JSONObject) updatedShape.get("attrs")).get("fill")).put("stroke", ((JSONObject) updatedShape.get("attrs")).get("stroke"))
+                updated = updated.put("fill", ((JSONObject) updatedShape.get("attrs")).get("fill")).put("stroke", ((JSONObject) updatedShape.get("attrs")).get("stroke"))
                         .put("strokeWidth", ((JSONObject) updatedShape.get("attrs")).get("strokeWidth"));
             }
         }
         return update.put("old",old).put("new",updated);
     }
 
-    public void update (String updateData){
-        JSONObject jsonUpdateData = new JSONObject(updateData);
-        String updateKey = jsonUpdateData.getString("key");
-        JSONObject jsonUpdatedShape = jsonUpdateData.getJSONObject("updatedShape");
+    public void update (String key,String updatedShape){
+        JSONObject jsonUpdatedShape = new JSONObject(updatedShape);
         String ID = ((JSONObject)jsonUpdatedShape.get("attrs")).getString("id");
-        JSONObject update = dataCompare(updateKey,database.getShape(ID).draw(),jsonUpdatedShape);
+        JSONObject update = dataCompare(key,database.getShape(ID).draw(),jsonUpdatedShape);
         database.update(ID,update);
     }
 
