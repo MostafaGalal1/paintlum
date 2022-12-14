@@ -52,7 +52,27 @@
 			<artifactId>json-simple</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-    </dependencies>
+		<dependency>
+			<groupId>com.fasterxml</groupId>
+			<artifactId>jackson-xml-databind</artifactId>
+			<version>0.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.14.0</version>
+		</dependency>
+		<dependency>
+			<groupId>be.ugent.rml</groupId>
+			<artifactId>rmlmapper</artifactId>
+			<version>6.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.ningpp</groupId>
+			<artifactId>mmegp-maven-plugin-demo-xmlmapper</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
