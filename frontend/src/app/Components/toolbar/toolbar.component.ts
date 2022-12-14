@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import axios from 'axios';
 import Konva from 'konva';
+import { delay } from 'rxjs';
 import {DataService} from "../../Services/data.service";
 
 @Component({
@@ -72,6 +73,7 @@ export class ToolbarComponent implements OnInit {
       await writableStream.write(JSONFile);
     }
     await writableStream.close();
+    alert("Saved Successfully!")
   }
 
   colorIt(){
@@ -96,13 +98,15 @@ export class ToolbarComponent implements OnInit {
     let formData = new FormData();
     formData.append("file", file);
     formData.append("ext", extension);
+    var res:any;
 
     axios.post(this.un_url + "load", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
     }).then(Response => {
-      this.data.setUpShape(Response.data)
+      let konvaArray : string[] = JSON.stringify(Response.data).slice(2,-1).split(",{");
+      this.data.setLoadFile(konvaArray);
     });
  }
 
@@ -144,7 +148,6 @@ export class ToolbarComponent implements OnInit {
         }
     }
   }
-
 
   remove(){
     this.data.setRemove(true);

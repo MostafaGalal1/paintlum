@@ -14,6 +14,7 @@ export class AppComponent implements OnInit{
   public removeIt?:boolean;
   public upShape?:string;
   public shape?:string;
+  public loadIt?:string[] = [''];
   public strokeColor:string = '#000000';
   public fillColor:string = 'transparent';
   public strokeWidth:string = '5';
@@ -29,11 +30,11 @@ export class AppComponent implements OnInit{
     this.dataService.getStrokeColor().subscribe((sCl) => this.strokeColor = sCl);
     this.dataService.getFillColor().subscribe((fCl) => this.fillColor = fCl);
     this.dataService.getStrokeWidth().subscribe((stW) => this.strokeWidth = stW);
-    this.dataService.getShape().subscribe((shP) => this.shape = shP);
     this.dataService.getUpShape().subscribe((ushP) => this.upShape = ushP);
     this.dataService.getDelete().subscribe((deL) => this.deletion = deL);
     this.dataService.getKonvaShape().subscribe((ksP) => this.shapeUpdate = ksP);
     this.dataService.getColorIt().subscribe((ks) => this.coloringIt = ks);
     this.dataService.getRemove().subscribe((rem) => this.removeIt = rem);
+    this.dataService.getLoadFile().subscribe((fiL) => this.loadIt = fiL);
   }
 }

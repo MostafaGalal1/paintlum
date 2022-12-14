@@ -9,6 +9,8 @@ import { ShapeFactory } from '../shapes/ShapeFactory';
 export class DrawDirective {
   factory : ShapeFactory;
   shape : any;
+  copyShape : any;
+  copying: boolean = false;
   sendScale : boolean = false;
   sendCoordinate : boolean = false;
   konvaShape : any;
@@ -20,6 +22,7 @@ export class DrawDirective {
 
   @Input() selectedShape?:string;
   @Input() strokeColor?:string;
+  @Input() loading?: string[];
   @Input() sendColor?:boolean;
   @Input() fillColor?:string;
   @Input() removeShape?:boolean;
@@ -73,7 +76,24 @@ export class DrawDirective {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if (changes.hasOwnProperty('removeShape')){
+    if (changes.hasOwnProperty('loading')){
+      if (this.loading?.join() === "")
+        return;
+      for(var sh of this.loading!){
+        sh = '{' + sh;
+        let tmp = Konva.Node.create(sh);
+        tmp.setAttr('name', 'shape');
+        this.layer.add(tmp);
+        this.tr?.nodes([tmp]);
+        this.fillColor = this.tr?.nodes()[0].getAttr('fill');
+        this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
+        this.strokeWidth = this.tr?.nodes()[0].getAttr('strokeWidth');
+      }
+      setTimeout(() => {
+        this.dataService.setLoadFile(['']);
+      });
+    }
+    else if (changes.hasOwnProperty('removeShape')){
       setTimeout(() => {
         this.dataService.setRemove(false);
       });
@@ -103,8 +123,6 @@ export class DrawDirective {
     }
 
     else if (changes.hasOwnProperty('updateShape')){
-      if (this.updateShape === '')
-          return;
       let tmp = Konva.Node.create(this.updateShape!);
       tmp.setAttr('name', 'shape');
       this.layer.add(tmp);
@@ -112,13 +130,6 @@ export class DrawDirective {
       this.fillColor = this.tr?.nodes()[0].getAttr('fill');
       this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
       this.strokeWidth = this.tr?.nodes()[0].getAttr('strokeWidth');
-      this.dataService.setFillColor(this.fillColor!);
-      this.dataService.setStrokeColor(this.strokeColor!);
-      this.dataService.setsetstrokeWidth(this.strokeWidth!);
-      this.layer.batchDraw();
-      setTimeout(() => {
-        this.dataService.setKonvaShape('');
-      });
     }
 
     else if (changes.hasOwnProperty('upShape')){
@@ -171,6 +182,7 @@ export class DrawDirective {
       if (this.tr !== undefined && !(pos!.x < (this.tr?.getX() - this.pad) || pos!.x > (this.tr?.getX() + this.tr?.getWidth() + this.pad) || pos!.y < (this.tr?.getY() - this.pad) || pos!.y > (this.tr?.getY() + this.tr?.getWidth() + this.pad))) {
         return;
       } else {
+        this.copyShape = Konva.Node.create(this.tr?.nodes()[0]);
         this.tr?.nodes()[0].draggable(false);
         this.tr.nodes([]);
         this.layer.batchDraw();
@@ -211,6 +223,8 @@ export class DrawDirective {
         x: pos!.x,
         y: pos!.y,
       });
+    } else if (this.selectedShape === "copy"){
+      this.copying = true;
     } else {
       this.shapeCreation = true;
       this.shape = this.factory.getShape(this.selectedShape!);
@@ -238,7 +252,7 @@ export class DrawDirective {
       });
     }
 
-    if (!this.shapeCreation && !this.brush && !this.selection){
+    if (!this.shapeCreation && !this.brush && !this.selection && !this.copying){
       return;
     }
 
@@ -309,6 +323,14 @@ export class DrawDirective {
         this.layer.batchDraw();
       }
       this.selection = false;
+    } else if (this.copying){
+      var pos = this.stage?.getPointerPosition();
+        let tmp = this.copyShape;
+        tmp.setAttrs({x: pos!.x, y: pos!.y});
+        this.layer.add(tmp);
+        this.tr?.nodes([tmp]);  
+        this.layer.batchDraw();
+        this.copying = false;
     } else if (this.sendScale){
       var pack: string;
       var un_data: any;
@@ -366,6 +388,14 @@ export class DrawDirective {
         this.layer.batchDraw();
       }
       this.selection = false;
+    } else if (this.copying){
+      var pos = this.stage?.getPointerPosition();
+        let tmp = this.copyShape;
+        tmp.setAttrs({x: pos!.x, y: pos!.y});
+        this.layer.add(tmp);
+        this.tr?.nodes([tmp]);  
+        this.layer.batchDraw();
+        this.copying = false;
     }
   }
 }

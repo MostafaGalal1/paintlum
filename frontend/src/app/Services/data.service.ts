@@ -9,6 +9,8 @@ export class DataService {
   Shape$ = this.Shape.asObservable();
   upShape = new BehaviorSubject('');
   upShape$ = this.upShape.asObservable();
+  loadedFile = new BehaviorSubject(['']);
+  loadedFile$ = this.loadedFile.asObservable();
   ColorIT = new BehaviorSubject(false);
   ColorIT$ = this.ColorIT.asObservable();
   removeShape = new BehaviorSubject(false);
@@ -58,6 +60,14 @@ export class DataService {
 
   setShape(und : string) {
     this.Shape.next(und);
+  }
+
+  getLoadFile():Observable<string[]> {
+    return this.loadedFile$;
+  }
+
+  setLoadFile(und : string[]) {
+    this.loadedFile.next(und);
   }
 
   getUpShape():Observable<string>{
