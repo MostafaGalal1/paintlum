@@ -3,6 +3,7 @@ package com.paint.backend.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
+import org.json.XML;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -59,9 +60,7 @@ public final class FileManager {
             System.out.println(result);
             mydecoder.close();
             f2.close();
-                JSONObject as= new Gson().fromJson(result,JSONObject.class);
-            System.out.printf(as.toString());
-            return as;
+            return XML.toJSONObject(result);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,7 +72,7 @@ public final class FileManager {
         try {
             FileOutputStream fileStream = new FileOutputStream(file);
             XMLEncoder encoder = new XMLEncoder(fileStream);
-            encoder.writeObject(database.getData().toString());
+            encoder.writeObject(XML.toString(database.getData(),"data"));
             encoder.close();
             fileStream.flush();
             fileStream.close();

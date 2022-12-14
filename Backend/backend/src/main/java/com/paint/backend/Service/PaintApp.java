@@ -88,6 +88,8 @@ public class PaintApp {
         database.clear();
         if(ext.equalsIgnoreCase("json")){
             data = fileManager.loadJson(file);
+        } else if (ext.equalsIgnoreCase("xml")) {
+            data = fileManager.loadXml(file);
         }
         database.setData(data);
         return database.getShapes();
