@@ -1,39 +1,45 @@
 <div class = "Stoolbar">
     <div class="tools">
-    <img class="image" src="assets/icons/stroke.svg" width="32" height="32">
-    <input #ignoredInput1 readonly class="color-picker" type="color"
+    <img class="image" src="assets/icons/stroke.svg" width="32" height="32" alt="">
+    <input readonly class="color-picker" title="change stroke color"
       [style.background]="strokeColor"
       [(colorPicker)]="strokeColor"
-      [cpIgnoredElements]="[ignoredInput1]"
-      [cpToggle]="false"
       (colorPickerChange)="pickStrokeColor()"
-    >
-    <img class="image" src="assets/icons/fill.svg" width="32" height="32">
-    <input #ignoredInput2 readonly class="color-picker" type="color"
+      [cpOKButton]="true"
+      [cpSaveClickOutside]="false"
+      [cpOKButtonClass]= "'btn btn-primary btn-xs'"
+      [cpEyeDropper]="true"
+      (colorPickerSelect)="colorIt()"
+    />
+    <img class="image" src="assets/icons/fill.svg" width="32" height="32" alt="">
+    <input readonly class="color-picker" title="change fill color"
       [style.background]="fillColor"
       [(colorPicker)]="fillColor"
-      [cpIgnoredElements]="[ignoredInput2]"
-      [cpToggle]="false"
       (colorPickerChange)="pickFillColor()"
-    >
+      [cpOKButton]="true"
+      [cpSaveClickOutside]="false"
+      [cpOKButtonClass]= "'btn btn-primary btn-xs'"
+      [cpEyeDropper]="true"
+      (colorPickerSelect)="colorIt()"
+    />
     </div>
     <div class="tools">
         <p>Stroke Width</p>
-        <input type="range" id = "myinput" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5">
+        <input type="range" id = "myinput" title="change stroke width" (input)="pickStrokeWidth($event)" [value] = "strokeWidth" min="5" max="50" step="5" (change)="colorIt()">
         <p>{{strokeWidth}}</p>
     </div>
     <div class="tools">
     <app-shapeskit></app-shapeskit>
     </div>
     <div class="tools">
-    <app-button btnClass="tool" btnText="select" (btnClick)="select()"></app-button>
-    <app-button btnClass="tool" btnText="remove" (btnClick)="remove()"></app-button>
-    <app-button btnClass="tool" btnText="save" (btnClick)="save()"></app-button>
-    <app-button btnClass="tool" btnText="load" (btnClick)="load($event)" btnShape="load"></app-button>
-    <app-button btnClass="tool" btnText="undo" (btnClick)="undo()"></app-button>
-    <app-button btnClass="tool" btnText="redo" (btnClick)="redo()"></app-button>
-    </div>
-    <div class="tools">
+    <app-button btnClass="tool" btnText="select" btnTitle="select tool" (btnClick)="select()"></app-button>
+    <app-button btnClass="tool" btnText="remove" btnTitle="remove shape tool" (btnClick)="remove()"></app-button>
+    <app-button btnClass="tool" btnText="save" btnTitle="save drawing" (btnClick)="save()"></app-button>
+    <label for="file" class="custom-file" title="load drawing">
+        <img src="assets/icons/load.svg" width="20" height="20" alt="">
+    </label>
     <input class="selector" type="file" id="file" accept=".xml, .json" (change)="load($event)">
+    <app-button btnClass="tool" btnText="undo" btnTitle="undo" (btnClick)="undo()"></app-button>
+    <app-button btnClass="tool" btnText="redo" btnTitle="redo" (btnClick)="redo()"></app-button>
     </div>
   </div>

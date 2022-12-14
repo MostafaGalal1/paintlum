@@ -24,28 +24,7 @@
     text-align: center;
 }
 .selector {
-    width: 96%;
-}
-
-.selector::-webkit-file-upload-button {
-    background-color: rgb(128,128,128);
-    width: 45%;
-    aspect-ratio: 2.5;
-    font-family: "Arial Black", serif;
-    color: black;
-    font-weight: bolder;
-    border-radius: 10px;
-    border: solid 1px black;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.selector::-webkit-file-upload-button:hover {
-    background-color: rgba(128,128,128,0.6);
-}
-
-.selector::-webkit-file-upload-button:active {
-    background-color: rgba(128,128,128,0.2);
+    display: none;
 }
 
 .color-picker {
@@ -80,5 +59,27 @@
 .image {
     filter: invert(85%) sepia(8%) saturate(12%) hue-rotate(356deg) brightness(75%) contrast(89%);
     position: relative;
-    top: 4px;
+    top: 9px;
+}
+
+.custom-file{
+    background-color: rgb(128,128,128);
+    color: black;
+    font-weight: bolder;
+    width: 40%;
+    aspect-ratio: 2.5;
+    margin: 2%;
+    padding: 2.6% 15% 1.9%;
+    border-radius: 10px;
+    border: solid 1px black;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.custom-file:hover {
+    background-color: rgba(128,128,128,0.6);
+}
+
+.custom-file:active {
+    background-color: rgba(128,128,128,0.2);
 }

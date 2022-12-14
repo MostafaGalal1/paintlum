@@ -1,0 +1,12 @@
+{
+  "map": {
+    "MaxID": 3,
+    "shapes": [
+      "{\"className\":\"Ellipse\",\"attrs\":\"{\\\"radiusX\\\":65.0,\\\"radiusY\\\":60.5,\\\"id\\\":\\\"0\\\",\\\"draggable\\\":true,\\\"strokeScaleEnabled\\\":false,\\\"x\\\":829.0,\\\"y\\\":238.0,\\\"strokeWidth\\\":5.0,\\\"scaleX\\\":1.0,\\\"scaleY\\\":1.0,\\\"className\\\":\\\"Ellipse\\\",\\\"stroke\\\":\\\"#000000\\\",\\\"fill\\\":\\\"transparent\\\",\\\"UndoUpdate\\\":[{\\\"map\\\":{\\\"key\\\":\\\"create\\\"}}],\\\"RedoUpdate\\\":[]}\"}",
+      "{\"className\":\"Ellipse\",\"attrs\":\"{\\\"radiusX\\\":42.0,\\\"radiusY\\\":40.5,\\\"id\\\":\\\"1\\\",\\\"draggable\\\":true,\\\"strokeScaleEnabled\\\":false,\\\"x\\\":579.0,\\\"y\\\":206.0,\\\"strokeWidth\\\":5.0,\\\"scaleX\\\":1.0,\\\"scaleY\\\":1.0,\\\"className\\\":\\\"Ellipse\\\",\\\"stroke\\\":\\\"#000000\\\",\\\"fill\\\":\\\"transparent\\\",\\\"UndoUpdate\\\":[{\\\"map\\\":{\\\"key\\\":\\\"create\\\"}}],\\\"RedoUpdate\\\":[]}\"}",
+      "{\"className\":\"Ellipse\",\"attrs\":\"{\\\"radiusX\\\":45.0,\\\"radiusY\\\":101.0,\\\"id\\\":\\\"2\\\",\\\"draggable\\\":true,\\\"strokeScaleEnabled\\\":false,\\\"x\\\":339.0,\\\"y\\\":244.0,\\\"strokeWidth\\\":5.0,\\\"scaleX\\\":1.0,\\\"scaleY\\\":1.0,\\\"className\\\":\\\"Ellipse\\\",\\\"stroke\\\":\\\"#000000\\\",\\\"fill\\\":\\\"transparent\\\",\\\"UndoUpdate\\\":[{\\\"map\\\":{\\\"key\\\":\\\"create\\\"}}],\\\"RedoUpdate\\\":[]}\"}"
+    ],
+    "RedoStack": "[]",
+    "UndoStack": "[\"0\",\"1\",\"2\"]"
+  }
+}

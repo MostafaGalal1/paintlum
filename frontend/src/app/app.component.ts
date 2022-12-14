@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from './Services/data.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
   constructor(private dataService:DataService){  }
 
   ngOnInit() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:8080/paint/restart" , false);
     xhr.send();
 

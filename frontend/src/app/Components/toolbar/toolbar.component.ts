@@ -1,6 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import axios from 'axios';
-import Konva from 'konva';
 import {DataService} from "../../Services/data.service";
 
 @Component({
@@ -37,19 +36,19 @@ export class ToolbarComponent implements OnInit {
   };
 
   async save() {
-    var blob;
-    var xhr = new XMLHttpRequest();
+    let blob;
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'save?fileType=json', false);
     xhr.send();
 
     blob = xhr.response;
-    var JSONFile = new File([blob], "", {type: "text/plain"});
+    let JSONFile = new File([blob], "", {type: "text/plain"});
 
     xhr.open("GET", this.un_url + 'save?fileType=xml', false);
     xhr.send();
 
     blob = xhr.response;
-    var XMLFile = new File([blob], "", {type: "text/plain"});
+    let XMLFile = new File([blob], "", {type: "text/plain"});
 
     this.newFile = await window.showSaveFilePicker({
       types: [
@@ -68,13 +67,16 @@ export class ToolbarComponent implements OnInit {
     console.log(this.newFile.name);
     if (this.newFile.name.indexOf("xml") !== -1) {
       await writableStream.write(XMLFile);
-    } else { 
+    } else {
       await writableStream.write(JSONFile);
     }
     await writableStream.close();
+    alert("Saved Successfully!")
   }
 
-  private stage:Konva.Circle = new Konva.Circle({x:43, y:43, fill:'red', stroke:'black', strokeWidth:12, draggable:true})
+  colorIt(){
+    this.data.setColorIt(true);
+  }
 
   load (e:any){
     let currentInput = e.target.files;
@@ -85,7 +87,6 @@ export class ToolbarComponent implements OnInit {
     let fileName = file.name;
     let regex = new RegExp('[^.]+$');
     let extension = fileName.match(regex);
-    console.log(extension);
 
     if (currentInput[0] == null) {
       return
@@ -93,16 +94,18 @@ export class ToolbarComponent implements OnInit {
     let formData = new FormData();
     formData.append("file", file);
     formData.append("ext", extension);
-
-    axios.post(this.un_url + "file", formData, {
+    axios.post(this.un_url + "load", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
-    }).then(Response => {this.data.setUpShape(Response.data)});
+    }).then(Response => {
+      let konvaArray : string[] = JSON.stringify(Response.data).slice(2,-1).split(",{");
+      this.data.setLoadFile(konvaArray);
+    });
  }
 
   async undo() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'undo', false);
     xhr.send();
 
@@ -122,7 +125,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   async redo() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", this.un_url + 'redo', false);
     xhr.send();
     if (xhr.response === "empty"){
@@ -140,22 +143,8 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-
   remove(){
-    var xhr = new XMLHttpRequest();
-    var pack: string;
-    var un_data: any;
-
-    un_data = {
-        "ID": 786867
-    };
-
-    pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
-
-    xhr.open("GET", this.un_url + 'delete' + '?' + pack, false);
-    xhr.send();
-
-    console.log(xhr.response);
+    this.data.setRemove(true);
   }
 
   select(){
