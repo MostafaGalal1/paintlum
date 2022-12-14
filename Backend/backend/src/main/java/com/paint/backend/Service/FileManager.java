@@ -1,5 +1,8 @@
 package com.paint.backend.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
@@ -69,19 +72,9 @@ public final class FileManager {
 
     public File saveXml(){
         File file = new File("temp.xml");
-        try {
-            FileOutputStream fileStream = new FileOutputStream(file);
-            XMLEncoder encoder = new XMLEncoder(fileStream);
-            encoder.writeObject(XML.toString(database.getData(),"data"));
-            encoder.close();
-            fileStream.flush();
-            fileStream.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return file;
+        ObjectMapper objectMapper = new XmlMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        return null;
     }
-
-
-
 }
