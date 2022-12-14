@@ -2,7 +2,6 @@ package com.paint.backend.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.paint.backend.Shapes.IShape;
 
 import org.json.JSONObject;
@@ -34,7 +33,7 @@ public final class Database {
         Shapes.put(ID, shape);
         clearRedo();
 
-        System.out.println(shape.draw().toString());
+        System.out.println(Shapes.size());
         return ID;
     }
 
