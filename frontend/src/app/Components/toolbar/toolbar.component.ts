@@ -98,11 +98,12 @@ export class ToolbarComponent implements OnInit {
     formData.append("file", file);
     formData.append("ext", extension);
 
-    axios.post(this.un_url + "file", formData, {
+    axios.post(this.un_url + "load", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
     }).then(Response => {this.data.setUpShape(Response.data)});
+  
  }
 
   async undo() {

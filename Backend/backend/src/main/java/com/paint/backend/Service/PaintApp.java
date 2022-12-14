@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Service
 public class PaintApp {
@@ -21,7 +23,6 @@ public class PaintApp {
         JSONObject jsonShape = new JSONObject(ShapeData);
         IShape shape = ShapesFactory.create(jsonShape);
         shape.setType((String) jsonShape.get("className"));
-       // System.out.println( ((JSONObject)jsonShape.get("attrs")).get("scaleX").toString());
         return database.add(shape);
     }
 
@@ -82,8 +83,14 @@ public class PaintApp {
         }
         return null;
     }
-    public void load(JSONObject data){
+    public ArrayList<JSONObject> load(File file, String ext) throws IOException {
+        JSONObject data =new JSONObject();
+        database.clear();
+        if(ext.equalsIgnoreCase("json")){
+            data = fileManager.loadJson(file);
+        }
         database.setData(data);
+        return database.getShapes();
     }
 
 }
