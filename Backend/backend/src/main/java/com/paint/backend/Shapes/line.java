@@ -3,13 +3,13 @@ package com.paint.backend.Shapes;
 import org.json.JSONObject;
 
 
-public class LineSegment extends Shape{
+public class line extends Shape{
 
     private float[] points;
     private String  lineCap;
     private String  lineJoin;
 
-    public LineSegment() {}
+    public line() {}
 
     @Override
     public JSONObject draw() {

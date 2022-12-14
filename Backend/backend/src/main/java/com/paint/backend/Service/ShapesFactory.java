@@ -13,13 +13,13 @@ public class ShapesFactory{
         if ((jsonShape.getString("className")).equalsIgnoreCase("circle")) {
             shape = gson.fromJson(jsonShape.get("attrs").toString(), Circle.class);
         } else if ((jsonShape.getString("className")).equalsIgnoreCase("regularpolygon")) {
-            shape = gson.fromJson(jsonShape.get("attrs").toString(), Polygon.class);
+            shape = gson.fromJson(jsonShape.get("attrs").toString(), regularpolygon.class);
         } else if ((jsonShape.getString("className")).equalsIgnoreCase("rect")) {
-            shape = gson.fromJson(jsonShape.get("attrs").toString(), Rectangle.class);
+            shape = gson.fromJson(jsonShape.get("attrs").toString(), rect.class);
         } else if ((jsonShape.getString("className")).equalsIgnoreCase("ellipse")) {
             shape = gson.fromJson(jsonShape.get("attrs").toString(), Ellipse.class);
         } else if ((jsonShape.getString("className")).equalsIgnoreCase("line")) {
-            shape = gson.fromJson(jsonShape.get("attrs").toString(), LineSegment.class);
+            shape = gson.fromJson(jsonShape.get("attrs").toString(), line.class);
         }else if ((jsonShape.getString("className")).equalsIgnoreCase("Star")){
             shape = gson.fromJson(jsonShape.get("attrs").toString(), Star.class);
         }

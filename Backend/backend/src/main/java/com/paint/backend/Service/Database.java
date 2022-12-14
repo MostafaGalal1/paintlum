@@ -1,6 +1,8 @@
 package com.paint.backend.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.paint.backend.Shapes.IShape;
 
 import org.json.JSONObject;
@@ -93,12 +95,13 @@ public final class Database {
 
         return new JSONObject().put(state,Shapes.get(ID).draw()).toString();
     }
-
     public JSONObject getData(){
-        ArrayList<String> shapes = new ArrayList<>();
+        JsonArray shapes = new JsonArray();
         for (Map.Entry<String,IShape> shape : Shapes.entrySet()) {
-            shapes.add(new Gson().toJson(shape.getValue()));
+            String className = shape.getValue().getClass().getSimpleName();
+            shapes.add(new JSONObject().put("attrs",new Gson().toJson(shape.getValue())).put("className",className).toString());
         }
+
         return new JSONObject().put("MaxID",MaxID)
                 .put("UndoStack",new Gson().toJson(UndoStack)).put("RedoStack",new Gson().toJson(RedoStack)).put("shapes",shapes);
     }
@@ -107,15 +110,20 @@ public final class Database {
         MaxID = data.getInt("MaxID");
         UndoStack = gson.fromJson(data.get("UndoStack").toString(),Stack.class);
         RedoStack = gson.fromJson(data.get("RedoStack").toString(),Stack.class);
-        /*
-        for(int shapeID=0 ;shapeID<gson.fromJson(data.get("shapes").toString(),ArrayList.class).size();shapeID++){
-                Shapes.put(shapeID,)
-        }*/
-        System.out.println(gson.toJson(UndoStack));
-        System.out.println(gson.toJson(RedoStack));
-        System.out.println("asdadasdasdsad");
+        JsonArray shapes = gson.fromJson(data.get("shapes").toString(),JsonArray.class);
+        for(int shapeID=0 ;shapeID<shapes.size();shapeID++){
+            IShape shape = ShapesFactory.create(new JSONObject(shapes.get(shapeID).toString()));
+            Shapes.put(String.valueOf(shapeID),shape);
+        }
     }
 
+    public ArrayList<JSONObject> getShapes(){
+        ArrayList<JSONObject> shapes =new ArrayList<>();
+        for (Map.Entry<String,IShape> shape : Shapes.entrySet()) {
+            shapes.add(shape.getValue().draw());
+        }
+        return shapes;
+    }
     public void clear() {
         MaxID = 0;
         UndoStack.clear();

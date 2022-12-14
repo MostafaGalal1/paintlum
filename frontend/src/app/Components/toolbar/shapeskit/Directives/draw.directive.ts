@@ -317,6 +317,8 @@ export class DrawDirective {
       pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
       var xhr = new XMLHttpRequest();
+      console.log(this.tr?.nodes()[0].toJSON());
+      console.log(un_data);
       xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
       xhr.send();
       this.sendScale = false;

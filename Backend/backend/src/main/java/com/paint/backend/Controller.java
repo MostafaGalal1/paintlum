@@ -1,7 +1,9 @@
 package com.paint.backend;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.paint.backend.Service.PaintApp;
+import com.paint.backend.Shapes.IShape;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -37,7 +40,7 @@ public class Controller {
     public void delete(@RequestParam String ID){
         paint.delete(ID);
     }
-
+/*
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     public String load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestPart(name = "ext") String ext) throws IOException {
         try {
@@ -51,7 +54,7 @@ public class Controller {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     @GetMapping("/undo")
     public String undo(){
@@ -85,6 +88,28 @@ public class Controller {
 
         return ResponseEntity.ok().contentLength(arr.length)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()).body(arr);
+    }
+
+    @RequestMapping(value = "/load", method = RequestMethod.POST)
+    public String load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestPart(name = "ext") String ext) {
+        InputStream initialStream;
+        File targetFile;
+        try {
+            initialStream = multipartFile.getInputStream();
+            byte[] buffer = new byte[initialStream.available()];
+            if(initialStream.read(buffer) == -1) throw new RuntimeException("Empty File");
+            targetFile = new File("targetFile."+ext);
+            if (!targetFile.createNewFile()) throw new RuntimeException("Target File Cannot Be Created");
+            OutputStream outStream = new FileOutputStream(targetFile);
+            outStream.write(buffer);
+            outStream.close();
+            String shapes = paint.load(targetFile,ext).toString();
+            if(!targetFile.delete()) System.out.println("Could not delete file");
+            return shapes;
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return null;
     }
 
 }
