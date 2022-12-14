@@ -19,6 +19,9 @@ export class DrawDirective {
     shapeDimension: boolean = false;
     selection: boolean = false;
     API_url: string = "http://localhost:8080/paint/";
+    
+    lineStroke:boolean = false;
+    lineStrokeWidth:boolean = false;
 
     @Input() selectedShape?: string;
     @Input() strokeColor?: string;
@@ -121,6 +124,8 @@ export class DrawDirective {
         }
 
         else if (changes.hasOwnProperty('updateShape')) {
+            if (this.updateShape === '')
+                return;
             let tmp = Konva.Node.create(this.updateShape!);
             tmp.setAttr('name', 'shape');
             this.layer.add(tmp);
@@ -128,6 +133,13 @@ export class DrawDirective {
             this.fillColor = this.tr?.nodes()[0].getAttr('fill');
             this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
             this.strokeWidth = this.tr?.nodes()[0].getAttr('strokeWidth');
+            this.dataService.setFillColor(this.fillColor!);
+            this.dataService.setStrokeColor(this.strokeColor!);
+            this.dataService.setsetstrokeWidth(this.strokeWidth!);
+            this.layer.batchDraw();
+            setTimeout(() => {
+                this.dataService.setKonvaShape('');
+            });
         }
 
         else if (changes.hasOwnProperty('upShape')) {
@@ -149,10 +161,15 @@ export class DrawDirective {
                 this.dataService.setUpShape('');
             });
         } else if (this.tr?.nodes()[0] !== undefined) {
+            if (this.tr?.nodes()[0].getAttr('className') === "Line"){
+                if (this.tr?.nodes()[0].getAttr('stroke') == this.strokeColor && this.tr?.nodes()[0].getAttr('strokeWidth') == this.strokeWidth)
+                    return;
+            }
             this.tr?.nodes()[0].setAttr("fill", this.fillColor);
             this.tr?.nodes()[0].setAttr("stroke", this.strokeColor);
             this.tr?.nodes()[0].setAttr("strokeWidth", parseInt(this.strokeWidth!));
             this.layer.batchDraw();
+            
             if (!this.sendColor)
                 return;
             setTimeout(() => {
@@ -191,6 +208,7 @@ export class DrawDirective {
                 points: [pos!.x, pos!.y, pos!.x, pos!.y],
                 stroke: this.strokeColor,
                 strokeWidth: parseInt(this.strokeWidth!),
+                fill: 'transparent',
                 scaleX: 1,
                 scaleY: 1,
                 lineCap: 'round',
@@ -345,8 +363,6 @@ export class DrawDirective {
             pack = Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
             var xhr = new XMLHttpRequest();
-            console.log(this.tr?.nodes()[0].toJSON());
-            console.log(un_data);
             xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
             xhr.send();
             this.sendScale = false;
@@ -358,7 +374,6 @@ export class DrawDirective {
 
             pack = Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
-            console.log(un_data);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", this.API_url + 'update' + '?' + pack, false);
             xhr.send();
