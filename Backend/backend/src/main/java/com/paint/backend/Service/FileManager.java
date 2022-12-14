@@ -2,6 +2,7 @@ package com.paint.backend.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 
 
 public final class FileManager {
@@ -78,9 +80,7 @@ public final class FileManager {
         ObjectMapper objectMapper = new XmlMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
         return file;
     }
-
-
-
 }
