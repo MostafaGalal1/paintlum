@@ -12,6 +12,10 @@ public abstract class Shape implements IShape {
     protected Stack<JSONObject> UndoUpdate = new Stack<>();
     protected Stack<JSONObject> RedoUpdate = new Stack<>();
 
+    public Shape() {
+        this.UndoUpdate.push(new JSONObject().put("key","create"));
+    }
+
     public void setID(String ID) { this.id = ID; }
 
     public void setType(String type) { this.className = type; }
@@ -30,8 +34,8 @@ public abstract class Shape implements IShape {
     }
 
     public String undoUpdate(){
-        if(UndoUpdate.empty()){
-            RedoUpdate.push(new JSONObject().put("create",true));
+        if(UndoUpdate.peek().get("key")=="create"){
+            RedoUpdate.push(UndoUpdate.pop());
             return "delete";
         }else if(UndoUpdate.peek().has("delete")){
             RedoUpdate.push(UndoUpdate.pop());
@@ -43,8 +47,8 @@ public abstract class Shape implements IShape {
     }
 
     public String redoUpdate(){
-        if(RedoUpdate.peek().has("create")){
-            RedoUpdate.pop();
+        if(RedoUpdate.peek().get("key")=="create"){
+            UndoUpdate.push(RedoUpdate.pop());
             return "create";
         }else if(RedoUpdate.peek().has("delete")){
             UndoUpdate.push(RedoUpdate.pop());
