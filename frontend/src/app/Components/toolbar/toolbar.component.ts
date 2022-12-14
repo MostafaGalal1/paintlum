@@ -89,7 +89,6 @@ export class ToolbarComponent implements OnInit {
     let fileName = file.name;
     let regex = new RegExp('[^.]+$');
     let extension = fileName.match(regex);
-    console.log(extension);
 
     if (currentInput[0] == null) {
       return
@@ -102,7 +101,9 @@ export class ToolbarComponent implements OnInit {
       headers: {
         "Content-Type": "multipart/form-data"
       }
-    }).then(Response => {this.data.setUpShape(Response.data)});
+    }).then(Response => {
+      this.data.setUpShape(Response.data);
+    console.log(Response.data)});
  }
 
   async undo() {
