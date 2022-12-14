@@ -6,7 +6,6 @@ import com.paint.backend.Shapes.IShape;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.*;
 
 
@@ -18,8 +17,9 @@ public final class Database {
     private Stack<String> RedoStack = new Stack<>();
     private Map<String, IShape> Shapes = new HashMap<>();
     private static Database instance;
+    private Database(){}
 
-    public static Database getInstance() throws IOException {
+    public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
         }
@@ -33,7 +33,7 @@ public final class Database {
         Shapes.put(ID, shape);
         clearRedo();
 
-        System.out.println(shape.draw().toString());
+        System.out.println(Shapes.size());
         return ID;
     }
 
@@ -94,16 +94,35 @@ public final class Database {
 
         return new JSONObject().put(state,Shapes.get(ID).draw()).toString();
     }
-
     public JSONObject getData(){
-        ArrayList<IShape> shapes = new ArrayList<IShape>();
+        JsonArray shapes = new JsonArray();
         for (Map.Entry<String,IShape> shape : Shapes.entrySet()) {
-            shapes.add(shape.getValue());
+            String className = shape.getValue().getClass().getSimpleName();
+            shapes.add(new JSONObject().put("attrs",new Gson().toJson(shape.getValue())).put("className",className).toString());
         }
+
         return new JSONObject().put("MaxID",MaxID)
                 .put("UndoStack",new Gson().toJson(UndoStack)).put("RedoStack",new Gson().toJson(RedoStack)).put("shapes",shapes);
     }
+    public void setData(JSONObject data){
+        Gson gson = new Gson();
+        MaxID = data.getInt("MaxID");
+        UndoStack = gson.fromJson(data.get("UndoStack").toString(),Stack.class);
+        RedoStack = gson.fromJson(data.get("RedoStack").toString(),Stack.class);
+        JsonArray shapes = gson.fromJson(data.get("shapes").toString(),JsonArray.class);
+        for(int shapeID=0 ;shapeID<shapes.size();shapeID++){
+            IShape shape = ShapesFactory.create(new JSONObject(shapes.get(shapeID).toString()));
+            Shapes.put(String.valueOf(shapeID),shape);
+        }
+    }
 
+    public ArrayList<JSONObject> getShapes(){
+        ArrayList<JSONObject> shapes =new ArrayList<>();
+        for (Map.Entry<String,IShape> shape : Shapes.entrySet()) {
+            shapes.add(shape.getValue().draw());
+        }
+        return shapes;
+    }
     public void clear() {
         MaxID = 0;
         UndoStack.clear();

@@ -8,14 +8,18 @@ export abstract class Shape implements Ishape {
     protected _stroke?: string | undefined;
     protected _strokeWidth?: number | undefined;
     protected _draggable?: boolean | undefined;
+    protected _scaleX?: number | undefined;
+    protected _scaleY?: number | undefined;
 
-    constructor(x?:number, y?:number, fill?: string, stroke?: string, strokeWidth?: number, draggable?: boolean){
+    constructor(x?:number, y?:number, fill?: string, stroke?: string, strokeWidth?: number, draggable?: boolean, scaleX?: number, scaleY?: number){
         this._x = x;
         this._y = y;
         this._fill = fill;
         this._stroke = stroke;
         this._strokeWidth = strokeWidth;
         this._draggable = draggable;
+        this._scaleX = scaleX;
+        this._scaleY = scaleY;
     }
 
     public get x(): number | undefined{
@@ -54,6 +58,18 @@ export abstract class Shape implements Ishape {
     public set draggable(value: boolean | undefined) {
         this._draggable = value;
     }
+    public get scaleX(): number | undefined {
+        return this._scaleX;
+    }
+    public set scaleX(value: number | undefined) {
+        this._scaleX = value;
+    }
+    public get scaleY(): number | undefined {
+        return this._scaleY;
+    }
+    public set scaleY(value: number | undefined) {
+        this._scaleY = value;
+    }
 
     getKonva() {
         return new Konva.Shape({
@@ -64,6 +80,8 @@ export abstract class Shape implements Ishape {
             stroke: this._stroke,
             strokeWidth: this._strokeWidth,
             draggable: this._draggable,
+            scaleX: this._scaleX,
+            scaleY: this._scaleY,
             strokeScaleEnabled: false,
         });
     }

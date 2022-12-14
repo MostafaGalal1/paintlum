@@ -1,18 +1,20 @@
 package com.paint.backend.Shapes;
 
-
 import org.json.JSONObject;
-
+import java.util.Objects;
 import java.util.Stack;
 
 public abstract class Shape implements IShape {
     protected String id;
     protected boolean draggable,strokeScaleEnabled;
-    protected float x, y, strokeWidth;
+    protected float x, y, strokeWidth , scaleX = 1, scaleY = 1;
     protected String className, stroke, fill;
     protected Stack<JSONObject> UndoUpdate = new Stack<>();
     protected Stack<JSONObject> RedoUpdate = new Stack<>();
 
+    public Shape() {
+        this.UndoUpdate.push(new JSONObject().put("key","create"));
+    }
 
     public void setID(String ID) { this.id = ID; }
 
@@ -27,15 +29,13 @@ public abstract class Shape implements IShape {
     }
     public abstract JSONObject draw();
 
-    public abstract void update(JSONObject jsonUpdate, String state);
-
     public void delete(){
         UndoUpdate.push(new JSONObject().put("delete", true));
     }
 
     public String undoUpdate(){
-        if(UndoUpdate.empty()){
-            RedoUpdate.push(new JSONObject().put("create",true));
+        if(UndoUpdate.peek().get("key")=="create"){
+            RedoUpdate.push(UndoUpdate.pop());
             return "delete";
         }else if(UndoUpdate.peek().has("delete")){
             RedoUpdate.push(UndoUpdate.pop());
@@ -47,8 +47,8 @@ public abstract class Shape implements IShape {
     }
 
     public String redoUpdate(){
-        if(RedoUpdate.peek().has("create")){
-            RedoUpdate.pop();
+        if(RedoUpdate.peek().get("key")=="create"){
+            UndoUpdate.push(RedoUpdate.pop());
             return "create";
         }else if(RedoUpdate.peek().has("delete")){
             UndoUpdate.push(RedoUpdate.pop());
@@ -59,4 +59,27 @@ public abstract class Shape implements IShape {
         return "update";
     }
 
+    public void update(JSONObject jsonUpdate, String state){
+        if(Objects.equals(state, "new")){ UndoUpdate.push(jsonUpdate); }
+        else{ RedoUpdate.push(jsonUpdate); }
+
+        System.out.println(jsonUpdate);
+        switch(jsonUpdate.getString("key")){
+            case "move"-> {
+                this.x = (((JSONObject)(jsonUpdate.get(state))).getFloat("x"));
+                this.y = (((JSONObject)(jsonUpdate.get(state))).getFloat("y"));
+            }
+            case "scale"-> {
+                this.x = (((JSONObject)(jsonUpdate.get(state))).getFloat("x"));
+                this.y = (((JSONObject)(jsonUpdate.get(state))).getFloat("y"));
+                this.scaleX = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleX"));
+                this.scaleY = (((JSONObject)(jsonUpdate.get(state))).getFloat("scaleY"));
+            }
+            case "style"->{
+                this.strokeWidth = (((JSONObject)(jsonUpdate.get(state))).getFloat("strokeWidth"));
+                this.stroke = (((JSONObject)(jsonUpdate.get(state))).getString("stroke"));
+                this.fill = (((JSONObject)(jsonUpdate.get(state))).getString("fill"));
+            }
+        }
+    }
 }

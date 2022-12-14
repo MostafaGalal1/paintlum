@@ -52,7 +52,6 @@ export class DataService {
 
   setRemove(val : boolean) {
     this.removeShape.next(val);
-  }
 
   setShape(und : string) {
     this.Shape.next(und);

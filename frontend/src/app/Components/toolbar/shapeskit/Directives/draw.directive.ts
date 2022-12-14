@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input, SimpleChanges } from '@angular/core';
+import { Directive, ChangeDetectorRef, HostListener, Input, SimpleChanges } from '@angular/core';
 import Konva from 'konva';
 import { DataService } from 'src/app/Services/data.service';
 import { ShapeFactory } from '../shapes/ShapeFactory';
@@ -59,9 +59,10 @@ export class DrawDirective {
     this.stage = new Konva.Stage({
       container: "container",
       width: 1600,
-      height: 880});
-      this.layer = new Konva.Layer();
-      this.tr = new Konva.Transformer({
+      height: 880
+    });
+    this.layer = new Konva.Layer();
+    this.tr = new Konva.Transformer({
       anchorStroke: 'grey',
       anchorFill: 'white',
       anchorSize: 7,
@@ -95,12 +96,12 @@ export class DrawDirective {
         this.dataService.setLoadFile(['']);
       });
     }
+
     else if (changes.hasOwnProperty('removeShape')){
       setTimeout(() => {
         this.dataService.setRemove(false);
       });
       if (this.tr?.nodes()[0] !== undefined) {
-
         un_data = {"ID": this.tr?.nodes()[0].getAttr('id')};
         this.tr?.nodes()[0].destroy();
 
@@ -122,6 +123,7 @@ export class DrawDirective {
         this.dataService.setDelete("-1");
       });
     }
+
 
     else if (changes.hasOwnProperty('updateShape')){
       let tmp = Konva.Node.create(this.updateShape!);
@@ -261,7 +263,7 @@ export class DrawDirective {
         this.konvaShape.setAttr('radius', Math.sqrt(Math.abs((this.konvaShape.getAttr('x') - pos!.x) * (this.konvaShape.getAttr('x') - pos!.x) + (this.konvaShape.getAttr('y') - pos!.y) * (this.konvaShape.getAttr('y') - pos!.y))));
       } else if (this.selectedShape === "diamond_star" || this.selectedShape === "penta_star" || this.selectedShape === "hexa_star") {
         this.konvaShape.setAttr('innerRadius', Math.sqrt(Math.abs((this.konvaShape.getAttr('x') - pos!.x) * (this.konvaShape.getAttr('x') - pos!.x) + (this.konvaShape.getAttr('y') - pos!.y) * (this.konvaShape.getAttr('y') - pos!.y))));
-        this.konvaShape.setAttr('outerRadius', this.konvaShape.getAttr('innerRadius') *  10 / (this.konvaShape.getAttr('numPoints') - 1));
+        this.konvaShape.setAttr('outerRadius', this.konvaShape.getAttr('innerRadius') * 10 / (this.konvaShape.getAttr('numPoints') - 1));
       } else if (this.selectedShape === "ellipse") {
         this.konvaShape.setAttr('width', Math.abs(pos!.x - this.konvaShape.getAttr('x')));
         this.konvaShape.setAttr('height', Math.abs(pos!.y - this.konvaShape.getAttr('y')));
@@ -287,11 +289,10 @@ export class DrawDirective {
     this.layer.batchDraw();
   }
 
-  @HostListener('mouseup') onMouseUp(){
+  @HostListener('mouseup') onMouseUp() {
     if (this.shapeDimension) {
       if (this.selectedShape !== "eraser")
         this.tr?.nodes([this.konvaShape]);
-
       let un_data : any = {
           "ShapeData": this.tr?.nodes()[0].toJSON()
       };
@@ -345,7 +346,32 @@ export class DrawDirective {
       let un_data: any;
       un_data = {"key":"move", "updatedShape": this.tr?.nodes()[0].toJSON()};
 
-      pack =  Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
+      if (selected![0] !== undefined) {
+        this.tr?.nodes([selected![0]]);
+        this.tr?.nodes()[0].draggable(true);
+        this.fillColor = this.tr?.nodes()[0].getAttr('fill');
+        this.strokeColor = this.tr?.nodes()[0].getAttr('stroke');
+        this.strokeWidth = this.tr?.nodes()[0].getAttr('strokeWidth');
+        this.dataService.setFillColor(this.fillColor!);
+        this.dataService.setStrokeColor(this.strokeColor!);
+        this.dataService.setsetstrokeWidth(this.strokeWidth!);
+        this.layer.batchDraw();
+      }
+      this.selection = false;
+    } else if (this.copying) {
+      var pos = this.stage?.getPointerPosition();
+      let tmp = this.copyShape;
+      tmp.setAttrs({ x: pos!.x, y: pos!.y });
+      this.layer.add(tmp);
+      this.tr?.nodes([tmp]);
+      this.layer.batchDraw();
+      this.copying = false;
+      var pack: string;
+      var un_data: any;
+      un_data = {
+        "ShapeData": tmp.toJSON()
+      };
+      pack = Object.keys(un_data).map(function (key) { return [key, un_data[key]].map(encodeURIComponent).join("="); }).join("&");
 
       console.log(un_data);
       let xhr = new XMLHttpRequest();
@@ -394,4 +420,3 @@ export class DrawDirective {
     }
   }
 }
-

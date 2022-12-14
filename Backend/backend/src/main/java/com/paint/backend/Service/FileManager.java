@@ -1,22 +1,26 @@
 package com.paint.backend.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.json.JSONObject;
+import org.json.XML;
 
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+
 
 public final class FileManager {
 
     private final Database database;
     private static FileManager instance;
 
-    public FileManager() throws IOException { database=Database.getInstance(); }
+    private FileManager() { database=Database.getInstance(); }
 
-    public static FileManager getInstance() throws IOException {
+    public static FileManager getInstance() {
         if (instance == null) {
             instance = new FileManager();
         }
@@ -37,21 +41,40 @@ public final class FileManager {
         return file;
     }
 
-    public File saveXml(){
-        File file = new File("temp.xml");
+    public JSONObject loadJson(File file){
         try {
-            FileOutputStream fileStream = new FileOutputStream(file);
-            XMLEncoder encoder = new XMLEncoder(fileStream);
-            encoder.writeObject(database.getData());
-            encoder.close();
-            fileStream.flush();
-            fileStream.close();
+            Gson json = new Gson();
+            FileReader f = new FileReader(String.valueOf(file.toPath()));
+            JSONObject y = json.fromJson(f, JSONObject.class);
+            System.out.println(y);
+            f.close();
+            return y;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        return file;
+        return null;
     }
 
+    public JSONObject loadXml(File file) throws IOException {
+        try {
+            FileInputStream f2 = new FileInputStream(file.toPath().toString());
+            XMLDecoder mydecoder = new XMLDecoder(f2);
+            String result = (String) mydecoder.readObject();
+            System.out.println(result);
+            mydecoder.close();
+            f2.close();
+            return XML.toJSONObject(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-
+    public File saveXml(){
+        File file = new File("temp.xml");
+        ObjectMapper objectMapper = new XmlMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        return null;
+    }
 }
