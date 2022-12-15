@@ -1,10 +1,6 @@
 package com.paint.backend;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.paint.backend.Service.PaintApp;
-import com.paint.backend.Shapes.IShape;
-import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -40,21 +35,6 @@ public class Controller {
     public void delete(@RequestParam String ID){
         paint.delete(ID);
     }
-/*
-    @RequestMapping(value = "/file", method = RequestMethod.POST)
-    public String load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestPart(name = "ext") String ext) throws IOException {
-        try {
-            Gson json = new Gson();
-            FileReader f = new FileReader("C:\\Users\\pc\\OneDrive-AlexandriaUniversity\\Desktop\\drawing.JSON");
-            JSONObject y = json.fromJson(f, JSONObject.class);
-            f.close();
-            paint.load(y);
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 
     @GetMapping("/undo")
     public String undo(){

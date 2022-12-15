@@ -32,7 +32,6 @@ public final class Database {
         Shapes.put(ID, shape);
         clearRedo();
 
-        System.out.println(Shapes.size());
         return ID;
     }
 
@@ -55,7 +54,6 @@ public final class Database {
     public void update(String ID,JSONObject update){
         UndoStack.push(ID);
         Shapes.get(ID).update(update,"new");
-        System.out.println(Shapes.get(ID).draw().toString());
         clearRedo();
     }
 
@@ -71,12 +69,10 @@ public final class Database {
         RedoStack.push(UndoStack.pop());
 
         String state = Shapes.get(ID).undoUpdate();
-        System.out.println(state);
+
         if(Objects.equals(state, "delete")){
             return new JSONObject().put("delete",ID).toString();
         }
-        System.out.println(Shapes.get(ID).draw().toString());
-
 
         return new JSONObject().put(state,Shapes.get(ID).draw()).toString();
     }
@@ -90,7 +86,6 @@ public final class Database {
         if(Objects.equals(state, "delete")){
             return  new JSONObject().put("delete",ID).toString();
         }
-        System.out.println(Shapes.get(ID).draw().toString());
 
         return new JSONObject().put(state,Shapes.get(ID).draw()).toString();
     }

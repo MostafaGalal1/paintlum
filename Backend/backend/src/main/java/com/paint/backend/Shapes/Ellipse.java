@@ -2,8 +2,6 @@ package com.paint.backend.Shapes;
 
 import org.json.JSONObject;
 
-
-
 public class Ellipse extends Shape {
     private float radiusX, radiusY;
 
