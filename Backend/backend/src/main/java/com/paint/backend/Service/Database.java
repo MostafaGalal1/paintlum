@@ -3,7 +3,6 @@ package com.paint.backend.Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.paint.backend.Shapes.IShape;
-
 import org.json.JSONObject;
 
 import java.util.*;

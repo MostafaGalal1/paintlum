@@ -34,12 +34,12 @@ public abstract class Shape implements IShape {
     }
 
     public String undoUpdate(){
-        if(UndoUpdate.peek().get("key").equals("create")){
-            RedoUpdate.push(UndoUpdate.pop());
-            return "delete";
-        }else if(UndoUpdate.peek().has("delete")){
+        if(UndoUpdate.peek().has("delete")){
             RedoUpdate.push(UndoUpdate.pop());
             return "create";
+        }else if(UndoUpdate.peek().get("key").equals("create")){
+            RedoUpdate.push(UndoUpdate.pop());
+            return "delete";
         }else{
             update(UndoUpdate.pop(),"old");
         }
@@ -47,12 +47,12 @@ public abstract class Shape implements IShape {
     }
 
     public String redoUpdate(){
-        if(RedoUpdate.peek().get("key").equals("create")){
-            UndoUpdate.push(RedoUpdate.pop());
-            return "create";
-        }else if(RedoUpdate.peek().has("delete")){
+        if(RedoUpdate.peek().has("delete")){
             UndoUpdate.push(RedoUpdate.pop());
             return "delete";
+        }else if(RedoUpdate.peek().get("key").equals("create")){
+            UndoUpdate.push(RedoUpdate.pop());
+            return "create";
         }else{
             update(RedoUpdate.pop(),"new");
         }
