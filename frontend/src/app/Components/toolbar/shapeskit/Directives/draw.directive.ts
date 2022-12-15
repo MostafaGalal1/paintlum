@@ -19,7 +19,7 @@ export class DrawDirective {
     shapeDimension: boolean = false;
     selection: boolean = false;
     API_url: string = "http://localhost:8080/paint/";
-    
+
     lineStroke:boolean = false;
     lineStrokeWidth:boolean = false;
 
@@ -161,15 +161,11 @@ export class DrawDirective {
                 this.dataService.setUpShape('');
             });
         } else if (this.tr?.nodes()[0] !== undefined) {
-            if (this.tr?.nodes()[0].getAttr('className') === "Line"){
-                if (this.tr?.nodes()[0].getAttr('stroke') == this.strokeColor && this.tr?.nodes()[0].getAttr('strokeWidth') == this.strokeWidth)
-                    return;
-            }
             this.tr?.nodes()[0].setAttr("fill", this.fillColor);
             this.tr?.nodes()[0].setAttr("stroke", this.strokeColor);
             this.tr?.nodes()[0].setAttr("strokeWidth", parseInt(this.strokeWidth!));
             this.layer.batchDraw();
-            
+
             if (!this.sendColor)
                 return;
             setTimeout(() => {
@@ -302,9 +298,7 @@ export class DrawDirective {
 
     @HostListener('mouseup') onMouseUp() {
         if (this.shapeDimension) {
-            if (this.selectedShape !== "eraser")
-                this.tr?.nodes([this.konvaShape]);
-
+            this.tr?.nodes([this.konvaShape]);
             var pack: string;
             var un_data: any;
             un_data = {
@@ -316,6 +310,9 @@ export class DrawDirective {
             xhr.open("GET", this.API_url + 'create' + '?' + pack, false);
             xhr.send();
             this.tr?.nodes()[0].setAttr('id', xhr.response);
+            if (this.selectedShape === "eraser") {
+                this.tr?.nodes([]);
+            }
         } else if (this.selection) {
             var shapes = this.stage?.find('.shape');
             var box = this.selectionRectangle!.getClientRect();
